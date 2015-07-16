@@ -1,0 +1,11 @@
+<li class="active">
+    <a href="#">
+    	<i class="fa fa-flask fa-fw"></i>Experiment<span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+    	<li><a href="{{ url_for('experiment._experiment', experiment_id = current_experiment.id ) }}">{{ current_experiment.name }}</a></li>
+        {% if current_experiment.status == "staging" %}<li><a href="{{ url_for('experiment.edit', experiment_id=current_experiment.id) }}">Edit Experiment</a></li>{% endif %}
+    </ul>
+    <!-- /.nav-second-level -->
+</li>
+

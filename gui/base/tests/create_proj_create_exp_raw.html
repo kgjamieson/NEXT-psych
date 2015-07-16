@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://ec2-54-69-195-202.us-west-2.compute.amazonaws.com:8002/" />
+<title>create_project_create_experiment</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create_project_create_experiment</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>fez_test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>foo</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>foo</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/new_project/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>example project 4</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=description</td>
+	<td>this is an example project for BD testing</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=h1.page-header</td>
+	<td>exact:Project: example project 4</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/new_experiment/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTitle</td>
+	<td>NEXT.Discovery New Experiment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=h4</td>
+	<td>Oops, you haven't uploaded a target set yet!</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/targets/manage')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=hosted_csv_file</td>
+	<td>/home/chris/Downloads/animals.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[@id='page-wrapper']/div/div/table/tbody/tr/td[2]</td>
+	<td>218</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/new_experiment/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTitle</td>
+	<td>NEXT.Discovery New Experiment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.description</td>
+	<td>First you need to decide what type of experiment you would like to create:</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/new_experiment/PoolBasedTripletMDS')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>example experiment</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=description</td>
+	<td>this is an example experiment for BD testing</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=instructions</td>
+	<td>start the experiment</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=debrief</td>
+	<td>thanks for participating!</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=query_tries</td>
+	<td>10</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=query_duration</td>
+	<td>5</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=params-d</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='page-wrapper']/div/div/div[2]/div/p</td>
+	<td>exact:Status: Staging</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[@id='page-wrapper']/div/div/div[2]/div/p</td>
+	<td>exact:Status: Staging</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='page-wrapper']/div/div/div[2]/div/p</td>
+	<td>exact:Status: Running</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[@id='page-wrapper']/div/div/div[2]/div/p</td>
+	<td>exact:Status: Running</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/dashboard/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=h1.page-header</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[10]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@value='delete'])[5]</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

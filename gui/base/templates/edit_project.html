@@ -1,0 +1,87 @@
+{% extends "outline.html" %}
+
+{% block title %} Edit Project {% endblock %}
+
+{% block sidebar %}
+{% include "_project_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+
+<h1 class="page-header">Edit Project</h1>
+
+<!-- Project Name Field -->
+<div class="form-group">
+  <label class="col-sm-2 text-right" for="name">{{ form.name.label }}</label>
+  <div class="col-sm-4">
+    {{ form.name(class_="form-control", form="save") }}
+    {% for error in form.name.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+<div class="clearfix"></div>
+
+<!-- Project Description -->
+<div class="form-group">
+  <label class="col-sm-2 text-right" for="description">{{ form.description.label }}</label>
+  <div class="col-sm-8">
+    {{ form.description(class_="form-control", form="save") }}
+    {% for error in form.description.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+<div class="clearfix"></div>
+
+{#
+<!-- Public or Private -->
+<div class="form-group">
+  <label class="col-sm-2 text-right" for="users">{{ form.users.label }}</label>
+  <!-- <p>comma separated list of usernames.</p> -->
+  <div class="col-sm-8">
+    {{ form.users(class_="form-control", form="save") }}
+    {% for error in form.users.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+	</div>
+</div>
+#}
+
+<!-- Save button -->    
+<form class="form-horizontal" method="post" id="save">
+  {{ form.hidden_tag() }}
+  <div class="col-lg-1 col-lg-offset-5 col-xs-12">
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
+
+<!-- <form action="{{ url_for('.delete', project_id=current_project.id) }}" method="post">
+  <div class="col-lg-1 col-xs-12">
+    <button type="submit" value="delete" class="btn btn-primary">Delete</button>
+  </div>
+</form> -->
+
+<div class="col-lg-1 col-xs-12">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-delete'>Delete</button> 
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header" style="text-align:center">
+            <h4>Are you sure you want to delete?</h4>
+          </div>
+          <div class="modal-footer" style="text-align:center">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <form style="display:inline" action="{{ url_for('.delete', project_id=current_project.id) }}" method="post">
+                <button type="submit" value="delete" class="btn btn-danger btn-ok">Delete</a>
+              </form> 
+          </div>
+      </div>
+  </div>
+</div> 
+
+{% endblock %}
+
+
+

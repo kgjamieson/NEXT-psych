@@ -1,0 +1,62 @@
+{% extends "outline.html" %}
+
+{% block title %} New Experiment {% endblock %} 
+
+{% block sidebar %}
+{% include "_project_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+
+<h1 class="page-header">New Experiment</h1>
+<div>
+  <div class="description">First you need to decide what type of experiment you would like to create:</div>
+  <table>
+    <tbody>
+      <tr style="height:145px">
+        <td class="col-sm-1 text-center">
+          <img style="border:1px solid; max-width:100px" src="/static/img/Triplet.jpg"></img>
+        </td>
+        <td class="col-sm-6" style="vertical-align:top;">
+          <h2 class="sub-header">
+            <a href="{{ url_for('new_experiment.new_experiment_details', app_id='PoolBasedTripletMDS') }}">Triplet Experiment</a>
+          </h2>
+      	  <div class="description" style="text-align: left; width:70%;">
+      	    Triplet experiments compare one item (A) to two other items (B & C) for similarity. A complex mathematical algorithm is used to calculate the distance between all items in the set, providing a measure of relationships between the items.
+      	  </div>
+        </td>
+      </tr>
+      <tr style="height:145px">
+        <td class="col-sm-2 text-center">
+          <img style="border:1px solid; max-width:100px" src="/static/img/Dueling.jpg"></img>
+        </td>
+        <td class="col-sm-6" style="vertical-align:top;">
+          <h2 class="sub-header">
+            <a href="{{ url_for('new_experiment.new_experiment_details', app_id='StochasticDuelingBordaBanditsPureExploration') }}">
+              Stochastic Dueling Borda Bandits Pure Exploration 
+            </a>
+          </h2>
+      	  <div class="description" style="text-align: left;">
+      	    Compare 2 items.
+      	  </div>
+        </td>
+      </tr>
+      <tr style="height:145px">
+        <td class="col-sm-2 text-center">
+          <img style="border:1px solid; max-width:100px" src="/static/img/Tuple.jpg"></img>
+        </td>
+        <td class="col-sm-6" style="vertical-align:top;">
+          <h2 class="sub-header">
+            <a href="{{ url_for('new_experiment.new_experiment_details', app_id='TupleBanditsPureExploration') }}">
+              Tuple Bandits Pure Exploration 
+            </a>
+          </h2>
+          <div class="description" style="text-align: left;">
+            Compare k items.
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

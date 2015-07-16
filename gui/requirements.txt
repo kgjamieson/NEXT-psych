@@ -1,0 +1,35 @@
+Flask
+
+# Flask Extensions
+Flask-Assets
+Flask-Cache
+Flask-DebugToolbar
+Flask-Login
+Flask-SQLAlchemy
+Flask-Script
+Flask-WTF
+Flask-mongoengine
+
+# Other
+itsdangerous
+cssmin
+jsmin
+boto
+
+# Database
+# Followed recommendations here: http://stackoverflow.com/questions/29517930/error-while-following-tumblelog-application-with-flask-and-mongoengine
+pymongo==2.7.2
+mongoengine==0.9.0
+
+
+# Documentation
+Sphinx
+
+# Testing
+pytest
+coverage
+mccabe
+flake8
+selenium
+
+greenlet

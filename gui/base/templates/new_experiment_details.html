@@ -1,0 +1,146 @@
+{% extends "outline.html" %}
+
+{% block title %} New Experiment Details {% endblock %}
+
+{% block sidebar %}
+{% include "_project_sidebar.html" %}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" >
+  $(document).ready (function(){
+    if({{ form.errors|length }} > 0){
+      // $("#error").show();
+      $("#error").alert();
+      $("#error").fadeTo(2000, 500).slideUp(500, function(){
+         $("#error").alert('close');
+      });
+    }
+  });
+</script>
+{% endblock %}
+
+{% block body %}
+
+<!-- alert if there are errors -->
+<div class="alert alert-danger alert-dismissable" 
+      style="text-align:center;width:70%;margin-top:20px;margin-left:auto;margin-right:auto;margin-bottom:-20px;display:none" 
+      id="error">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Oops! </strong>
+    There was an error in your submission
+</div>
+
+<!-- header and description of page -->
+<h2 class="page-header">Experiment Details</h2>
+<div class="description">
+  <p>Give your experiment a name and a short description.</p>
+</div>
+
+<!-- Project Name Field -->
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="name">{{ form.name.label }}</label>
+  <div class="col-sm-4">
+    {{ form.name(class_="form-control", form="save") }}
+    {% for error in form.name.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<!-- Project Description -->
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="description">{{ form.description.label }}</label>
+  <div class="col-sm-8">
+    {{ form.description(class_="form-control", form="save") }}
+    {% for error in form.description.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+
+<!-- Experiment Instructions -->
+<h2 class="page-header">Experiment Instructions </h2>
+<div class="description">
+  <p>People participating in your experiment need to know what comparisons they are making. Provide a
+    description of the comparison and any other instructions they should see before the experiment begins.</p>
+  <p>You can also provide a debriefing message that they will see when they have completed the experiment.</p>
+</div>
+
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}</label>
+  <div class="col-sm-8">
+    {{ form.instructions(class_="form-control", form="save") }}
+    {% for error in form.instructions.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="debrief">{{ form.debrief.label }}</label>
+  <div class="col-sm-8">
+    {{ form.debrief(class_="form-control", form="save") }}
+    {% for error in form.debrief.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<!-- Experiment Target Set -->
+<h2 class="page-header"> Experiment Target Set </h2>
+<div class="description">
+  <p>Choose a target set</p>
+</div>
+
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="instructions">{{ form.target_set.label }}</label>
+  <div class="col-sm-8">
+    {{ form.target_set(class_="form-control", form="save") }}
+    {% for error in form.target_set.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<!-- Query Limits -->
+<h2 class="page-header"> Query Limits/Stopping Criterion</h2>
+<div class="description">
+  <p>Choose the number of queries and the time limit a user has.</p>
+</div>
+
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="instructions">{{ form.query_tries.label }}</label>
+  <div class="col-sm-8">
+    {{ form.query_tries(class_="form-control", form="save") }}
+    {% for error in form.query_tries.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<div class="form-group clearfix">
+  <label class="col-sm-2 text-right" for="instructions">{{ form.query_duration.label }}</label>
+  <div class="col-sm-8">
+    {{ form.query_duration(class_="form-control", form="save") }}
+    {% for error in form.query_duration.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+  </div>
+</div>
+
+<!-- Render app_params form -->
+{{ app_params_html|safe }}
+
+
+<!-- Save button -->    
+<form class="form-horizontal" method="post" id="save" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="col-lg-1 col-lg-offset-5 col-xs-12" style="padding-top:20px; padding-bottom:50px;">
+    <button type="submit" class="btn btn-primary" id="save">Save</button>
+  </div>
+</form>
+
+{% endblock %}
+

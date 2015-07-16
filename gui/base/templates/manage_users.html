@@ -1,0 +1,34 @@
+{% extends "outline.html" %}
+
+{% block title %} Manage Users {% endblock %}
+
+{% block script_include %}
+<script type ="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+  tinymce.init({
+  selector: "textarea.editor"
+  });
+</script>
+{% endblock %}
+
+{% block style_include %}
+<style type="text/css">
+  .fileOption {
+  border: 1px solid #ddd;
+  }
+</style>
+{% endblock %}
+
+{% block sidebar %}
+{% include "_project_sidebar.html" %}
+{% include "_experiment_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+
+<h1 class="page-header">Manage Users</h1>
+
+<p>Eventually you will be able to add more users onto a single experiment.</p>
+
+{% endblock %}
+

@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p><b>Current Ranking</b></p>
+    <p>uses current model empirical estimates to forecast which targets are ranked the highest</p>
+
+    <ul class="nav nav-tabs">
+      {% for alg in current_experiment.info["alg_list"] %}
+      <li role="presentation" {{ "class=active" if loop.first }}><a href="#most_current_ranking_{{ alg['alg_label'] }}_tab"  role="tab" data-toggle="tab">{{ alg["alg_label"] }}-{{ alg["alg_id"] }}</a></li>
+      
+      {% endfor %}
+    </ul>
+    
+    <div class="tab-content">
+    {% for alg in current_experiment.info["alg_list"] %}
+    {% set alg_label = alg["alg_label"] %}
+      <div class="row tab-pane {{ 'active' if loop.first }}" role="tabpanel" 
+            id="most_current_ranking_{{ alg_label }}_tab" style="padding-top:20px; padding-bottom:20px">
+        <div class="col-lg-10 col-lg-offset-1" id="most_current_ranking_{{ alg_label }}"> 
+          <h1> Loading </h1>
+        </div>
+  
+        <script>  
+          create_ranking = function(data) {
+            // console.log("most_current_ranking data:", data);
+            next_widget.createRankingTable(data, "most_current_ranking_{{ alg_label }}")
+          }
+
+          data = next_widget.getStats(
+            {
+              'app_id': "{{ current_experiment.app_id }}",
+              'exp_uid': "{{ current_experiment.exp_uid }}",
+              'exp_key': "{{ current_experiment.exp_key }}",
+              'args':{
+                'stat_id' : 'most_current_ranking',
+                'params'  : {'alg_label': "{{ alg_label }}" }
+              }
+            },
+          create_ranking
+          );  
+        </script>
+
+      </div>
+      
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+    
