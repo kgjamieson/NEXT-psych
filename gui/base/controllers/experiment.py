@@ -186,7 +186,8 @@ def get_temp_keys():
     keys = eval(response.text)["keys"]
     # Use the global host and port since these are external links
     print config.NEXT_FRONTEND_GLOBAL_HOST, config.NEXT_FRONTEND_GLOBAL_PORT
-    links = ["http://"+ config.NEXT_FRONTEND_GLOBAL_HOST+":"+str(config.NEXT_FRONTEND_GLOBAL_PORT)+"/experiment/query/"+current_experiment.app_id+"/"+current_experiment.exp_uid+"/"+key for key in keys]
+    # links = ["http://"+ config.NEXT_FRONTEND_GLOBAL_HOST+":"+str(config.NEXT_FRONTEND_GLOBAL_PORT)+"/experiment/query/"+current_experiment.app_id+"/"+current_experiment.exp_uid+"/"+key for key in keys]
+    links = ["http://"+ config.NEXT_FRONTEND_GLOBAL_HOST+":"+str(config.NEXT_BACKEND_GLOBAL_PORT)+"/query/query_page/query_page/"+current_experiment.exp_uid+"/"+key for key in keys]
     return "\n".join(links),200, {'Content-Disposition':'attachment'}
 
 @experiment.route('/get-participant-responses')

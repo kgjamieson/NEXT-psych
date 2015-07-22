@@ -1,4 +1,4 @@
 import app_manager
 import PoolBasedTripletMDS
-import StochasticDuelingBordaBanditsPureExploration
+import DuelingBanditsPureExploration
 import TupleBanditsPureExploration

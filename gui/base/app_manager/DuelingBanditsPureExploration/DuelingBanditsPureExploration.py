@@ -19,12 +19,12 @@ TEMPLATES_DIRECTORY = os.path.dirname(__file__)
 loader = FileSystemLoader(TEMPLATES_DIRECTORY)
 env = Environment(loader=loader)
 
-class StochasticDuelingBordaBanditsPureExploration(AppResourcePrototype):
+class DuelingBanditsPureExploration(AppResourcePrototype):
     """
-    Stochastic Dueling BordaBandits PureExploration
+    Dueling Bandits PureExploration
     Author: Chris Fernandez
 
-    App resource for StochasticDuelingBordaBanditsPureExploration. 
+    App resource for DuelingBanditsPureExploration. 
     """
 
     def get_experiment_params(self, args=None):
@@ -38,7 +38,7 @@ class StochasticDuelingBordaBanditsPureExploration(AppResourcePrototype):
             alg_id = SelectField('Algorithm Id', choices=[(algorithm, algorithm) for algorithm in alg_list])
             alg_proportion = FloatField('Algorithm Proportion')
         
-        class StochasticDuelingBordaBanditsPureExplorationForm(Form):            
+        class DuelingBanditsPureExplorationForm(Form):            
             context_type = SelectField('Context Type', choices=[('text', 'Text'), ('image', 'Image')])
             context_image = FileField('Context Image')
             context_text = TextField('Context Text')
@@ -82,7 +82,7 @@ class StochasticDuelingBordaBanditsPureExploration(AppResourcePrototype):
             alg_rows = FieldList(FormField(AlgorithmDefinitionRowForm))
 
         template = env.get_template("new_experiment_params.html")
-        return template, StochasticDuelingBordaBanditsPureExplorationForm
+        return template, DuelingBanditsPureExplorationForm
 
     def get_experiment_dashboard(self, current_experiment, args=None):
         """
