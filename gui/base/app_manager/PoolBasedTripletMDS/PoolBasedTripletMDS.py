@@ -85,7 +85,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label"]))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
             for response in response_list:
-                line = [participant_id, response['timestamp']]
+                line = [participant_id, response['timestamp_query_generated']]
                 targets = {}
                 # This index is not a backend index! It is just one of the target_indices
                 for index in response['target_indices']:
