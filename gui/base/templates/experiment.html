@@ -116,9 +116,12 @@
     </div>
 
     <p> <b> Permanent Query View:</b> </p>
-    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;"> 
+<!--     <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;"> 
       <a href="{{ next_frontend_url }}/experiment/query/{{ current_experiment.app_id }}/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}" target="_blank">{{ next_frontend_url }}/experiment/query/{{ current_experiment.app_id }}/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}</a>
-    </div>
+    </div> -->
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;"> 
+      <a href="{{ next_backend_url }}/query/query_page/query_page/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}" target="_blank">{{ next_backend_url }}/query/query_page/query_page/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}</a>
+    </div>    
 
     <div class="col-lg-12" style="padding:0">
       <p> <b> Temporary Query View: </b> </p>
