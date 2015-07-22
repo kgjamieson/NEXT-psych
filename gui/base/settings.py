@@ -24,8 +24,8 @@ class Config(object):
     AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME','next.discovery')
 
     # Local docker frontend base links (This is not set, therefor always is localhost, which is fine)
-    NEXT_BACKEND_HOST = os.environ.get("NEXT_BACKEND_HOST", 'localhost')
-    NEXT_BACKEND_PORT = os.environ.get("NEXT_BACKEND_PORT", "8000")
+    NEXT_BACKEND_HOST = os.environ.get("NEXT_BACKEND_GLOBAL_HOST", 'localhost')
+    NEXT_BACKEND_PORT = os.environ.get("NEXT_BACKEND_GLOBAL_PORT", "8000")
     
     # Global frontend base links. Used for widgets and stats calls.
     NEXT_BACKEND_GLOBAL_HOST = os.environ.get("NEXT_BACKEND_GLOBAL_HOST", 'localhost')
