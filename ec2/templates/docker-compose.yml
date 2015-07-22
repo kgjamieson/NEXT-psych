@@ -141,4 +141,7 @@ nextfrontenddocker:
    - NEXT_BACKEND_GLOBAL_PORT
    - NEXT_FRONTEND_GLOBAL_HOST
    - NEXT_FRONTEND_GLOBAL_PORT
+   - AWS_ACCESS_ID
+   - AWS_SECRET_ACCESS_KEY
+   - AWS_BUCKET_NAME
 ###########################

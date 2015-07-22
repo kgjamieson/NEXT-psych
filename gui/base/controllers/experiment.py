@@ -151,7 +151,7 @@ def run_experiment(experiment_id):
     create_target_mapping_dict['exp_key'] = current_experiment.exp_key
     # Do this more cleanly. The problem is that mongoengine fields can't be json serialized.
     create_target_mapping_dict['target_blob'] = [mongo_to_dict(doc) for doc in current_experiment.target_set.targets]
-    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/createtargetmapping"
+    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/targets/createtargetmapping"
     response = requests.post(url,
                              json.dumps(create_target_mapping_dict),
                              headers={'content-type':'application/json'})
@@ -167,7 +167,8 @@ def run_experiment(experiment_id):
 def get_temp_keys():
     n = int(request.args.get("keys_count",0))
     # Use local links to to local request
-    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/widgets/temp-widget-keys"
+    # url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/widgets/temp-widget-keys"
+    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/temp-widget-keys"
     args = {
         'exp_uid':current_experiment.exp_uid,
         'exp_key':current_experiment.exp_key,
