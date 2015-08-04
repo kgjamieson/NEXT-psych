@@ -11,7 +11,7 @@ For more information, in-depth tutorials, and API docs, we recommend visiting ou
 You can download the latest version of NEXT from github with the following clone command:
 
 ```
-$ git clone https://github.com/kgjamieson/NEXT.git
+$ git clone https://github.com/kgjamieson/NEXT-psych.git
 ```
 
 We are actively working to develop and improve NEXT, but users should be aware of the following caveats: 
@@ -20,7 +20,7 @@ We are actively working to develop and improve NEXT, but users should be aware o
 
 ### Launching NEXT on EC2
 
-First, you must set your Amazon Web Services (AWS) account credentials as enviornment variables. If you don't already have AWS account, you can follow our AWS account quickstart [here](https://github.com/kgjamieson/NEXT/wiki/AWS-Account-Quickstart) or the official AWS account set-up guide [here](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html) for an in-depth introduction.
+First, you must set your Amazon Web Services (AWS) account credentials as enviornment variables. If you don't already have AWS account, you can follow our AWS account quickstart [here](https://github.com/kgjamieson/NEXT-psych/wiki/AWS-Account-Quickstart) or the official AWS account set-up guide [here](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html) for an in-depth introduction.
 
 Export your AWS credentials as environment variables using:
 ```
@@ -31,7 +31,7 @@ Note that you'll need to use your `AWS_SECRET_ACCESS_KEY` and `AWS_ACCESS_KEY_ID
 
 Install the local python packages needed for NEXT:
 ```
-$ cd NEXT
+$ cd NEXT-psych
 $ sudo pip install -r local_requirements.txt
 ```
 
@@ -68,7 +68,7 @@ First, in a new terminal, export your AWS credentials and use `get-master` to ob
 $ export AWS_SECRET_ACCESS_KEY=[your_secret_aws_access_key_here]
 $ export AWS_ACCESS_KEY_ID=[your_aws_access_key_id_here]
 $ export AWS_BUCKET_NAME=[your_aws_bucket_name_here]
-$ cd NEXT/ec2
+$ cd NEXT-psych/ec2
 $ python next_ec2.py --key-pair=[keypair] --identity-file=[key-file] get-master [cluster-name]
 ```
 
