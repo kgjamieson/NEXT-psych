@@ -20,7 +20,7 @@ We are actively working to develop and improve NEXT, but users should be aware o
 
 ### Launching NEXT on EC2
 
-First, you must set your Amazon Web Services (AWS) account credentials as enviornment variables. If you don't already have AWS account, you can follow our AWS account quickstart [here](https://github.com/kgjamieson/NEXT-psych/wiki/AWS-Account-Quickstart) or the official AWS account set-up guide [here](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html) for an in-depth introduction.
+First, you must set your Amazon Web Services (AWS) account credentials as enviornment variables. If you don't already have AWS account, you can follow our AWS account quickstart [here](https://github.com/kgjamieson/NEXT/wiki/AWS-Account-Quickstart) or the official AWS account set-up guide [here](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html) for an in-depth introduction.
 
 Export your AWS credentials as environment variables using:
 ```
