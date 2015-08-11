@@ -38,10 +38,9 @@ def main():
     d = 2
     m = int(ceil(40*n*d*log(n)))  # number of labels
     
-    p = 0.1; # error rate
+    p = 0.0; # error rate
     
-    Strain = []
-    Stest = []
+    S = []
     Xtrue = randn(n,d);
     for iter in range(0,m):
 
@@ -58,21 +57,12 @@ def main():
         if R<p:
             q = [ q[i] for i in [1,0,2]]
 
-        if iter < .9*m:
-            Strain.append(q)
-        else:
-            Stest.append(q)
+        S.append(q)
 
 
     # compute embedding 
-    X,emp_loss_train = computeEmbedding(n,d,Strain,num_random_restarts=2,epsilon=0.01,verbose=True)
+    X,emp_loss = computeEmbedding(n,d,S,num_random_restarts=2,epsilon=0.01,verbose=True)
 
-    # compute loss on test set
-    emp_loss_test,hinge_loss_test = getLoss(X,Stest)
-
-    print
-    print 'Training loss = %f,   Test loss = %f' %(emp_loss_train,emp_loss_test)
-    
 
 
 def getRandomQuery(X):
@@ -193,7 +183,7 @@ def getGradient(X,S):
 
     return G,avg_grad_row_norm_sq,max_grad_row_norm_sq,avg_row_norm_sq
 
-def computeEmbedding(n,d,S,num_random_restarts=0,max_num_passes=0,max_norm=0,epsilon=0.01,verbose=False):
+def computeEmbedding(n,d,S,num_random_restarts=0,max_num_passes=0,max_iter_GD=0,max_norm=0,epsilon=0.01,verbose=False):
     """
     Computes an embedding of n objects in d dimensions usin the triplets of S.
     S is a list of triplets such that for each q in S, q = [i,j,k] means that
@@ -202,9 +192,12 @@ def computeEmbedding(n,d,S,num_random_restarts=0,max_num_passes=0,max_norm=0,eps
     Inputs:
         (int) n : number of objects in embedding
         (int) d : desired dimension
-        (list [(int) i, (int) j,(int) k]) S : list of triplets, i,j,k must be in [n]. 
-        (int) num_random_restarts : number of random restarts (nonconvex optimization, may converge to local minima)
+        (list [(int) i, (int) j,(int) k]) S : list of triplets, i,j,k must be in [n].
+        (int) num_random_restarts : number of random restarts (nonconvex
+        optimization, may converge to local minima). E.g., 9 random restarts
+        means take the best of 10 runs of the optimization routine.
         (int) max_num_passes : maximum number of passes over data SGD makes before proceeding to GD (default equals 16)
+        (int) max_iter_GD: maximum number of GD iteration (default equals 50)
         (float) max_norm : the maximum allowed norm of any one object (default equals 10*d)
         (float) epsilon : parameter that controls stopping condition, smaller means more accurate (default = 0.01)
         (boolean) verbose : outputs some progress (default equals False)
@@ -215,21 +208,25 @@ def computeEmbedding(n,d,S,num_random_restarts=0,max_num_passes=0,max_norm=0,eps
     """
 
     if max_num_passes==0:
-        max_num_passes = 32
+        max_num_passes_SGD = 16
+    else:
+        max_num_passes_SGD = max_num_passes
 
-    X_old = None
+
+    if max_iter_GD ==0:
+        max_iter_GD = 50
+
     emp_loss_old = float('inf')
     num_restarts = -1
     while num_restarts < num_random_restarts:
         num_restarts += 1
 
         ts = time.time()
-        X,acc = computeEmbeddingWithEpochSGD(n,d,S,max_num_passes=max_num_passes,max_norm=max_norm,epsilon=0.,verbose=verbose)
+        X,acc = computeEmbeddingWithEpochSGD(n,d,S,max_num_passes=max_num_passes_SGD,max_norm=max_norm,epsilon=epsilon,verbose=verbose)
         te_sgd = time.time()-ts
 
         ts = time.time()
-        X_new,tmp1,tmp2,tmp3 = computeEmbeddingWithGD(X,S,max_iters=50,max_norm=max_norm,epsilon=epsilon,verbose=verbose)
-        emp_loss_new,hinge_loss_new = getLoss(X_new,S)
+        X_new,emp_loss_new,hinge_loss_new,acc_new = computeEmbeddingWithGD(X,S,max_iters=max_iter_GD,max_norm=max_norm,epsilon=epsilon,verbose=verbose)
         te_gd = time.time()-ts
 
         if emp_loss_new<emp_loss_old:
