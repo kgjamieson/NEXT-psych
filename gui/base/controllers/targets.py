@@ -29,7 +29,7 @@ def manage():
         hosted_zip_file.seek(0, os.SEEK_END)
         if "hosted_zip_file" in request.files.keys() and hosted_zip_file.tell()!=0:
             has_zip_file = True
-            hosted_zip_file = request.files['hosted_zip_file']        
+            hosted_zip_file = request.files['hosted_zip_file']
 
             # Dictionary mapping filename to object
             target_file_dict = zipfile_to_dictionary(hosted_zip_file)
@@ -38,15 +38,13 @@ def manage():
             #    flash("Inconsistent number of targets to images")
             #    return redirect(url_for('project.manage_targets'))
 
-
         hosted_csv_file = request.files['hosted_csv_file']
-        
+
         # Parse the csv file into a list of dictionaries, one for each row
         target_list = csv_to_dict(hosted_csv_file, ["target_id", "primary_type", "alt_description"])
 
         # Create target set
-        target_set = TargetSet(name=hosted_csv_file.filename)    
-
+        target_set = TargetSet(name=hosted_csv_file.filename)
         for target in target_list:
                 # Get file object
             if has_zip_file == True:
@@ -69,7 +67,7 @@ def manage():
         # Save the target_set
         target_set.save()
         current_project.add_target_set(target_set)
-            
+
     # Always return this page
     return render_template('manage_targets.html')
 
@@ -97,7 +95,7 @@ def edit(target_set_id):
             target.update(set__alt_description=form.alt_description.data)
             # need to redefine target set before rendering template to update changes
             target_set = TargetSet.objects(id=target_set_id)[0]
-            return render_template("edit_target_set.html", form=form, target_set_form=TargetSetForm(obj=target_set), target_set=target_set)       
+            return render_template("edit_target_set.html", form=form, target_set_form=TargetSetForm(obj=target_set), target_set=target_set)
 
     return render_template("edit_target_set.html", form=form, target_set_form=TargetSetForm(obj=target_set), target_set=target_set)
 
@@ -120,7 +118,7 @@ def edit_target_set_name(target_set_id):
             # need to redefine target set before rendering template to update changes
             target_set = TargetSet.objects(id=target_set_id)[0]
             # create new form object for editing targets
-            # return render_template("edit_target_set.html", form=form, target_set_form=TargetSetForm(obj=target_set), target_set=target_set)       
+            # return render_template("edit_target_set.html", form=form, target_set_form=TargetSetForm(obj=target_set), target_set=target_set)
 
     return redirect(url_for('targets.edit', target_set_id=target_set_id))
 

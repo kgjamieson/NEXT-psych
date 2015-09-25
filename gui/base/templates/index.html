@@ -19,7 +19,7 @@
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js" defer></script>
-  <script src="/static/js/jquery.easing.min.js" defer></script> 
+  <script src="/static/js/jquery.easing.min.js" defer></script>
   <script src="/static/js/jquery.scrollTo.js" defer></script>
   <script src="/static/js/wow.min.js" defer></script>
   <script src="/static/js/custom.js" defer></script>
@@ -100,7 +100,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#intro">Home</a></li>
                 <li><a href="#about">About</a></li>
-                {% if current_user.is_authenticated() %}
+                {% if current_user.is_authenticated %}
                 <li><a href="{{ url_for('dashboard._dashboard') }}">Dashboard</a></li>
                 <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
                 {% else %}
@@ -137,7 +137,7 @@
           <div class="wow bounceInDown" data-wow-delay="0.4s">
           <div class="section-heading">
           <h2>About NEXT</h2>
-          
+
 
           </div>
           </div>
@@ -148,7 +148,7 @@
     <div class="container">
 
     <div class="row">
-      <p class="about-next"> NEXT.discovery accelerates machine learning by automatically focusing and optimizing crowdsourcing to gather information most salient to the task at hand, be it classification, clustering, ranking or regression. </p>   
+      <p class="about-next"> NEXT.discovery accelerates machine learning by automatically focusing and optimizing crowdsourcing to gather information most salient to the task at hand, be it classification, clustering, ranking or regression. </p>
     </div>
     <div class="row row-spacing">
       <div class="col-xs-12 col-md-6">
@@ -159,7 +159,7 @@
 
         <div class="about-next-title">2. Enlist some help</div>
         <p class="about-next-desc">
-            "Is a <b>Stout</b> more similar to a <b>Brown Ale</b> or <b>Pale Ale</b>?"<br> 
+            "Is a <b>Stout</b> more similar to a <b>Brown Ale</b> or <b>Pale Ale</b>?"<br>
             &gt;&gt; <i>Brown Ale</i> <br>
         </p>
         <div class="about-next-title">3. Get answers</div>
@@ -175,11 +175,11 @@
     <i class="fa fa-2x fa-angle-down"></i>
   </section>
   <!-- /Section: about -->
-  
-  {% if not current_user.is_authenticated() %}
+
+  {% if not current_user.is_authenticated %}
   <!-- Section: create account -->
   <section id="create" class="home-section text-center bg-gray">
-    
+
     <div class="heading-about">
       <div class="container">
       <div class="row">
@@ -194,7 +194,7 @@
       </div>
     </div>
     <div class="container">
-      <p class="about-next"> Create an account or login to gain access to the full power of NEXT.discovery</p> 
+      <p class="about-next"> Create an account or login to gain access to the full power of NEXT.discovery</p>
       <div class="row row-spacing">
         <div class="col-sm-4 col-sm-offset-1 col-lg-4 col-lg-offset-1">
           <p class="about-next-title">Login</p>
@@ -225,21 +225,21 @@
               <!-- email -->
               <div class="form-group">
                   {{ create_form.new_email.label }}
-                  {{ create_form.new_email(class_="form-control", style='display:none') }} 
+                  {{ create_form.new_email(class_="form-control", style='display:none') }}
                   <input class='form-control' id='create-new-email' type='text'>
                   {% for error in create_form.new_email.errors %}<span style="color: red;">[{{ error }}]</span>{% endfor %}
               </div>
               <!-- password -->
               <div class="form-group">
                   {{ create_form.new_password.label }}
-                  {{ create_form.new_password(class_="form-control", style='display:none') }} 
+                  {{ create_form.new_password(class_="form-control", style='display:none') }}
                   <input class='form-control' id='create-new-password' type='password'>
                   {% for error in create_form.new_password.errors %}<span style="color: red;">[{{ error }}]</span>{% endfor %}
               </div>
               <!-- confirm password -->
               <div class="form-group">
                   {{ create_form.confirm_password.label }}
-                  {{ create_form.confirm_password(class_="form-control", style='display:none') }} 
+                  {{ create_form.confirm_password(class_="form-control", style='display:none') }}
                   <input class='form-control' id='create-confirm-password' type='password'>
                   {% for error in create_form.confirm_password.errors %}<span style="color: red;">[{{ error }}]</span>{% endfor %}
               </div>
@@ -269,7 +269,7 @@
           </div>
           <p style="text-align: center">Copyright &copy;2015 - All rights reserved - NEXT.discovery v<g:meta name="app.version" /></p>
         </div>
-      </div>  
+      </div>
     </div>
   </footer>
 
