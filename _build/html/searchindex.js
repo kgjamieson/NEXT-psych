@@ -1,0 +1,1 @@
+Search.setIndex({envversion:47,filenames:["index","install","overview","troubleshooting"],objects:{},objnames:{},objtypes:{},terms:{content:0,index:0,instal:1,modul:0,page:0,search:0,thi:0,troubleshoot:3},titles:["Welcome to NEXT&#8217;s documentation!","&lt;no title&gt;","&lt;no title&gt;","&lt;no title&gt;"],titleterms:{document:0,indic:0,next:0,tabl:0,welcom:0}})
