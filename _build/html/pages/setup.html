@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Setup &mdash; NEXT 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NEXT 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Web user interface" href="gui.html" />
+    <link rel="prev" title="Overview" href="overview.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="setup">
+<span id="id1"></span><h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<p><em>If not familiar with the command line, visit a</em> <a class="reference external" href="http://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line">command line tutorial</a>.</p>
+<p><em>If you&#8217;re running into bugs while setting up, look at</em> <a class="reference internal" href="#troubleshooting">troubleshooting</a>.</p>
+<div class="section" id="complete-setup-guides">
+<h2>Complete setup guides<a class="headerlink" href="#complete-setup-guides" title="Permalink to this headline">¶</a></h2>
+<p>... can be found on the <a class="reference external" href="https://github.com/kgjamieson/NEXT/wiki">GitHub wiki</a>.</p>
+</div>
+<div class="section" id="quick-setup-script">
+<h2>Quick setup script<a class="headerlink" href="#quick-setup-script" title="Permalink to this headline">¶</a></h2>
+<p>This will provide</p>
+<ul class="simple">
+<li>an easy-to-type command, <code class="docutils literal"><span class="pre">next_ec2</span></code> that is aliased to <em>part</em> of a longer
+command.</li>
+<li>Variables for your AWS access keys and other Amazon credentials.</li>
+</ul>
+<div class="highlight-shell"><div class="highlight"><pre><span class="c"># FILE : ~/Desktop/next_setup.sh. Can be run with `source ~/Desktop/next_setup.sh`</span>
+<span class="nb">cd</span> /path/to/NEXT
+<span class="c"># if no IAM user: AWS &gt; Identity and Access Management &gt; Users &gt; Add User</span>
+<span class="c"># if IAM user: AWS &gt; IAM &gt; Users &gt; select username &gt; User Actions &gt; Manage Access Keys &gt; Create Access Key &gt; Download credentials</span>
+<span class="c"># more details found at [1]</span>
+<span class="c"># [1]:http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html</span>
+<span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;access&gt;
+<span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;secret&gt;
+
+<span class="c"># Create a new key in AWS &gt; EC2 &gt; Key Pairs &gt; Create Key Pair</span>
+<span class="c"># KEY_FILE is the path to the downloaded file</span>
+<span class="c"># KEY_PAIR is the name entered in Amazon of the key</span>
+<span class="c"># (i.e, if &quot;key&quot; created, KEY_PAIR=&quot;key&quot; not &quot;key.pem&quot;)</span>
+<span class="nb">export </span><span class="nv">KEY_FILE</span><span class="o">=</span>/Users/scott/Classes/security/AWS/SS_NEXT.pem
+<span class="nb">export </span><span class="nv">KEY_PAIR</span><span class="o">=</span>SS_NEXT
+chmod <span class="m">400</span> <span class="nv">$KEY_FILE</span>
+
+<span class="c"># This might be a useful alias</span>
+<span class="nb">alias </span><span class="nv">next_ec2</span><span class="o">=</span><span class="s1">&#39;python next_ec2.py --key-pair=$KEY_PAIR --identity-file=$KEY_FILE&#39;</span>
+
+<span class="c"># Launching a bucket into S3. Either run the command below or define AWS_BUCKET_NAME</span>
+<span class="c">#python next_ec2.py --key-pair=$KEY_PAIR --identity-file=$KEY_FILE createbucket SS_next</span>
+<span class="nb">export </span><span class="nv">AWS_BUCKET_NAME</span><span class="o">=</span>&lt;bucket uiud&gt;
+
+<span class="c"># launch the instance (we don&#39;t because it&#39;s a setup script)</span>
+<span class="c">#python next_ec2.py --key-pair=$KEY_PAIR --identity-file=$KEY_FILE launch SS_next</span>
+
+<span class="c"># after `next_ec2 launch cluster_name` and it eventually prints</span>
+<span class="c"># out red and green `rabbitmqmonitor_1`...</span>
+<span class="c"># if launching GUI or NEXT-psych, go to [2]</span>
+<span class="c"># if launching CLI or NEXT      , go to [3]</span>
+<span class="c">#</span>
+<span class="c"># (these URLs are for NEXT 0.1)</span>
+<span class="c"># [2]:http://&lt;ec2-public-dns&gt;</span>
+<span class="c"># [3]:http://&lt;ec2-public-dns&gt;:8000/dashboard/experiment_list</span>
+</pre></div>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Clean up the startup scripts so the output makes sense. Maybe include green highlighted lines that say &#8220;[notice] Your NEXT server is running at &lt;ec2-public-dns&gt;.&#8221; This could be viewable with <code class="docutils literal"><span class="pre">docker-compose</span> <span class="pre">logs</span> <span class="pre">notice</span></code> on the remote machine.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<span id="id2"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>While looking at the below troubleshooting hints, look at the output your script
+gives you, towards the end. The keywords you&#8217;re looking for will probably be in
+the last couple lines.</p>
+<div class="section" id="i-get-errors-like-invalidkeypair-notfound-while-trying-to-launch-my-cluster">
+<h3>I get errors like <code class="docutils literal"><span class="pre">InvalidKeyPair.NotFound</span></code> while trying to launch my cluster<a class="headerlink" href="#i-get-errors-like-invalidkeypair-notfound-while-trying-to-launch-my-cluster" title="Permalink to this headline">¶</a></h3>
+<p><cite>Solution</cite>: Change your AWS default region to Oregon. The image below shows how.</p>
+<img alt="../_images/region.png" src="../_images/region.png" />
+<p>This is documented on GitHub with <a class="reference external" href="https://github.com/kgjamieson/NEXT/issues/11">NEXT issue #11</a>.</p>
+<p>The <code class="docutils literal"><span class="pre">next_ec2.py</span></code> script defines a default region. The AWS EC2 keys are only
+in one region and are not global; this means that <code class="docutils literal"><span class="pre">--identity-file</span></code> and
+<code class="docutils literal"><span class="pre">--key-pair</span></code> can&#8217;t find what they&#8217;re looking for.</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Allow NEXT use in any region, not just Oregon.</p>
+</div>
+</div>
+<div class="section" id="i-get-errors-with-python-s-print-statement">
+<h3>I get errors with Python&#8217;s <code class="docutils literal"><span class="pre">print</span></code> statement<a class="headerlink" href="#i-get-errors-with-python-s-print-statement" title="Permalink to this headline">¶</a></h3>
+<p>Errors such as <code class="docutils literal"><span class="pre">SyntaxError:</span> <span class="pre">Missing</span> <span class="pre">parentheses</span> <span class="pre">in</span> <span class="pre">call</span> <span class="pre">to</span> <span class="pre">'print'</span></code></p>
+<p><cite>Solution</cite>: Activate a <a class="reference external" href="http://virtualenv.readthedocs.org/en/latest/">virtualenv</a> for Python 2 (I would go with Python 2.7).</p>
+<p>To do that, you can either use <code class="docutils literal"><span class="pre">virtualenv</span></code> or <code class="docutils literal"><span class="pre">conda</span></code> (but only if you use
+the <a class="reference external" href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> Python distro.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="c"># if using Anaconda. Can be run from anywhere</span>
+create --name py26 <span class="nv">python</span><span class="o">=</span>2.6 anaconda
+
+<span class="c"># setup if using virtual env</span>
+mkdir env      <span class="c"># making the environment folder</span>
+virtualenv env <span class="c"># activating the virtualenv</span>
+
+<span class="c"># virtualenv activation. Must have the path to `activate`</span>
+<span class="nb">source </span>env/bin/activate
+
+<span class="c"># get rid of virtualenv (applies to both conda and virtualenv)</span>
+<span class="nb">source </span>deactivate
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">NEXT</a></h1>
+
+
+
+<p class="blurb">An adaptive learning algorithm testing framework</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=kgjamieson&repo=NEXT&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#complete-setup-guides">Complete setup guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-setup-script">Quick setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Web user interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="overview.html" title="previous chapter">Overview</a></li>
+      <li>Next: <a href="gui.html" title="next chapter">Web user interface</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Scott Sievert.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/pages/setup.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/kgjamieson/NEXT" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

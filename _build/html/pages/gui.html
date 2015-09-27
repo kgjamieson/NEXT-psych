@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Web user interface &mdash; NEXT 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NEXT 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Command line interface" href="cli.html" />
+    <link rel="prev" title="Setup" href="setup.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="web-user-interface">
+<h1>Web user interface<a class="headerlink" href="#web-user-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="launching-the-web-interface">
+<h2>Launching the web interface<a class="headerlink" href="#launching-the-web-interface" title="Permalink to this headline">¶</a></h2>
+<p><em>This assumes you have your Amazon AWS keys and credintials. If not or any
+errors are encountered, visit</em> <a class="reference internal" href="setup.html#setup"><span>Setup</span></a>.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;access&gt;
+<span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;secret&gt;
+<span class="nb">export </span><span class="nv">KEY_FILE</span><span class="o">=</span>/Users/scott/Classes/security/AWS/SS_NEXT.pem
+<span class="nb">export </span><span class="nv">KEY_PAIR</span><span class="o">=</span>SS_NEXT
+<span class="nb">alias </span><span class="nv">next_ec2</span><span class="o">=</span><span class="s1">&#39;python next_ec2.py --key-pair=$KEY_PAIR --identity-file=$KEY_FILE&#39;</span>
+
+python next_ec2.py --key-pair<span class="o">=</span><span class="nv">$KEY_PAIR</span> --identity-file<span class="o">=</span><span class="nv">$KEY_FILE</span> launch &lt;clustername&gt;
+</pre></div>
+</div>
+<p>Then visit the URL <code class="docutils literal"><span class="pre">http://&lt;ec2-public-dns&gt;</span></code> and the web interface is there!
+The <code class="docutils literal"><span class="pre">&lt;ec2-public-dns&gt;</span></code> can be found on Amazon&#8217;s AWS EC2 dashboard and
+selecting your instance.</p>
+<img alt="../_images/ec2-public-dns.png" src="../_images/ec2-public-dns.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This process of launching an instance. In a separate terminal, you can run <code class="docutils literal"><span class="pre">next_ec2</span> <span class="pre">stop</span> <span class="pre">&lt;clustername&gt;</span></code> to stop EC2 billing and the instance and <code class="docutils literal"><span class="pre">next_ec2</span> <span class="pre">start</span> <span class="pre">&lt;clustername&gt;</span> <span class="pre">to</span> <span class="pre">restart</span> <span class="pre">it.</span> <span class="pre">This</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">quicker</span> <span class="pre">than</span> <span class="pre">terminating</span> <span class="pre">the</span> <span class="pre">instance</span> <span class="pre">via</span> <span class="pre">``next_ec2</span> <span class="pre">terminate</span> <span class="pre">&lt;instancename&gt;</span></code></p>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Make a GUI to run this script. I&#8217;d like to have double-click to launch NEXT... or have the user log into their Amazon account and <em>that&#8217;s it</em>. That should be fairly easy with Amazon&#8217;s AWS SDK.</p>
+</div>
+</div>
+<div class="section" id="launching-a-new-experiment">
+<h2>Launching a new experiment<a class="headerlink" href="#launching-a-new-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">How to launch a new experiment?</p>
+</div>
+</div>
+<div class="section" id="replicating-an-experiment">
+<h2>Replicating an experiment<a class="headerlink" href="#replicating-an-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">How to include your own data?</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">NEXT</a></h1>
+
+
+
+<p class="blurb">An adaptive learning algorithm testing framework</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=kgjamieson&repo=NEXT&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Web user interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#launching-the-web-interface">Launching the web interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-a-new-experiment">Launching a new experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#replicating-an-experiment">Replicating an experiment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="setup.html" title="previous chapter">Setup</a></li>
+      <li>Next: <a href="cli.html" title="next chapter">Command line interface</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Scott Sievert.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/pages/gui.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/kgjamieson/NEXT" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
