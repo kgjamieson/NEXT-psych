@@ -29,10 +29,41 @@ selecting your instance.
 
 .. todo:: Make a GUI to run this script. I'd like to have double-click to launch NEXT... or have the user log into their Amazon account and *that's it*. That should be fairly easy with Amazon's AWS SDK.
 
+Data formatting
+---------------
+Two files are needed:
+
+* a zip file. This zip file should contain images/etc.
+* a CSV file. This CSV file should have 3 rows. The first row should be the
+  filename, the second should the filetype (image, video) and the third should
+  be an alternate description. No header should be included in this CSV file!
+  An example CSV file is shown below
+
+.. code-block:: python
+
+   01F_AN_O.jpeg,image,01F_AN_O.jpeg
+   01F_CA_C.jpeg,image,01F_CA_C.jpeg
+   01F_CA_O.jpeg,image,01F_CA_O.jpeg
+   01F_DI_C.jpeg,image,01F_DI_C.jpeg
+
+
+.. warning:: A header should not be included in this CSV file!
+.. todo:: Actually check the second column of the CSV file. I know image works but I am not sure what else works
+.. todo:: Verify videos/animations work.
+.. todo:: See where the alternate description shows up. Maybe it's only in the dataset and never visible by the user?
+
 Launching a new experiment
 --------------------------
-.. todo:: How to launch a new experiment?
 
 Replicating an experiment
 -------------------------
 .. todo:: How to include your own data?
+
+Viewing the results
+-------------------
+Go to URL ``http://<ec2-public-dns>:8000/dashboard/experiment_list``. This will
+provide a lot of graphs and rankings for all your experiments.
+
+.. todo:: No link from NEXT GUI to the NEXT backend is available. See `NEXT-psych issue #2`_
+
+.. _`NEXT-psych issue #2`: https://github.com/kgjamieson/NEXT-psych/issues/2

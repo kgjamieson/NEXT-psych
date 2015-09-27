@@ -67,18 +67,56 @@ selecting your instance.</p>
 <p class="last">Make a GUI to run this script. I&#8217;d like to have double-click to launch NEXT... or have the user log into their Amazon account and <em>that&#8217;s it</em>. That should be fairly easy with Amazon&#8217;s AWS SDK.</p>
 </div>
 </div>
-<div class="section" id="launching-a-new-experiment">
-<h2>Launching a new experiment<a class="headerlink" href="#launching-a-new-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-formatting">
+<h2>Data formatting<a class="headerlink" href="#data-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Two files are needed:</p>
+<ul class="simple">
+<li>a zip file. This zip file should contain images/etc.</li>
+<li>a CSV file. This CSV file should have 3 rows. The first row should be the
+filename, the second should the filetype (image, video) and the third should
+be an alternate description. No header should be included in this CSV file!
+An example CSV file is shown below</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="mo">01</span><span class="n">F_AN_O</span><span class="o">.</span><span class="n">jpeg</span><span class="p">,</span><span class="n">image</span><span class="p">,</span><span class="mo">01</span><span class="n">F_AN_O</span><span class="o">.</span><span class="n">jpeg</span>
+<span class="mo">01</span><span class="n">F_CA_C</span><span class="o">.</span><span class="n">jpeg</span><span class="p">,</span><span class="n">image</span><span class="p">,</span><span class="mo">01</span><span class="n">F_CA_C</span><span class="o">.</span><span class="n">jpeg</span>
+<span class="mo">01</span><span class="n">F_CA_O</span><span class="o">.</span><span class="n">jpeg</span><span class="p">,</span><span class="n">image</span><span class="p">,</span><span class="mo">01</span><span class="n">F_CA_O</span><span class="o">.</span><span class="n">jpeg</span>
+<span class="mo">01</span><span class="n">F_DI_C</span><span class="o">.</span><span class="n">jpeg</span><span class="p">,</span><span class="n">image</span><span class="p">,</span><span class="mo">01</span><span class="n">F_DI_C</span><span class="o">.</span><span class="n">jpeg</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A header should not be included in this CSV file!</p>
+</div>
 <div class="admonition-todo admonition" id="index-1">
 <p class="first admonition-title">Todo</p>
-<p class="last">How to launch a new experiment?</p>
+<p class="last">Actually check the second column of the CSV file. I know image works but I am not sure what else works</p>
 </div>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">Verify videos/animations work.</p>
+</div>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">See where the alternate description shows up. Maybe it&#8217;s only in the dataset and never visible by the user?</p>
+</div>
+</div>
+<div class="section" id="launching-a-new-experiment">
+<h2>Launching a new experiment<a class="headerlink" href="#launching-a-new-experiment" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="replicating-an-experiment">
 <h2>Replicating an experiment<a class="headerlink" href="#replicating-an-experiment" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-2">
+<div class="admonition-todo admonition" id="index-4">
 <p class="first admonition-title">Todo</p>
 <p class="last">How to include your own data?</p>
+</div>
+</div>
+<div class="section" id="viewing-the-results">
+<h2>Viewing the results<a class="headerlink" href="#viewing-the-results" title="Permalink to this headline">¶</a></h2>
+<p>Go to URL <code class="docutils literal"><span class="pre">http://&lt;ec2-public-dns&gt;:8000/dashboard/experiment_list</span></code>. This will
+provide a lot of graphs and rankings for all your experiments.</p>
+<div class="admonition-todo admonition" id="index-5">
+<p class="first admonition-title">Todo</p>
+<p class="last">No link from NEXT GUI to the NEXT backend is available. See <a class="reference external" href="https://github.com/kgjamieson/NEXT-psych/issues/2">NEXT-psych issue #2</a></p>
 </div>
 </div>
 </div>
@@ -112,8 +150,10 @@ selecting your instance.</p>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Web user interface</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#launching-the-web-interface">Launching the web interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-formatting">Data formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#launching-a-new-experiment">Launching a new experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#replicating-an-experiment">Replicating an experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#viewing-the-results">Viewing the results</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface</a></li>
