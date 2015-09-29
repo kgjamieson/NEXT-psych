@@ -8,7 +8,7 @@
     <meta name="author" content="Nicholas Glattard, n.glattard@gmail.com">
 
     <title>NEXT - {{exp_uid}}</title>
-    
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
@@ -58,7 +58,7 @@
           width:90%;
           margin-left: auto;
           margin-right: auto;
-        }        
+        }
         .text {
           display: table-cell;
           text-align: center;
@@ -101,23 +101,23 @@
         }
     </style>
   </head>
-  
+
 
   <body>
     <!-- show instructions modal on load of page -->
     <script>
-      $(window).load(function() { 
+      $(window).load(function() {
         // Set a timeout...
         setTimeout(function(){
           // Hide the address bar!
           window.scrollTo(0, 1);
         }, 0);
-        $('#directions').modal({backdrop:'static'}); 
+        $('#directions').modal({backdrop:'static'});
       });
     </script>
 
     <!-- debrief Modal -->
-    <div class="modal fade" id="debrief" tabindex="-1" role="dialog" 
+    <div class="modal fade" id="debrief" tabindex="-1" role="dialog"
           aria-labelledby="debrief" aria-hidden="true" data-backdrop="static" data-keyboard="false" href="#">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -143,12 +143,12 @@
 
     <script>
       next_widget.setUrl("{{host_url}}");
-      var tries =  100;
+      var tries =  {{num_tries}};
       var div_id = "wrapper";
       var exp_uid = "{{exp_uid}}";
       var widget_key = "{{widget_key}}";
       var participant_uid = next_widget.makeRandomString(30);
-      
+
       // get info widget
       var info_args = {
           name: "getInfo",
@@ -157,7 +157,7 @@
           args: {}
       };
 
-      // args for getQuery 
+      // args for getQuery
       var args = {
           name: "getQuery",
           exp_uid: exp_uid,
@@ -170,7 +170,7 @@
       	if(tries > 1){
                   tries -=1;
                   next_widget.getQuery(div_id, args, callbacks);
-              } else{         
+              } else{
                 $('#instructions').hide()
                 $('#wrapper').hide()
                 $('#debrief').show()
@@ -189,14 +189,14 @@
           $('#debrief_text').html(debrief);
           tries = response.response["num_tries"];
           },
-      
+
          widget_failure: function(){
             $('#instructions').hide()
             $('#query').hide()
             $('#debrief').show()
             $('#debrief').modal('show');
           }
-      }      
+      }
 
       next_widget.getInfo(info_args, callbacks);
       next_widget.getQuery(div_id, args, callbacks);
