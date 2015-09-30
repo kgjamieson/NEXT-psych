@@ -159,8 +159,21 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
+    <p><b>Results</b></p>
+    The results are available on the backend:
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
+        <a href="{{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}">{{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}</a>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
     <p><b>Participant Responses</b></p>
-    Get participant response data: <a href="get-participant-responses" download="participant-responses.csv">here.</a>
+    Get participant response data as a CSV file:
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
+        CSV file: <a href="get-participant-responses" download="participant-responses.csv">participant-responses.csv</a>
+    </div>
   </div>
 </div>
 
