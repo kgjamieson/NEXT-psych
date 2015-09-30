@@ -24,7 +24,7 @@ def _experiment(experiment_id):
 
     # Frontend base url needed for stats and widgets
     next_backend_url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT
-    
+
     # Frontend url needed for queries
     next_frontend_url = "http://"+config.NEXT_FRONTEND_GLOBAL_HOST+":"+config.NEXT_FRONTEND_GLOBAL_PORT
 
@@ -34,8 +34,8 @@ def _experiment(experiment_id):
     # This is an html string containing the necessary app dashboard.
     app_dashboard_html = app_resource.get_experiment_dashboard(current_experiment)
 
-    return render_template('experiment.html', experiment_id=experiment_id, 
-                                            next_backend_url=next_backend_url, 
+    return render_template('experiment.html', experiment_id=experiment_id,
+                                            next_backend_url=next_backend_url,
                                             next_frontend_url=next_frontend_url,
                                             app_dashboard_html=app_dashboard_html)
 
@@ -80,14 +80,14 @@ def edit(experiment_id):
 
     # This is an html string containing the necessary app params.
     app_params_template, app_params_form = app_resource.get_experiment_params()
-    
+
     # associate app_params_form to form.params
     NewExperimentForm_params.params = FormField(app_params_form)
     form = NewExperimentForm_params(obj=current_experiment)
 
     # render app params form template with the new composited form
     app_params_html = render_template(app_params_template, form=form.params)
-    
+
     # Update the target set selections
     target_set_names = [target.name for target in current_project.target_sets]
 
@@ -134,7 +134,7 @@ def run_experiment(experiment_id):
     if 'exp_uid' in response_dict.keys() and 'exp_key' in response_dict.keys():
         current_experiment.set_exp_uid(response_dict['exp_uid'])
         current_experiment.set_exp_key(response_dict['exp_key'])
-        current_experiment.set_perm_key(response_dict['perm_key']) 
+        current_experiment.set_perm_key(response_dict['perm_key'])
     else:
         flash("Failed to change experiment status to running.")
         return redirect(url_for('experiment._experiment', experiment_id = current_experiment.id))
@@ -143,7 +143,7 @@ def run_experiment(experiment_id):
     url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/experiment"
     response = requests.get(url+"/"+current_experiment.exp_uid+"/"+current_experiment.exp_key)
     current_experiment.set_info(eval(response.text))
-    
+
     # Now that we have an exp_uid and exp_key, we can do the target mapping. This needs some error handling here.
     create_target_mapping_dict = {}
     create_target_mapping_dict['app_id'] = current_experiment.app_id
@@ -176,13 +176,13 @@ def get_temp_keys():
         'tries': current_experiment.query_tries,
         'duration': current_experiment.query_duration
         }
-    
+
     try:
         response = requests.post(url, json.dumps(args), headers={'content-type':'application/json'})
     except (requests.HTTPError, requests.ConnectionError) as e:
         print "Excepted in get_temp_key", e
         raise
-    
+
     keys = eval(response.text)["keys"]
     # Use the global host and port since these are external links
     print config.NEXT_FRONTEND_GLOBAL_HOST, config.NEXT_FRONTEND_GLOBAL_PORT
@@ -197,8 +197,8 @@ def get_temp_keys():
 def get_participant_responses():
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     participant_responses = app_resource.get_formatted_participant_data(current_experiment)
-    return "\n".join(participant_responses), 200, {'Content-Disposition':'attachment'}
-    
+    return "\n".join(participant_responses), 200, {'Content-Disposition':'attachment', 'Content-Type': 'text/csv; charset=utf-8'}
+
 #############################
 # Some utility functions
 
@@ -218,8 +218,8 @@ def getquery(app_id, exp_uid, widget_key):
 
     # This is an html string containing the necessary app dashboard.
     app_query_html = app_resource.get_query(
-                            app_id=app_id, 
-                            exp_uid = exp_uid, 
+                            app_id=app_id,
+                            exp_uid = exp_uid,
                             widget_key = widget_key)
 
     return app_query_html
