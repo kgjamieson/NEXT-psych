@@ -17,16 +17,16 @@ $(document).on('change', '.btn-file :file', function() {
 
 $(document).ready( function() {
     $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-        
+
         var input = $(this).parents('.input-group').find(':text'),
             log = numFiles > 1 ? numFiles + ' files selected' : label;
-        
+
         if( input.length ) {
             input.val(log);
         } else {
             if( log ) alert(log);
         }
-        
+
     });
 });
 </script>
@@ -47,7 +47,7 @@ $(document).ready( function() {
     <th> Target Set Size </th>
     <th> Actions </th>
   </thead>
-  {% for target_set in current_project.target_sets %} 
+  {% for target_set in current_project.target_sets %}
   <tr>
     <td style="vertical-align:middle">
       <a href="{{ url_for('targets.edit',target_set_id=target_set.id ) }}">{{ target_set.name }}</a></td>
@@ -58,10 +58,10 @@ $(document).ready( function() {
         <div style="display:inline-block; padding:5px;" >
           <button type="submit" value="edit" class="btn btn-primary">Edit</button>
         </div>
-      </form> 
+      </form>
       <!-- delete all button -->
       <div style="display:inline-block; padding:5px;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-delete-all'>Delete All</button> 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-delete-all'>Delete All</button>
       </div>
       <div class="modal fade" id="confirm-delete-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -73,7 +73,7 @@ $(document).ready( function() {
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <form style="display:inline" action="{{ url_for('.delete_all',target_set_id=target_set.id) }}" method="post">
                       <button type="submit" value="delete" class="btn btn-danger btn-ok">Delete All</a>
-                    </form> 
+                    </form>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@ $(document).ready( function() {
   <!-- zip file -->
   <div class="form-group">
     <label> Zip File</label>
-    <p class="help-block"> Zip file containing the media. For example the images. </p> 
+    <p class="help-block"> Zip file containing the media. For example the images. </p>
     <div class="col-sm-6">
       <div class="input-group" name="hosted_zip_file">
         <span class="input-group-btn">
@@ -113,7 +113,7 @@ $(document).ready( function() {
   <div class="form-group">
     <label> CSV File with description data </label>
     <p class="help-block">
-      Upload a csv file with rows: "target_id, primary_type, alt_desc". The target_id MUST match the file name. The alt_type is necessarily text, with alt_desc being the associated text. 
+      Upload a csv file with rows: "target_id, primary_type, alt_desc". The target_id MUST match the file name. The alt_type is necessarily text, with alt_desc being the associated text.
     </p>
     <div class="col-sm-6">
       <div class="input-group">
@@ -137,14 +137,14 @@ $(document).ready( function() {
   </ul>
   {% endif %}
   {% endwith %}
-  
+
   <h2>
     <div class="col-sm-1">
       <button type="submit" class="btn btn-primary" style="margin-bottom:20px">Upload</button>
     </div>
     <div class="clearfix"></div>
   </h2>
-  
+
 </form>
 
 

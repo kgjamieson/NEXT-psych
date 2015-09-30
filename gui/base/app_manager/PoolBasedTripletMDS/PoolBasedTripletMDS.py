@@ -19,7 +19,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
     PoolBased TripletMDS
     Author: Lalit Jain
 
-    App resource for PoolBasedTripletMDS. 
+    App resource for PoolBasedTripletMDS.
     """
 
     def get_experiment_params(self, args=None):
@@ -32,16 +32,16 @@ class PoolBasedTripletMDS(AppResourcePrototype):
             alg_label = TextField('Algorithm Label')
             alg_id = SelectField('Algorithm Id', choices=[(algorithm, algorithm) for algorithm in alg_list])
             alg_proportion = FloatField('Algorithm Proportion')
-        
+
         class PoolBasedTripletMDSParamsForm(Form):
             d = IntegerField('Dimension', validators=[validators.required()], default=2)
             failure_probability = FloatField('Confidence Level', validators=[validators.required()], default=0.95)
-            algorithm_management = RadioField('Algorithm Management', 
+            algorithm_management = RadioField('Algorithm Management',
                                                 choices=[('fixed_proportions','Fixed Proportions'),
                                                         ('pure_exploration','Pure Exploration'),
                                                         ('explore_exploit','Explore Exploit')],
                                                 default='fixed_proportions')
-            participant_to_algorithm_management = RadioField('Participant to Algorithm Management', 
+            participant_to_algorithm_management = RadioField('Participant to Algorithm Management',
                                                                 choices=[('one_to_many','One-to-many'),
                                                                           ('one_to_one','One-to-one')],
                                                                 default='one_to_many')
@@ -63,7 +63,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         template = env.get_template("experiment_dashboard.html")
         html = render_template(template)
         return html
-    
+
     def get_formatted_participant_data(self, current_experiment, args=None):
         """
         Return formatted participant logs that are app specific.
@@ -101,17 +101,17 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                 # Append the alg_label
                 line.append(response['alg_label'])
                 participant_responses.append(",".join(line))
-                
-        return participant_responses        
-    
+
+        return participant_responses
+
     def run_experiment(self, current_experiment, args=None):
         """
         Run an initExp call on the frontend base level.
         """
-        
+
         # Set up request dictionary for api initExp call
         initExp_dict = {}
-        initExp_dict['app_id'] = current_experiment.app_id 
+        initExp_dict['app_id'] = current_experiment.app_id
         initExp_dict['site_id'] = config.SITE_ID
         initExp_dict['site_key'] = config.SITE_KEY
         initExp_dict['args'] = {}
@@ -121,6 +121,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         initExp_dict['args']['debrief'] = current_experiment.debrief
         initExp_dict['args']['d'] = current_experiment.params['d']
         initExp_dict['args']['n'] = len(current_experiment.target_set.targets)
+        initExp_dict['args']['num_tries'] = current_experiment.query_tries
         initExp_dict['args']['failure_probability'] = current_experiment.params['failure_probability']
         initExp_dict['args']['participant_to_algorithm_management'] = current_experiment.params['participant_to_algorithm_management']
         initExp_dict['args']['algorithm_management_settings'] = {}
@@ -140,14 +141,14 @@ class PoolBasedTripletMDS(AppResourcePrototype):
             proportions_dict['proportion'] = alg['alg_proportion']
             initExp_dict['args']['algorithm_management_settings']['params']['proportions'].append(proportions_dict)
 
-        # Make request  for initExp 
+        # Make request  for initExp
         try:
             url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/experiment"
             response = requests.post(url,
                                      json.dumps(initExp_dict),
                                      headers={'content-type':'application/json'})
             response_dict = eval(response.text)
-            
+
         except:
             exc_class, exc, tb = sys.exc_info()
             new_exc = Exception("%s. Error connecting to backend."%(exc or exc_class))
@@ -159,7 +160,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         """
         Render custom query for app type
         """
-        
+
         # Make this more flexible
         next_backend_url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT
 
@@ -171,10 +172,10 @@ class PoolBasedTripletMDS(AppResourcePrototype):
 
         template = env.get_template("query.html")
 
-        return render_template(template, 
-                                app_id=app_id, 
-                                exp_uid = exp_uid, 
-                                widget_key = widget_key, 
+        return render_template(template,
+                                app_id=app_id,
+                                exp_uid = exp_uid,
+                                widget_key = widget_key,
                                 next_backend_url=next_backend_url,
                                 query_tries = query_tries,
                                 debrief = debrief,

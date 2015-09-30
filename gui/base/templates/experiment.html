@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/static/js/d3.js"></script>
 <script type="text/javascript" src="/static/js/d3.tip.v0.6.3.js"></script>
 <script type="text/javascript" src="/static/js/next_widget.js"></script>
-<script type="text/javascript" src="/static/js/next_data.js"></script>    
+<script type="text/javascript" src="/static/js/next_data.js"></script>
 <script type="text/javascript" src="/static/js/charts2.js"></script>
 
 <script>
@@ -23,12 +23,12 @@
                 width                       :   800px;
                 height                      :   500px;
             }
-	    
+
             .overlay {
                 fill: none;
                 pointer-events: all;
             }
-	    
+
             .tooltip {
                 position: absolute;
                 pointer-events: none;
@@ -38,7 +38,7 @@
 	    .plot {
 	    	width: 100%;
 	    	height: 400px;
-	    }  
+	    }
 
 
       </style>
@@ -58,23 +58,23 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-   <p><b>Description:</b> {{ current_experiment.description }} </p>   
-   
-   <p><b>Parameters</b>  </p>  
+   <p><b>Description:</b> {{ current_experiment.description }} </p>
+
+   <p><b>Parameters</b>  </p>
     <!--   Maybe make this a <ul>?
-    <p><b>Instructions:</b> [generate instructions here] </p> 
-    <p><b>Debriefing:</b> [add debrief here] </p> 
-    <p><b>Target Set:</b> [add target set here] </p> 
-    
-     <p><b>Query Number:</b> [add query value here] </p>  
-     <p><b>Duration:</b> [add duration value] </p> 
-     <p><b>Dimensions:</b> [dimension value] </p> 
-     <p><b>Confidence Level:</b> [conf value] </p> 
-     <p><b>Algorithms Used:</b> [add alg labels and proportions] </p> 
-     <p><b>Algorithm Management:</b> [add  value] </p> 
-     <p><b>Participant to Algorithm Management:</b> [add duration value] </p> 
-     --> 
-     
+    <p><b>Instructions:</b> [generate instructions here] </p>
+    <p><b>Debriefing:</b> [add debrief here] </p>
+    <p><b>Target Set:</b> [add target set here] </p>
+
+     <p><b>Query Number:</b> [add query value here] </p>
+     <p><b>Duration:</b> [add duration value] </p>
+     <p><b>Dimensions:</b> [dimension value] </p>
+     <p><b>Confidence Level:</b> [conf value] </p>
+     <p><b>Algorithms Used:</b> [add alg labels and proportions] </p>
+     <p><b>Algorithm Management:</b> [add  value] </p>
+     <p><b>Participant to Algorithm Management:</b> [add duration value] </p>
+     -->
+
   </div>
 </div>
 
@@ -112,7 +112,7 @@
       <br>
       <br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#info'>Detailed Info</button>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="directions" aria-hidden="true">
       <div class="modal-dialog">
@@ -132,17 +132,17 @@
     </div>
 
     <p> <b> Permanent Query View:</b> </p>
-<!--     <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;"> 
+<!--     <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
       <a href="{{ next_frontend_url }}/experiment/query/{{ current_experiment.app_id }}/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}" target="_blank">{{ next_frontend_url }}/experiment/query/{{ current_experiment.app_id }}/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}</a>
     </div> -->
-    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;"> 
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
       <a href="{{ next_backend_url }}/query/query_page/query_page/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}" target="_blank">{{ next_backend_url }}/query/query_page/query_page/{{ current_experiment.exp_uid }}/{{ current_experiment.perm_key }}</a>
-    </div>    
+    </div>
 
     <div class="col-lg-12" style="padding:0">
       <p> <b> Temporary Query View: </b> </p>
       <div class="input-group col-lg-6">
-      	<input type="text" name="keys_count" class="form-control" id="keys_count_form" oninput="outputUpdate(value)" placeholder="Enter desired number of temporary query view"> 
+      	<input type="text" name="keys_count" class="form-control" id="keys_count_form" oninput="outputUpdate(value)" placeholder="Enter desired number of temporary query view">
       	<span class="input-group-btn">
       	  <a href="get-temp-keys?keys_count=50" id="keys_count_button" download="keys.txt"><button type="button" class="btn btn-default" > Generate Keys </button></a>
       	</span>
@@ -160,7 +160,7 @@
 {{ app_dashboard_html|safe }}
 
 <div class="panel panel-default">
-  <div class="panel-body">      
+  <div class="panel-body">
     <p><b>Participant Responses</b></p>
     Get participant response data: <a href="get-participant-responses" download="participant-responses.csv">here.</a>
   </div>
@@ -168,4 +168,4 @@
 
 
 {% endif %}
-{% endblock %}  
+{% endblock %}

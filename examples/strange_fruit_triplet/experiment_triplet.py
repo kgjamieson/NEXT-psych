@@ -18,12 +18,12 @@ for idx,alg_id in enumerate(supported_alg_ids):
   if idx==0:
     alg_item['alg_label'] = 'Test'
   else:
-    alg_item['alg_label'] = alg_id    
+    alg_item['alg_label'] = alg_id
   alg_item['test_alg_label'] = 'Test'
   alg_item['params'] = {}
   alg_list.append(alg_item)
 
-# Create common algorithm management settings  
+# Create common algorithm management settings
 params = {}
 params['proportions'] = []
 for algorithm in alg_list:
@@ -40,9 +40,9 @@ initExp['args'] = {}
 initExp['args']['n'] = 30
 initExp['args']['d'] = 2
 initExp['args']['failure_probability'] = .01
-initExp['args']['participant_to_algorithm_management'] = 'one_to_many' 
-initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
-initExp['args']['alg_list'] = alg_list 
+initExp['args']['participant_to_algorithm_management'] = 'one_to_many'
+initExp['args']['algorithm_management_settings'] = algorithm_management_settings
+initExp['args']['alg_list'] = alg_list
 # initExp['args']['instructions'] = 'Test instructions'
 # initExp['args']['debrief'] = 'Test debrief'
 initExp['app_id'] = 'PoolBasedTripletMDS'
