@@ -3,7 +3,7 @@ author: Lalit Jain, lalitkumarjj@gmail.com
 modified: Chris Fernandez, chris2fernandez@gmail.com
 last updated: 05/27/2015
 
-A module for replicating the 25 total arms with 8 arms shown at a time tuple bandits pure exploration 
+A module for replicating the 25 total arms with 8 arms shown at a time tuple bandits pure exploration
 experiments from the NEXT paper.
 
 Usage:
@@ -30,7 +30,7 @@ for alg_id in supported_alg_ids:
   alg_item['params'] = {}
   alg_list.append(alg_item)
 
-# Create common algorithm management settings  
+# Create common algorithm management settings
 algorithm_management_settings = {}
 params = {}
 params['proportions'] = []
@@ -53,12 +53,12 @@ for cap in cap_list:
   #   initExp['args']['n'] = 25
   # else:
   #   initExp['args']['n'] = 8
-  initExp['args']['n'] = 25    
+  initExp['args']['n'] = 25
   initExp['args']['k'] = 8
   initExp['args']['failure_probability'] = .01
-  initExp['args']['participant_to_algorithm_management'] = 'one_to_many' # 'one_to_one'  
-  initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
-  initExp['args']['alg_list'] = alg_list 
+  initExp['args']['participant_to_algorithm_management'] = 'one_to_many' # 'one_to_one'
+  initExp['args']['algorithm_management_settings'] = algorithm_management_settings
+  initExp['args']['alg_list'] = alg_list
   # initExp['args']['instructions'] = ''
   # initExp['args']['debrief'] =''
   # initExp['args']['num_tries'] = 3

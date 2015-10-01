@@ -37,7 +37,7 @@ def new_experiment_details(app_id):
 
     # This is an html string containing the necessary app params.
     app_params_template, app_params_form = app_resource.get_experiment_params()
-    
+
     # associate app_params_form to form.params
     NewExperimentForm_params.params = FormField(app_params_form)
     form = NewExperimentForm_params()
@@ -47,7 +47,7 @@ def new_experiment_details(app_id):
 
     # Is exposing the target id a potential security hole?
     target_set_ids = [target.id for target in current_project.target_sets]
-    form.target_set.choices = zip(target_set_ids, target_set_names)    
+    form.target_set.choices = zip(target_set_ids, target_set_names)
 
     # check if form is validated
     if form.validate_on_submit():
@@ -55,7 +55,7 @@ def new_experiment_details(app_id):
         if form.params.process_experiment_params():
             name = form.name.data
             description = form.description.data
-            instructions = form.instructions.data; 
+            instructions = form.instructions.data;
             debrief = form.debrief.data
             params  = form.params.data
             target_set = form.target_set.data
@@ -73,7 +73,7 @@ def new_experiment_details(app_id):
                 query_duration = query_duration
             )
             experiment.save()
-            
+
 
             # Add experiment to the current project
             current_project.add_experiment(experiment)
@@ -82,4 +82,4 @@ def new_experiment_details(app_id):
     # render app params form template with the new composited form
     app_params_html = render_template(app_params_template, form=form.params)
     return render_template("new_experiment_details.html", form=form, app_params_html=app_params_html)
-        
+
