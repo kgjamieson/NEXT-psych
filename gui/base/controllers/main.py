@@ -1,15 +1,14 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, session
 from flask.ext.login import login_user, logout_user, login_required
-
-from base import cache
 from base.forms import LoginForm, CreateAccountForm
-from base.models import User, Experiment
+from base.models import User
 from base.settings import Config
-main = Blueprint('main', __name__)
 
+main = Blueprint('main', __name__)
 config = Config()
 @main.route('/', methods=["GET", "POST"])
 def home():
+    print "config.AUTHENTICATE {}".format(config.AUTHENTICATE)
     if config.AUTHENTICATE:
         return render_template('index.html', login_form=LoginForm(), create_form=CreateAccountForm())
     else:
@@ -18,11 +17,11 @@ def home():
         if not User.objects(email=email):
             user = User(email=email)
             user.set_password(password)
-            user.save
+            user.save()
         else:
-            user = User(email).first()
+            user = User.objects(email=email).first()
         login_user(user, remember=True)
-    return redirect(url_for('dashboard._dashboard'))
+        return redirect(url_for('dashboard._dashboard'))
 
 @main.route('/login', methods=["POST"])
 def login():
@@ -67,10 +66,9 @@ def create():
 
 @main.route('/logout')
 def logout():
-    if config.AUTHENTICATE:
-        logout_user()
-        flash("You have been logged out.", "success")
-        #session.clear()
-        return redirect(url_for('main.home'))
+    logout_user()
+    flash("You have been logged out.", "success")
+    #session.clear()
+    return redirect(url_for('main.home'))
 
 
