@@ -10,7 +10,19 @@ main = Blueprint('main', __name__)
 config = Config()
 @main.route('/', methods=["GET", "POST"])
 def home():
-    return render_template('index.html', login_form=LoginForm(), create_form=CreateAccountForm())
+    if config.AUTHENTICATE:
+        return render_template('index.html', login_form=LoginForm(), create_form=CreateAccountForm())
+    else:
+        email = 'default'
+        password = 'password'
+        if not User.objects(email=email):
+            user = User(email=email)
+            user.set_password(password)
+            user.save
+        else:
+            user = User(email).first()
+        login_user(user, remember=True)
+    return redirect(url_for('dashboard._dashboard'))
 
 @main.route('/login', methods=["POST"])
 def login():
@@ -55,9 +67,10 @@ def create():
 
 @main.route('/logout')
 def logout():
-    logout_user()
-    flash("You have been logged out.", "success")
-    #session.clear()
-    return redirect(url_for('main.home'))
+    if config.AUTHENTICATE:
+        logout_user()
+        flash("You have been logged out.", "success")
+        #session.clear()
+        return redirect(url_for('main.home'))
 
 
