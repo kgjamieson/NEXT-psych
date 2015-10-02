@@ -103,10 +103,10 @@ def generate_target_blob(AWS_BUCKET_NAME,
             f = open(primary_file)
         else:
             f = primary_file
-        print f.stream
-        print f.read()
+        print "stream", f.stream
+        print "read", f.readline()
         i = 0
-        for line in f.stream:
+        for line in f.stream.readlines():
             print line
             line = line.strip()
             if line:
