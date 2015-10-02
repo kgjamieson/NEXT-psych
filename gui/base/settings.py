@@ -31,15 +31,11 @@ class Config(object):
     NEXT_BACKEND_GLOBAL_HOST = os.environ.get("NEXT_BACKEND_GLOBAL_HOST", 'localhost')
     NEXT_BACKEND_GLOBAL_PORT = os.environ.get("NEXT_BACKEND_GLOBAL_PORT", "8000")
 
-    # Global frontend links. Used for widgets and stats calls.
-    NEXT_FRONTEND_GLOBAL_HOST = os.environ.get("NEXT_FRONTEND_GLOBAL_HOST", 'localhost')
-    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get("NEXT_FRONTEND_GLOBAL_PORT", "80")
-
-    
     # Site ID and Key for Next Frontend Base.
     SITE_ID = '99eb2f19d5a303acc8fa1a6e9e05cd'
     SITE_KEY = '7c48d1b377889d9ec0322e1dcf7f39'
 
+    AUTHENTICATE = False
     
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///../next_baseDB.db'

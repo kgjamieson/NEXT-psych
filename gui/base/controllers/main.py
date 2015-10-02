@@ -4,9 +4,10 @@ from flask.ext.login import login_user, logout_user, login_required
 from base import cache
 from base.forms import LoginForm, CreateAccountForm
 from base.models import User, Experiment
-
+from base.settings import Config
 main = Blueprint('main', __name__)
 
+config = Config()
 @main.route('/', methods=["GET", "POST"])
 def home():
     return render_template('index.html', login_form=LoginForm(), create_form=CreateAccountForm())

@@ -1,5 +1,16 @@
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField, RadioField, FileField, SelectField, BooleanField, HiddenField, FormField, FieldList, IntegerField, validators
+from wtforms import (TextField,
+                     PasswordField,
+                     TextAreaField,
+                     RadioField,
+                     FileField,
+                     SelectField,
+                     BooleanField,
+                     HiddenField,
+                     FormField,
+                     FieldList,
+                     IntegerField,
+                     validators)
 from bson.objectid import ObjectId
 
 class CreateAccountForm(Form):

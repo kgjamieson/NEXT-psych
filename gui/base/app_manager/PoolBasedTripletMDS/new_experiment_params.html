@@ -168,7 +168,7 @@ add_row = function(div_id) {
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
       {{ subfield.label(style="font-weight:500; margin:2px;") }} 
       <div style="padding-left:21px; padding-bottom:10px">
-        dummy text explaining the above option
+        Currently NEXT can only assign queries to algorithms in fixed proportions.
       </div>
     {% endfor %}
     {% for error in form.algorithm_management.errors %}
@@ -184,10 +184,7 @@ add_row = function(div_id) {
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
-      <div style="padding-left:21px; padding-bottom:10px">
-        dummy text explaining the above option
-      </div>
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}      
     {% endfor %}
     {% for error in form.participant_to_algorithm_management.errors %}
     <span style="color: red;">[{{ error }}]</span>
