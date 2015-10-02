@@ -91,17 +91,34 @@ $(document).ready( function() {
 </p>
 
 <form method="post" enctype="multipart/form-data" class="box">
-
-  <!-- zip file -->
+  <!-- Name -->
   <div class="form-group">
-    <label> Zip File</label>
-    <p class="help-block"> Zip file containing the media. For example the images. </p>
     <div class="col-sm-6">
-      <div class="input-group" name="hosted_zip_file">
+      <label for="usr">Target Set Name:</label>
+      <input type="text" class="form-control" id="name" name="name">
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  
+  <!-- primary targets -->
+  <div class="form-group">
+    <label> Primary Targets</label>
+    <p class="help-block"> Zip or txt file containing targets.</p>
+    <div class="col-sm-6">
+      <label for="primary_type">Select primary target type:</label>
+      <select class="form-control" id="primary_type" name="primary_type">
+	<option>image</option>
+	<option>text</option>
+	<option>video</option>
+	<option>audio (coming soon)</option>
+      </select>
+      
+      <div class="input-group" name="primary_file">
         <span class="input-group-btn">
-            <span class="btn btn-primary btn-file">
-                Browse&hellip; <input class="form-control" type="file" name="hosted_zip_file">
-            </span>
+	  <span class="btn btn-primary btn-file">
+            Browse&hellip; <input class="form-control" type="file" name="primary_file">
+          </span>
         </span>
         <input type="text" class="form-control" readonly>
       </div>
@@ -109,17 +126,23 @@ $(document).ready( function() {
     <div class="clearfix"></div>
   </div>
 
-  <!-- csv file -->
+  <!-- alt targets -->
   <div class="form-group">
-    <label> CSV File with description data </label>
-    <p class="help-block">
-      Upload a csv file with rows: "target_id, primary_type, alt_desc". The target_id MUST match the file name. The alt_type is necessarily text, with alt_desc being the associated text.
+    <label> Alt Targets</label>
+    <p class="help-block"> Optional <b>zip</b> file containing alt targets.
+      We currently only support image targets.
     </p>
     <div class="col-sm-6">
-      <div class="input-group">
+      <label for="primary_type">Select alt target type:</label>
+      <select class="form-control" id="alt_type" name="alt_type">
+	<option>None</option>
+	<option>image</option>
+      </select>
+
+      <div class="input-group" name="alt_file">
         <span class="input-group-btn">
             <span class="btn btn-primary btn-file">
-                Browse&hellip; <input class="form-control" type="file" name="hosted_csv_file">
+                Browse&hellip; <input class="form-control" type="file" name="alt_file">
             </span>
         </span>
         <input type="text" class="form-control" readonly>

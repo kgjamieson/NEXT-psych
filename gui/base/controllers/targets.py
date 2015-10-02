@@ -1,21 +1,27 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for, session
-from flask.ext.login import login_user, logout_user, login_required
-from wtforms import TextField, PasswordField, TextAreaField, RadioField, FieldList, IntegerField, FormField, StringField, validators, SelectField, HiddenField
-from flask_wtf import Form
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask.ext.login import login_required
+from wtforms import (TextAreaField,
+                     RadioField,
+                     IntegerField,
+                     FormField,
+                     StringField)
 
-from base import cache
-from base.forms import LoginForm, NewExperimentForm, ManageTargets, TargetSetForm
-from base.models import User, Target, TargetSet
+from base.forms import ManageTargets, TargetSetForm
+from base.models import Target, TargetSet
 from base.current import *
-
-from base.upload_manager import *
+from base.settings import Config
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 from StringIO import StringIO
 from mongoengine import *
-import os
+import os, sys, datetime
 
+config = Config()
+sys.path.extend('../../examples')
+import examples.launch_experiment as launch_experiment
+
+launch_experiment.generate_target_blob
 targets = Blueprint('targets', __name__)
 
 @targets.route('/manage',methods=["GET","POST"])
@@ -23,51 +29,38 @@ targets = Blueprint('targets', __name__)
 @project_required
 def manage():
     if request.method == 'POST':
-        # Handle the zip file case first
-        has_zip_file = False
-        hosted_zip_file = request.files['hosted_zip_file']
-        hosted_zip_file.seek(0, os.SEEK_END)
-        if "hosted_zip_file" in request.files.keys() and hosted_zip_file.tell()!=0:
-            has_zip_file = True
-            hosted_zip_file = request.files['hosted_zip_file']
+        # Handle the primary targets first
+        primary_file = request.files['primary_file']
+        alt_file = request.files['alt_file']
 
-            # Dictionary mapping filename to object
-            target_file_dict = zipfile_to_dictionary(hosted_zip_file)
-            # Very basic consistency check
-            #if len(target_list) != len(target_file_dict):
-            #    flash("Inconsistent number of targets to images")
-            #    return redirect(url_for('project.manage_targets'))
+        name = request.form['name'] 
+        if not name:
+            flash('You must specify a unique target set name.')
+            return render_template('manage_targets.html')
+        primary_type = request.form['primary_type']
+        alt_type  = None if request.form['alt_type']=='None' else request.form['alt_type']
 
-        hosted_csv_file = request.files['hosted_csv_file']
-
-        # Parse the csv file into a list of dictionaries, one for each row
-        target_list = csv_to_dict(hosted_csv_file, ["target_id", "primary_type", "alt_description"])
-
-        # Create target set
-        target_set = TargetSet(name=hosted_csv_file.filename)
+        
+        target_set = TargetSet(name=name)
+        target_list = launch_experiment.generate_target_blob(config.AWS_BUCKET_NAME,
+                                                             config.AWS_ID,
+                                                             config.AWS_KEY,
+                                                             str(datetime.date.today()),
+                                                             primary_file,
+                                                             primary_type,
+                                                             alt_file,
+                                                             alt_type)['target_blob']
         for target in target_list:
-                # Get file object
-            if has_zip_file == True:
-                target_file = target_file_dict[target["target_id"]]
-                bucket = get_AWS_bucket()
-                target_url = upload_to_S3(bucket, str(current_project.id)+"_"+target["target_id"], StringIO(target_file))
-                target = Target( target_id = target["target_id"],
-                                 primary_type = target["primary_type"],
-                                 primary_description = target_url,
-                                 alt_type = "text",
-                                 alt_description = target["alt_description"])
-            else:
-                target = Target( target_id = target["target_id"],
-                                 primary_type = target["primary_type"],
-                                 primary_description = target["target_id"],
-                                 alt_type = "text",
-                                 alt_description = target["alt_description"])
+            target = Target(target_id = target['target_id'],
+                            primary_type = target['primary_type'],
+                            primary_description = target['primary_description'],
+                            alt_type = target['alt_type'],
+                            alt_description = target['alt_description'])
             target.save()
             target_set.targets.append(target)
         # Save the target_set
         target_set.save()
         current_project.add_target_set(target_set)
-
     # Always return this page
     return render_template('manage_targets.html')
 
