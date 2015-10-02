@@ -1,21 +1,17 @@
+import sys
+import datetime
+
+from mongoengine import *
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask.ext.login import login_required
-from wtforms import (TextAreaField,
-                     RadioField,
-                     IntegerField,
-                     FormField,
-                     StringField)
 
-from base.forms import ManageTargets, TargetSetForm
-from base.models import Target, TargetSet
 from base.current import *
 from base.settings import Config
-from boto.s3.connection import S3Connection
-from boto.s3.key import Key
+from base.models import Target, TargetSet
+from base.forms import ManageTargets, TargetSetForm
 
-from StringIO import StringIO
-from mongoengine import *
-import os, sys, datetime
+
+
 
 config = Config()
 sys.path.extend('../../examples')
@@ -37,6 +33,7 @@ def manage():
         if not name:
             flash('You must specify a unique target set name.')
             return render_template('manage_targets.html')
+        
         primary_type = request.form['primary_type']
         alt_type  = None if request.form['alt_type']=='None' else request.form['alt_type']
 
