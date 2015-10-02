@@ -104,7 +104,9 @@ def generate_target_blob(AWS_BUCKET_NAME,
         else:
             f = primary_file
         i = 0
+        print "what file is this?"
         for line in f:
+            print line
             line = line.strip()
             if line:
                 i += 1
