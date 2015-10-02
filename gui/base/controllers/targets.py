@@ -36,7 +36,6 @@ def manage():
         
         primary_type = request.form['primary_type']
         alt_type  = 'text' if request.form['alt_type']=='None' else request.form['alt_type']
-
         
         target_set = TargetSet(name=name)
         target_list = launch_experiment.generate_target_blob(config.AWS_BUCKET_NAME,
