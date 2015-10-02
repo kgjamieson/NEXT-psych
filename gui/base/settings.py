@@ -33,7 +33,7 @@ class Config(object):
 
     # Global frontend links. Used for widgets and stats calls.
     NEXT_FRONTEND_GLOBAL_HOST = os.environ.get("NEXT_FRONTEND_GLOBAL_HOST", 'localhost')
-    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get("NEXT_FRONTEND_GLOBAL_PORT", "80")
+    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get("NEXT_FRONTEND_GLOBAL_PORT", '80')
 
     # Site ID and Key for Next Frontend Base.
     SITE_ID = '99eb2f19d5a303acc8fa1a6e9e05cd'

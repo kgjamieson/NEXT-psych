@@ -99,18 +99,21 @@ def generate_target_blob(AWS_BUCKET_NAME,
                               'alt_description': primary_file_name}
                     targets.append(target)
     else:
-         with open(file) as f:
-            i = 0
-            for line in f:
-                line = line.strip()
-                if line:
-                    i += 1
-                    target = {'target_id': str(i),
-                              'primary_type': 'text',
-                              'primary_description':line,
-                              'alt_type': 'text',
-                              'alt_description':line}
-                    targets.append(target)
+        if type(primary_file) is str:
+            f = open(primary_file)
+        else:
+            f = primary_file
+        i = 0
+        for line in f:
+            line = line.strip()
+            if line:
+                i += 1
+                target = {'target_id': str(i),
+                          'primary_type': 'text',
+                          'primary_description':line,
+                          'alt_type': 'text',
+                          'alt_description':line}
+                targets.append(target)
     return {'target_blob' : targets}
 
 def get_AWS_bucket(AWS_BUCKET_NAME,AWS_ID, AWS_KEY):

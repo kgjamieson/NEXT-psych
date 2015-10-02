@@ -35,7 +35,7 @@ def manage():
             return render_template('manage_targets.html')
         
         primary_type = request.form['primary_type']
-        alt_type  = None if request.form['alt_type']=='None' else request.form['alt_type']
+        alt_type  = 'text' if request.form['alt_type']=='None' else request.form['alt_type']
 
         
         target_set = TargetSet(name=name)
