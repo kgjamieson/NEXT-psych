@@ -7,7 +7,7 @@ from launch_experiment import *
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 experiment_list = []
-supported_alg_ids = ['RandomSampling','RandomSampling','UncertaintySampling','CrowdKernel','STE']
+supported_alg_ids = ['RandomSampling','CrowdKernel']
 
 # Create common alg_list
 alg_list = []
@@ -21,6 +21,7 @@ for idx,alg_id in enumerate(supported_alg_ids):
   alg_item['test_alg_label'] = 'Test'
   alg_item['params'] = {}
   alg_list.append(alg_item)
+
 # Create common algorithm management settings  
 params = {}
 params['proportions'] = []
@@ -34,18 +35,18 @@ algorithm_management_settings['params'] = params
 # Create experiment dictionary
 initExp = {}
 initExp['args'] = {}
-initExp['args']['n'] = 6
+initExp['args']['n'] = 43
 initExp['args']['d'] = 2
-initExp['args']['failure_probability'] = .01
+initExp['args']['failure_probability'] = .05
 initExp['args']['participant_to_algorithm_management'] = 'one_to_many' 
 initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
 initExp['args']['alg_list'] = alg_list 
-# initExp['args']['instructions'] = 'Test instructions'
-# initExp['args']['debrief'] = 'Test debrief'
+initExp['args']['instructions'] = 'On each trial, pick the facial expression on the bottom that conveys the same feeling as the one on the top.'
+initExp['args']['debrief'] = 'Thanks for participating!'
 initExp['app_id'] = 'PoolBasedTripletMDS'
-initExp['site_id'] = 'replace this with working site id'
-initExp['site_key'] = 'replace this with working site key'
-
+# initExp['site_id'] = 'replace this with working site id'
+# initExp['site_key'] = 'replace this with working site key'
+initExp['args']['num_tries'] = 50
 
 experiment = {}
 experiment['initExp'] = initExp

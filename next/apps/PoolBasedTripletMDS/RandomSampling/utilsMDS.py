@@ -420,9 +420,5 @@ def computeEmbeddingWithGD(X,S,max_iters=0,max_norm=0,epsilon=0.01,c1=0.0001,rho
     return X,emp_loss_0,hinge_loss_0,rel_max_grad
 
 
-
-
-
-
 if __name__ == "__main__":
     main()
