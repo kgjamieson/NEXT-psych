@@ -52,10 +52,9 @@ def generate_target_blob(AWS_BUCKET_NAME,
     print "generating blob"
     targets = []
     bucket = get_AWS_bucket(AWS_BUCKET_NAME, AWS_ID, AWS_KEY)
-    print primary_file.read().splitlines()
     is_primary_zip = ((type(primary_file) is str and primary_file.endswith('.zip'))
                       or (zipfile.is_zipfile(primary_file)))
-    print is_primary_zip
+    
     if is_primary_zip:
         target_file_dict, target_name_dict = zipfile_to_dictionary(primary_file)
         if alt_type != 'text':
@@ -102,6 +101,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
                               'alt_description': primary_file_name}
                     targets.append(target)
     else:
+
         print "in else"
         print primary_file
         print primary_file.filename
@@ -120,6 +120,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
             f = open(primary_file)
         else:
             f = primary_file
+            f.seek(0)
         print 'stream', f.read().splitlines()
         i = 0
         for line in f.read().splitlines():
