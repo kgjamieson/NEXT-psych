@@ -104,7 +104,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
         print "in else"
         print primary_file
         print primary_file.filename
-        x = csv.reader(file.read().splitlines(),quotechar='"', delimiter=',',skipinitialspace=True)
+        x = csv.reader(primary_file.read().splitlines(),quotechar='"', delimiter=',',skipinitialspace=True)
         for row in x:
             print row
         if type(primary_file) is str:
