@@ -101,27 +101,11 @@ def generate_target_blob(AWS_BUCKET_NAME,
                               'alt_description': primary_file_name}
                     targets.append(target)
     else:
-
-        print "in else"
-        print primary_file
-        print primary_file.filename
-
-        primary_file.save('foo')
-        x = open('foo','r')
-        print "opened"
-        for line in x:
-            print line
-        print "printing rows"
-        for row in x:
-            for col in row:
-                print col
-
         if type(primary_file) is str:
             f = open(primary_file)
         else:
             f = primary_file
             f.seek(0)
-        print 'stream', f.read().splitlines()
         i = 0
         for line in f.read().splitlines():
             print line
