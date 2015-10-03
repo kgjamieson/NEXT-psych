@@ -52,9 +52,10 @@ def generate_target_blob(AWS_BUCKET_NAME,
     print "generating blob"
     targets = []
     bucket = get_AWS_bucket(AWS_BUCKET_NAME, AWS_ID, AWS_KEY)
+    print primary_file.read().splitlines()
     is_primary_zip = ((type(primary_file) is str and primary_file.endswith('.zip'))
-                      or (zipfile.is_zipfile(primary_file))) 
-    
+                      or (zipfile.is_zipfile(primary_file)))
+    print is_primary_zip
     if is_primary_zip:
         target_file_dict, target_name_dict = zipfile_to_dictionary(primary_file)
         if alt_type != 'text':
@@ -107,6 +108,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
 
         primary_file.save('foo')
         x = open('foo','r')
+        print "opened"
         for line in x:
             print line
         print "printing rows"

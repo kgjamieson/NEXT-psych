@@ -28,7 +28,7 @@ def manage():
         # Handle the primary targets first
         primary_file = request.files['primary_file']
         alt_file = request.files['alt_file']
-
+        print primary_file.read().splitlines()
         name = request.form['name'] 
         if not name:
             flash('You must specify a unique target set name.')
