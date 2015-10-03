@@ -105,8 +105,9 @@ def generate_target_blob(AWS_BUCKET_NAME,
         print primary_file
         print primary_file.filename
         x = csv.reader(primary_file.read().splitlines(),quotechar='"', delimiter=',',skipinitialspace=True)
+        print "printing rows"
         for row in x:
-            print row
+            print "row",row
         if type(primary_file) is str:
             f = open(primary_file)
         else:
