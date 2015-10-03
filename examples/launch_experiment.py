@@ -99,6 +99,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
                               'alt_description': primary_file_name}
                     targets.append(target)
     else:
+        print "in else"
         if type(primary_file) is str:
             f = open(primary_file)
         else:
