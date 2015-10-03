@@ -17,6 +17,7 @@ python launch_experiment --experiment_file=
 """
 import os
 import re
+import csv
 import imp
 import sys
 import json
@@ -101,13 +102,16 @@ def generate_target_blob(AWS_BUCKET_NAME,
                     targets.append(target)
     else:
         print "in else"
+        print primary_file
+        print primary_file.filename
+        x = csv.reader(file.read().splitlines(),quotechar='"', delimiter=',',skipinitialspace=True)
+        for row in x:
+            print row
         if type(primary_file) is str:
             f = open(primary_file)
         else:
             f = primary_file
         print 'stream', f.read().splitlines()
-        s = f.stream.getvalue()
-        print 'read', s
         i = 0
         for line in f.read().splitlines():
             print line
