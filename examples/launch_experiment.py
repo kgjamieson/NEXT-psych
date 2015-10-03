@@ -48,6 +48,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
         AWS_ID: Aws id
         AWS_KEY: Aws key
     '''
+    print "generating blob"
     targets = []
     bucket = get_AWS_bucket(AWS_BUCKET_NAME, AWS_ID, AWS_KEY)
     is_primary_zip = ((type(primary_file) is str and primary_file.endswith('.zip'))
