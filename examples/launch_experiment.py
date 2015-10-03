@@ -56,6 +56,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
                       or (zipfile.is_zipfile(primary_file)))
     
     if is_primary_zip:
+        
         target_file_dict, target_name_dict = zipfile_to_dictionary(primary_file)
         if alt_type != 'text':
             assert alt_file != None, 'Need an alt_file.'
@@ -108,7 +109,6 @@ def generate_target_blob(AWS_BUCKET_NAME,
             f.seek(0)
         i = 0
         for line in f.read().splitlines():
-            print line
             line = line.strip()
             if line:
                 i += 1
