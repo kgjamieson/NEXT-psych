@@ -15,7 +15,7 @@
 
 <script>
 $(document).ready(function () {
-  toggleFields(); 
+  toggleFields();
 
   $("#params-context_type").change(function () {
       toggleFields();
@@ -77,6 +77,7 @@ function toggleFields() {
     <script>
     index = 1;
 add_row = function(div_id) {
+    console.log ( 'In add_row function' );
     // get last row
     $('#algs tr:last')
     // add new row after last row
@@ -144,34 +145,34 @@ add_row = function(div_id) {
       <tr>
         <td style="vertical-align:middle">
           Test
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_label" 
-            name="params-alg_rows-0-alg_label" 
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_label"
+            name="params-alg_rows-0-alg_label"
             form="save"
             style="display:none"
             value="Test"
           >
         </td>
-        <td style="vertical-align:middle"> 
-          BR_LilUCB 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_id" 
-            name="params-alg_rows-0-alg_id" 
+        <td style="vertical-align:middle">
+          BR_LilUCB
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_id"
+            name="params-alg_rows-0-alg_id"
             form="save"
             style="display:none"
             value="BR_LilUCB"
           >
         </td>
-        <td> 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_proportion" 
-            name="params-alg_rows-0-alg_proportion" 
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_proportion"
+            name="params-alg_rows-0-alg_proportion"
             form="save"
             style="padding:2px; width:100%; height:100%; margin:0px"
             value="1.0"
@@ -199,7 +200,7 @@ add_row = function(div_id) {
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
         dummy text explaining the above option
       </div>
@@ -217,7 +218,7 @@ add_row = function(div_id) {
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
         dummy text explaining the above option
       </div>
@@ -226,5 +227,5 @@ add_row = function(div_id) {
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </div>
-  <br>      
+  <br>
 </div>

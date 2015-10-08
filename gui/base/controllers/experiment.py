@@ -107,6 +107,7 @@ def edit(experiment_id):
         current_experiment.update(set__query_tries=form.query_tries.data)
         current_experiment.update(set__query_duration=form.query_duration.data)
         return redirect(url_for('experiment._experiment', experiment_id=current_experiment.id))
+
     return render_template("edit_experiment_details.html", form=form, app_params_html = app_params_html)
 
 
