@@ -141,23 +141,17 @@
 <!-- Save button -->
 <form style="padding-top:30px;" class="form-horizontal" method="post" id="save">
   {{ form.hidden_tag() }}
-  <div class="col-lg-1 col-lg-offset-4 col-xs-12">
     <button type="submit" class="btn btn-primary">Save</button>
-  </div>
 </form>
 
 <!-- clone button -->
 <form action="{{ url_for('.clone', experiment_id=current_experiment.id) }}" method="post">
-  <div class="col-lg-1 col-xs-12">
     <button type="submit" value="delete" class="btn btn-primary">Clone</button>
-  </div>
 </form>
 
 <!-- delete button -->
 <form action="{{ url_for('.delete', experiment_id=current_experiment.id) }}" method="post">
-  <div class="col-lg-1 col-xs-12">
     <button type="submit" value="delete" class="btn btn-primary">Delete</button>
-  </div>
 </form>
 
 <!-- create some spacing so people can see the save and delete buttons -->
