@@ -24,7 +24,7 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
     Dueling Bandits PureExploration
     Author: Chris Fernandez
 
-    App resource for DuelingBanditsPureExploration. 
+    App resource for DuelingBanditsPureExploration.
     """
 
     def get_experiment_params(self, args=None):
@@ -37,18 +37,18 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
             alg_label = TextField('Algorithm Label')
             alg_id = SelectField('Algorithm Id', choices=[(algorithm, algorithm) for algorithm in alg_list])
             alg_proportion = FloatField('Algorithm Proportion')
-        
-        class DuelingBanditsPureExplorationForm(Form):            
+
+        class DuelingBanditsPureExplorationForm(Form):
             context_type = SelectField('Context Type', choices=[('text', 'Text'), ('image', 'Image')])
             context_image = FileField('Context Image')
             context_text = TextField('Context Text')
             failure_probability = FloatField('Confidence Level', validators=[validators.required()], default=0.95)
-            algorithm_management = RadioField('Algorithm Management', 
+            algorithm_management = RadioField('Algorithm Management',
                                                 choices=[('fixed_proportions','Fixed Proportions'),
                                                         ('pure_exploration','Pure Exploration'),
                                                         ('explore_exploit','Explore Exploit')],
                                                 default='fixed_proportions')
-            participant_to_algorithm_management = RadioField('Participant to Algorithm Management', 
+            participant_to_algorithm_management = RadioField('Participant to Algorithm Management',
                                                                 choices=[('one_to_many','One-to-many'),
                                                                           ('one_to_one','One-to-one')],
                                                                 default='one_to_many')
@@ -91,13 +91,13 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         template = env.get_template("experiment_dashboard.html")
         html = render_template(template)
         return html
-    
+
     def get_formatted_participant_data(self, current_experiment, args=None):
         """
         Return formatted participant logs that are app specific.
         """
         # WHY ARE WE LOOKING AT INDICES IN THIS FUNCTION???
-        
+
         # Use frontend base local url
         url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
         try:
@@ -126,8 +126,8 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
                 # Append the alg_label
                 line.append(response['alg_label'])
                 participant_responses.append(",".join(line))
-                
-        return participant_responses   
+
+        return participant_responses
 
 
     def run_experiment(self, current_experiment, args=None):
@@ -157,7 +157,7 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         initExp_dict['args']['algorithm_management_settings']['params']['context_image'] = current_experiment.params['context_image']
         initExp_dict['args']['algorithm_management_settings']['params']['context_text'] = current_experiment.params['context_text']
         initExp_dict['args']['algorithm_management_settings']['params']['proportions'] = []
-        
+
         for alg in current_experiment.params['alg_rows']:
             params_dict = copy.deepcopy(alg)
             params_dict['params'] = {}
@@ -169,17 +169,17 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
             proportions_dict['alg_label'] = alg['alg_label']
             proportions_dict['proportion'] = alg['alg_proportion']
             initExp_dict['args']['algorithm_management_settings']['params']['proportions'].append(proportions_dict)
-        
+
         print initExp_dict
 
-        # Make request  for initExp 
+        # Make request  for initExp
         try:
             url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
             response = requests.post(url,
                                      json.dumps(initExp_dict),
                                      headers={'content-type':'application/json'})
             response_dict = eval(response.text)
-            
+
         except:
             exc_class, exc, tb = sys.exc_info()
             new_exc = Exception("%s. Error connecting to backend."%(exc or exc_class))
@@ -192,7 +192,7 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         """
         Render custom query for app type
         """
-        
+
         # Make this more flexible
         next_backend_url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT
 
@@ -212,10 +212,10 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
 
         template = env.get_template("query.html")
 
-        return render_template(template, 
-                                app_id=app_id, 
-                                exp_uid = exp_uid, 
-                                widget_key = widget_key, 
+        return render_template(template,
+                                app_id=app_id,
+                                exp_uid = exp_uid,
+                                widget_key = widget_key,
                                 next_backend_url=next_backend_url,
                                 query_tries = query_tries,
                                 debrief = debrief,
