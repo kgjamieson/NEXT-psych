@@ -23,8 +23,8 @@
 {% block body %}
 
 <!-- alert if there are errors -->
-<div class="alert alert-danger alert-dismissable" 
-      style="text-align:center;width:70%;margin-top:20px;margin-left:auto;margin-right:auto;margin-bottom:-20px;display:none" 
+<div class="alert alert-danger alert-dismissable"
+      style="text-align:center;width:70%;margin-top:20px;margin-left:auto;margin-right:auto;margin-bottom:-20px;display:none"
       id="error">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <strong>Oops! </strong>
@@ -66,15 +66,50 @@
   <p>People participating in your experiment need to know what comparisons they are making. Provide a
     description of the comparison and any other instructions they should see before the experiment begins.</p>
   <p>You can also provide a debriefing message that they will see when they have completed the experiment.</p>
+  <p>The instructions and debrief will be parsed as HTML.</p>
 </div>
+
 
 <div class="form-group clearfix">
   <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}</label>
   <div class="col-sm-8">
-    {{ form.instructions(class_="form-control", form="save") }}
-    {% for error in form.instructions.errors %}
-      <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}<br>
+    <div class="instructions-text">
+      {{ form.instructions(class_="form-control", form="save") }}
+      {% for error in form.instructions.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}<br>
+    </div>
+  </div>
+  <button type="button" class="btn btn-info" data-target="modal"
+       onclick="parse_html($('textarea[name=instructions]').val());">
+       Preview HTML
+  </button>
+</div>
+
+<script>
+parse_html = function(text){
+    text = text.replace(/(?:\r\n|\r|\n)/g, '<br />');
+  document.getElementById("preview_html").innerHTML = text;
+
+  $('.modal').modal('show');
+
+  console.log(html);
+};
+</script>
+
+<!-- HTML Preview Modal -->
+<div class="modal fade" id="directions" tabindex="-1" role="dialog" aria-labelledby="directions" aria-hidden="true" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="modal-title">HTML Preview</h1>
+      </div>
+      <div class="modal-body" id="preview_html">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -86,6 +121,10 @@
       <span style="color: red;">[{{ error }}]</span>
     {% endfor %}<br>
   </div>
+  <button type="button" class="btn btn-info" data-dismiss="modal"
+       onclick="parse_html($('textarea[name=debrief]').val());">
+       Preview HTML
+  </button>
 </div>
 
 <!-- Experiment Target Set -->
@@ -134,7 +173,7 @@
 {{ app_params_html|safe }}
 
 
-<!-- Save button -->    
+<!-- Save button -->
 <form class="form-horizontal" method="post" id="save" enctype="multipart/form-data">
   {{ form.hidden_tag() }}
   <div class="col-lg-1 col-lg-offset-5 col-xs-12" style="padding-top:20px; padding-bottom:50px;">
