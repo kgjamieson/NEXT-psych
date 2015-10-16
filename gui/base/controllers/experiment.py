@@ -98,6 +98,7 @@ def edit(experiment_id):
     if form.validate_on_submit():
         # update all fields
         # Why do we use updates instead of saves?
+        print form.params.data
         current_experiment.update(set__name=form.name.data)
         current_experiment.update(set__description=form.description.data)
         current_experiment.update(set__instructions=form.instructions.data)

@@ -58,6 +58,7 @@ def new_experiment_details(app_id):
             instructions = form.instructions.data;
             debrief = form.debrief.data
             params  = form.params.data
+            print "data", form.params.data
             target_set = form.target_set.data
             query_tries = form.query_tries.data
             query_duration = form.query_duration.data

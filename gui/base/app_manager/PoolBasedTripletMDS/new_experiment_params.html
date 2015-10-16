@@ -36,16 +36,20 @@
       </div>
 </div>
 
-    <script>
-    index = 1;
-add_row = function(div_id) {
-    // get last row
-    $('#algs tr:last')
-    // add new row after last row
-	.after($('<tr>')
-               // add first cell (alg_label)
-               .append($('<td>')
-		       .append($('<input>')
+<script>
+  {% if form.alg_rows|length >0 %}
+  index = {{form.alg_rows|length}};
+  {% else %}
+  index = 1;
+  {% endif %}
+      add_row = function(div_id) {
+      // get last row
+     $('#algs tr:last')
+      // add new row after last row
+      .after($('<tr>')
+        // add first cell (alg_label)
+        .append($('<td>')
+	  .append($('<input>')
 			       .attr({
 				   class:'form-control',
 				   type:'text',
@@ -64,8 +68,9 @@ add_row = function(div_id) {
 				   class:'form-control',
 				   id:'params-alg_rows-'+index+'-alg_id',
 				   name:'params-alg_rows-'+index+'-alg_id',
-				   form:'save',
-				   style:'padding:2px; width:100%; height:100%; margin:0px'
+	    			form:'save',
+	    style:'padding:2px; width:100%; height:100%; margin:0px'
+	    
 			       })
 			       .append($('<option>')
 				       .attr({value:"RandomSampling"})
@@ -94,59 +99,67 @@ add_row = function(div_id) {
 			      )
 		      )
 )
-    index = index+1;
-  }
+		index = index+1;
+		};
+		
 </script>
-
-<!-- table for adding algs -->
-<div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix">Algorithm Definition</label>
-  <div class="col-sm-8">
-    <table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
-      <thead>
-        <th> Algorithm Label </th>
-        <th> Algorithm Id </th>
-        <th> Proportion </th>
-      </thead>
+    <!-- table for adding algs -->
+    <div class="form-group clearfix">
+      <label class="col-sm-2 text-right clearfix">Algorithm Definition</label>
+      <div class="col-sm-8">
+	<table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
+	  <thead>
+            <th> Algorithm Label </th>
+            <th> Algorithm Id </th>
+            <th> Proportion </th>
+	  </thead>
+	  {% if form.alg_rows|length == 0 %}
+	  <tr>
+            <td style="vertical-align:middle">
+              Test
+              <input 
+		 class="form-control" 
+		 type="text" 
+		 id="params-alg_rows-0-alg_label" 
+		 name="params-alg_rows-0-alg_label" 
+		 form="save"
+		 style="display:none"
+		 value="Test"
+		 >
+            </td>
+            <td style="vertical-align:middle"> 
+              Random Sampling 
+              <input 
+		 class="form-control" 
+		 type="text" 
+		 id="params-alg_rows-0-alg_id" 
+		 name="params-alg_rows-0-alg_id" 
+		 form="save"
+		 style="display:none"
+		 value="RandomSampling">
+            </td>
+            <td> 
+              <input 
+		 class="form-control" 
+		 type="text" 
+		 id="params-alg_rows-0-alg_proportion" 
+		 name="params-alg_rows-0-alg_proportion" 
+		 form="save"
+		 style="padding:2px; width:100%; height:100%; margin:0px"
+		 value="1.0">
+            </td>
+	  </tr>
+      {% else %}
+      {% for alg_row in form.alg_rows %}
       <tr>
-        <td style="vertical-align:middle">
-          Test
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_label" 
-            name="params-alg_rows-0-alg_label" 
-            form="save"
-            style="display:none"
-            value="Test"
-          >
-        </td>
-        <td style="vertical-align:middle"> 
-          Random Sampling 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_id" 
-            name="params-alg_rows-0-alg_id" 
-            form="save"
-            style="display:none"
-            value="RandomSampling"
-          >
-        </td>
-        <td> 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_proportion" 
-            name="params-alg_rows-0-alg_proportion" 
-            form="save"
-            style="padding:2px; width:100%; height:100%; margin:0px"
-            value="1.0"
-          >
-        </td>
+	<td style="vertical-align:middle"> {{alg_row.alg_label(form='save')}} </td>
+	<td style="vertical-align:middle"> {{alg_row.alg_id(form='save')}} </td>
+	<td style="vertical-align:middle"> {{alg_row.alg_proportion(form='save')}} </td> 
       </tr>
-    </table>
-  </div>
+      {% endfor %}
+      {% endif %} 
+        </table>
+	</div>
 
   <!-- add rows button -->
   <div class="col-sm-8 col-sm-offset-2" style="text-align:center">

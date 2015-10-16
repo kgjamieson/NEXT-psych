@@ -57,7 +57,6 @@ class PoolBasedTripletMDS(AppResourcePrototype):
 
             # List field of the rows of algorithm labels and alg id's
             alg_rows = FieldList(FormField(AlgorithmDefinitionRowForm))
-
         template = env.get_template("new_experiment_params.html")
         return template, PoolBasedTripletMDSParamsForm
 
