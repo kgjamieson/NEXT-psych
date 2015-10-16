@@ -75,7 +75,6 @@ def new_experiment_details(app_id):
             )
             experiment.save()
 
-
             # Add experiment to the current project
             current_project.add_experiment(experiment)
             return redirect(url_for('experiment._experiment', experiment_id=experiment.id))

@@ -81,7 +81,7 @@
 			       .append($('<option>')
 				       .attr({value:"CrowdKernel"})
 				       .html('Crowd Kernel'))
-			      
+
 
 		      )
 	      )
@@ -179,7 +179,7 @@
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
         Currently NEXT can only assign queries to algorithms in fixed proportions.
       </div>
@@ -197,11 +197,11 @@
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }}      
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
     {% endfor %}
     {% for error in form.participant_to_algorithm_management.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </div>
-  <br>      
+  <br>
 </div>
