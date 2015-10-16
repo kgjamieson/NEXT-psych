@@ -2,7 +2,7 @@ import sys
 import datetime
 
 from mongoengine import *
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask.ext.login import login_required
 
 from base.current import *
@@ -28,14 +28,14 @@ def manage():
         # Handle the primary targets first
         primary_file = request.files['primary_file']
         alt_file = request.files['alt_file']
-        name = request.form['name'] 
-        if not name:
+        name = request.form['name']
+        if not name or name == '':
             flash('You must specify a unique target set name.')
             return render_template('manage_targets.html')
-        
+
         primary_type = request.form['primary_type']
         alt_type  = 'text' if request.form['alt_type']=='None' else request.form['alt_type']
-        
+
         target_set = TargetSet(name=name)
         target_list = launch_experiment.generate_target_blob(config.AWS_BUCKET_NAME,
                                                              config.AWS_ID,

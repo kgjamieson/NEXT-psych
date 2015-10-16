@@ -36,6 +36,22 @@ $(document).ready( function() {
 
 <h1 class="page-header">Manage Targets</h1>
 
+<!--Print errors out-->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-danger" role="alert">
+    <ul class=flashes>
+      <p><h5>There were errors!</h5>
+      {% for message in messages %}
+          {{ message | safe }}
+          <br>
+      {% endfor %}
+      </p>
+    </div>
+    </ul>
+  {% endif %}
+{% endwith %}
+
 <h3> Current Target Sets </h3>
 {% if current_project.target_sets|length() == 0 %}
 <p> No uploaded target sets! </p>
@@ -100,7 +116,7 @@ $(document).ready( function() {
     <div class="clearfix"></div>
   </div>
 
-  
+
   <!-- primary targets -->
   <div class="form-group">
     <label> Primary Targets</label>
@@ -113,7 +129,7 @@ $(document).ready( function() {
 	<option>video</option>
 	<option>audio (coming soon)</option>
       </select>
-      
+
       <div class="input-group" name="primary_file">
         <span class="input-group-btn">
 	  <span class="btn btn-primary btn-file">
@@ -129,7 +145,7 @@ $(document).ready( function() {
   <!-- alt targets -->
   <div class="form-group">
     <label> Alt Targets</label>
-    <p class="help-block"> Optional <b>zip</b> file containing alt targets.
+    <p class="help-block"> <b>Optional zip file</b> containing alt targets.
       We currently only support image targets.
     </p>
     <div class="col-sm-6">
