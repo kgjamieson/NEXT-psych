@@ -61,39 +61,32 @@ $(document).ready( function() {
   <thead>
     <th> Target Set Name </th>
     <th> Target Set Size </th>
+    <th> Target Set ID </th>
     <th> Actions </th>
   </thead>
   {% for target_set in current_project.target_sets %}
   <tr>
     <td style="vertical-align:middle">
-      <a href="{{ url_for('targets.edit',target_set_id=target_set.id ) }}">{{ target_set.name }}</a></td>
+      <a href="{{ url_for('targets.edit',target_set_id=target_set.id ) }}">
+          {{ target_set.name }}</a></td>
     <td style="vertical-align:middle"> {{ target_set.targets|length() }} </td>
+    <td style="vertical-align:middle"> {{ target_set.id }} </td>
     <td style="width:1%;white-space:nowrap;">
       <!-- edit button -->
-      <form style="display:inline" action="{{ url_for('targets.edit',target_set_id=target_set.id ) }}" method="post">
+      <form style="display:inline"
+          action="{{ url_for('targets.edit',target_set_id=target_set.id ) }}"
+          method="post">
         <div style="display:inline-block; padding:5px;" >
           <button type="submit" value="edit" class="btn btn-primary">Edit</button>
         </div>
       </form>
-      <!-- delete all button -->
-      <div style="display:inline-block; padding:5px;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-delete-all'>Delete All</button>
-      </div>
-      <div class="modal fade" id="confirm-delete-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="text-align:center">
-                  <h4>Are you sure you want to delete all targets?</h4>
-                </div>
-                <div class="modal-footer" style="text-align:center">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <form style="display:inline" action="{{ url_for('.delete_all',target_set_id=target_set.id) }}" method="post">
-                      <button type="submit" value="delete" class="btn btn-danger btn-ok">Delete All</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-      </div>
+      <!-- delete target set button -->
+      <form style="display:inline"
+          action="{{ url_for('.delete_all',target_set_id=target_set.id) }}"
+          method="post">
+        <button type="submit" value="delete" class="btn btn-danger btn-ok">
+            Delete target set</a>
+      </form>
     </td>
   </tr>
   {% endfor %}
