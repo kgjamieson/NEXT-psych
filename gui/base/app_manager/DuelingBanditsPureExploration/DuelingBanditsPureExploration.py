@@ -51,7 +51,9 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
             participant_to_algorithm_management = RadioField('Participant to Algorithm Management',
                                                                 choices=[('one_to_many','One-to-many'),
                                                                           ('one_to_one','One-to-one')],
-                                                                default='one_to_many')
+                                                                default='one_to_many',
+                                                                description='One particpant to how many algorithms?'
+                                                                )
 
             # process the experiment parameters
             def process_experiment_params(self):

@@ -29,7 +29,7 @@ popup_alert = function(text){
 };
 </script>
 <!-- Question mark/info Modal -->
-<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="directions" aria-hidden="true" data-keyboard="false">
+<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body" id="question-info" style='text-align:center;'>
@@ -41,8 +41,6 @@ popup_alert = function(text){
     </div>
   </div>
 </div>
-
-
 
 <!-- alert if there are errors -->
 <div class="alert alert-danger alert-dismissable"
@@ -125,14 +123,12 @@ parse_html = function(text){
     text = text.replace(/(?:\r\n|\r|\n)/g, '<br />');
   document.getElementById("preview_html").innerHTML = text;
 
-  $('.modal').modal('show');
-
-  console.log(html);
+  $('#html-preview').modal('show');
 };
 </script>
 
 <!-- HTML Preview Modal -->
-<div class="modal fade" id="directions" tabindex="-1" role="dialog" aria-labelledby="directions" aria-hidden="true" data-keyboard="false">
+<div class="modal fade" id="html-preview" tabindex="-1" role="dialog" aria-labelledby="directions" aria-hidden="true" data-keyboard="false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
