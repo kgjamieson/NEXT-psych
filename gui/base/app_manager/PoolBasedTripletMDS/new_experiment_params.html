@@ -9,14 +9,20 @@
 <!-- Unfortunately I couldnt get  form.hidden_tag()  to work! -->
 {% for field in form %}
 {% if field.widget.input_type == 'hidden' %}
-<div style="display:none;">{{ field(class_="form-control", form="save") }}</div>
+<div style="display:none;">{{ field(class_="form-control", form="save") }}
+</div>
 {% endif %}
 {% endfor %}
 
-
-
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.d.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.d.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('How many dimensions do you want to embed'+
+      ' in? Do you think two dimensions (like an image) are important '+
+      'or do you think more are important?\n\nThis works best for viewing'+
+      ' with dimension=2.')">?</button>
+  </label>
       <div class="col-sm-8">
 	{{ form.d(class_="form-control", form="save") }}
         {% for error in form.d.errors %}
@@ -27,7 +33,11 @@
 
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Check with Lalit before making any big statements here')">?</button>
+  </label>
       <div class="col-sm-8">
 	{{ form.failure_probability(class_="form-control", form="save") }}
         {% for error in form.failure_probability.errors %}
@@ -70,7 +80,7 @@
 				   name:'params-alg_rows-'+index+'-alg_id',
 	    			form:'save',
 	    style:'padding:2px; width:100%; height:100%; margin:0px'
-	    
+
 			       })
 			       .append($('<option>')
 				       .attr({value:"RandomSampling"})
@@ -101,11 +111,15 @@
 )
 		index = index+1;
 		};
-		
+
 </script>
     <!-- table for adding algs -->
     <div class="form-group clearfix">
-      <label class="col-sm-2 text-right clearfix">Algorithm Definition</label>
+      <label class="col-sm-2 text-right clearfix">Algorithm Definition
+      <br>
+      <button type="button" class="btn btn-primary btn-xs"
+          onclick="popup_alert('TODO: tell Lalit to explain what each algorithm means')">?</button>
+      </label>
       <div class="col-sm-8">
 	<table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
 	  <thead>
@@ -117,33 +131,33 @@
 	  <tr>
             <td style="vertical-align:middle">
               Test
-              <input 
-		 class="form-control" 
-		 type="text" 
-		 id="params-alg_rows-0-alg_label" 
-		 name="params-alg_rows-0-alg_label" 
+              <input
+		 class="form-control"
+		 type="text"
+		 id="params-alg_rows-0-alg_label"
+		 name="params-alg_rows-0-alg_label"
 		 form="save"
 		 style="display:none"
 		 value="Test"
 		 >
             </td>
-            <td style="vertical-align:middle"> 
-              Random Sampling 
-              <input 
-		 class="form-control" 
-		 type="text" 
-		 id="params-alg_rows-0-alg_id" 
-		 name="params-alg_rows-0-alg_id" 
+            <td style="vertical-align:middle">
+              Random Sampling
+              <input
+		 class="form-control"
+		 type="text"
+		 id="params-alg_rows-0-alg_id"
+		 name="params-alg_rows-0-alg_id"
 		 form="save"
 		 style="display:none"
 		 value="RandomSampling">
             </td>
-            <td> 
-              <input 
-		 class="form-control" 
-		 type="text" 
-		 id="params-alg_rows-0-alg_proportion" 
-		 name="params-alg_rows-0-alg_proportion" 
+            <td>
+              <input
+		 class="form-control"
+		 type="text"
+		 id="params-alg_rows-0-alg_proportion"
+		 name="params-alg_rows-0-alg_proportion"
 		 form="save"
 		 style="padding:2px; width:100%; height:100%; margin:0px"
 		 value="1.0">
@@ -154,10 +168,10 @@
       <tr>
 	<td style="vertical-align:middle"> {{alg_row.alg_label(form='save')}} </td>
 	<td style="vertical-align:middle"> {{alg_row.alg_id(form='save')}} </td>
-	<td style="vertical-align:middle"> {{alg_row.alg_proportion(form='save')}} </td> 
+	<td style="vertical-align:middle"> {{alg_row.alg_proportion(form='save')}} </td>
       </tr>
       {% endfor %}
-      {% endif %} 
+      {% endif %}
         </table>
 	</div>
 
@@ -175,7 +189,11 @@
 
 <!-- alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}
+      <br>
+      <button type="button" class="btn btn-primary btn-xs"
+          onclick="popup_alert('TODO: ask Lalit what algorithm management is')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
@@ -193,7 +211,11 @@
 
 <!-- participant to alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}
+      <br>
+      <button type="button" class="btn btn-primary btn-xs"
+          onclick="popup_alert('TODO: ask Lalit what participant to algorithm management is')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}

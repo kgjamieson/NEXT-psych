@@ -35,7 +35,11 @@ function toggleFields() {
 </script>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_type.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_type.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Ask Lalit for specific details on what \'context\' means. I think it means will each question display image or text or audio or video?')">?</button>
+  </label>
       <div class="col-sm-8">
   {{ form.context_type(class_="form-control", form="save") }}
         {% for error in form.context_type.errors %}
@@ -45,7 +49,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix" id="context_image">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_image.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_image.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('2015-10-16 Scott Sievert: I could not see this anywhere in my simple test... TODO: I need to ask Lalit to provide more detail. This shows up, at least on the frontend client.')">?</button>
+  </label>
       <div class="col-sm-8">
         {{ form.context_image(class_="form-control", form="save") }}
         {% for error in form.context_image.errors %}
@@ -55,7 +63,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix" id="context_text">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_text.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_text.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TOOD: What does context mean?')">?</button>
+  </label>
       <div class="col-sm-8">
   {{ form.context_text(class_="form-control", form="save") }}
         {% for error in form.context_text.errors %}
@@ -65,7 +77,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: make sure you are not making any big statements about how sure')">?</button>
+  </label>
       <div class="col-sm-8">
 	{{ form.failure_probability(class_="form-control", form="save") }}
         {% for error in form.failure_probability.errors %}
@@ -134,7 +150,11 @@ add_row = function(div_id) {
 
 <!-- table for adding algs -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix">Algorithm Definition</label>
+  <label class="col-sm-2 text-right clearfix">Algorithm Definition
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: What does BR_LilUCB mean? TODO: What does Crowd Kernel mean?')">?</button>
+  </label>
   <div class="col-sm-8">
     <table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
       <thead>
@@ -196,7 +216,11 @@ add_row = function(div_id) {
 
 <!-- alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Remove the dummy text, explain what each option is')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
@@ -214,7 +238,11 @@ add_row = function(div_id) {
 
 <!-- participant to alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: remove the dummy text, explain each option')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}

@@ -22,6 +22,28 @@
 
 {% block body %}
 
+<script>
+popup_alert = function(text){
+    document.getElementById("question-info").innerHTML = '<h4>' + text + '</h4>';
+  $("#info").modal().show()
+};
+</script>
+<!-- Question mark/info Modal -->
+<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="directions" aria-hidden="true" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="question-info" style='text-align:center;'>
+      </div>
+      <center>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
+      </center>
+      <br>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- alert if there are errors -->
 <div class="alert alert-danger alert-dismissable"
       style="text-align:center;width:70%;margin-top:20px;margin-left:auto;margin-right:auto;margin-bottom:-20px;display:none"
@@ -39,7 +61,11 @@
 
 <!-- Project Name Field -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="name">{{ form.name.label }}</label>
+  <label class="col-sm-2 text-right" for="name">{{ form.name.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('This is the main name behind your project')">?</button>
+  </label>
   <div class="col-sm-4">
     {{ form.name(class_="form-control", form="save") }}
     {% for error in form.name.errors %}
@@ -50,7 +76,11 @@
 
 <!-- Project Description -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="description">{{ form.description.label }}</label>
+  <label class="col-sm-2 text-right" for="description">{{ form.description.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('This is the main description of the project')">?</button>
+  </label>
   <div class="col-sm-8">
     {{ form.description(class_="form-control", form="save") }}
     {% for error in form.description.errors %}
@@ -71,7 +101,11 @@
 
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}</label>
+  <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('These are the instructions that appear with every question/query.')">?</button>
+  </label>
   <div class="col-sm-8">
     <div class="instructions-text">
       {{ form.instructions(class_="form-control", form="save") }}
@@ -114,7 +148,11 @@ parse_html = function(text){
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="debrief">{{ form.debrief.label }}</label>
+  <label class="col-sm-2 text-right" for="debrief">{{ form.debrief.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('This is the message the user sees when they are done with the experiment.')">?</button>
+  </label>
   <div class="col-sm-8">
     {{ form.debrief(class_="form-control", form="save") }}
     {% for error in form.debrief.errors %}
@@ -134,7 +172,12 @@ parse_html = function(text){
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="instructions">{{ form.target_set.label }}</label>
+  <label class="col-sm-2 text-right" for="instructions">{{ form.target_set.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('This is the dataset that where the data from each question ' +
+      'will be drawn from. This can be uploaded with the \'Manage Targets\' tab.')">?</button>
+  </label>
   <div class="col-sm-8">
     {{ form.target_set(class_="form-control", form="save") }}
     {% for error in form.target_set.errors %}
@@ -150,7 +193,12 @@ parse_html = function(text){
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="instructions">{{ form.query_tries.label }}</label>
+  <label class="col-sm-2 text-right" for="instructions">{{ form.query_tries.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('This is the number of questions that will be asked each participant.')">?</button>
+  </label>
+  </label>
   <div class="col-sm-8">
     {{ form.query_tries(class_="form-control", form="save") }}
     {% for error in form.query_tries.errors %}
@@ -160,7 +208,13 @@ parse_html = function(text){
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="instructions">{{ form.query_duration.label }}</label>
+  <label class="col-sm-2 text-right" for="instructions">{{ form.query_duration.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: clarify this. On 2015-10-16, Scott Sievert believes that '+
+      'this parameter does not matter and is never looked at; I changed it to 1min and saw '+
+      'no change.')">?</button>
+  </label>
   <div class="col-sm-8">
     {{ form.query_duration(class_="form-control", form="save") }}
     {% for error in form.query_duration.errors %}

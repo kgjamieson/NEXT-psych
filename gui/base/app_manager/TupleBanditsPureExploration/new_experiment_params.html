@@ -15,7 +15,7 @@
 
 <script>
 $(document).ready(function () {
-  toggleFields(); 
+  toggleFields();
 
   $("#params-context_type").change(function () {
       toggleFields();
@@ -35,7 +35,11 @@ function toggleFields() {
 </script>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_type.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_type.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Ask Lalit about this context type')">?</button>
+  </label>
       <div class="col-sm-8">
   {{ form.context_type(class_="form-control", form="save") }}
         {% for error in form.context_type.errors %}
@@ -45,7 +49,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix" id="context_image">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_image.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_image.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Ask Lalit what this context image is')">?</button>
+  </label>
       <div class="col-sm-8">
         {{ form.context_image(class_="form-control", form="save") }}
         {% for error in form.context_image.errors %}
@@ -55,7 +63,12 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix" id="context_text">
-  <label class="col-sm-2 text-right" for="params">{{ form.context_text.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.context_text.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Ask what context text is')">?</button>
+  </label>
+  </label>
       <div class="col-sm-8">
   {{ form.context_text(class_="form-control", form="save") }}
         {% for error in form.context_text.errors %}
@@ -65,7 +78,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.k.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.k.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('When presented with a question, how many choices will the user have?')">?</button>
+  </label>
       <div class="col-sm-8">
   {{ form.k(class_="form-control", form="save") }}
         {% for error in form.k.errors %}
@@ -75,7 +92,11 @@ function toggleFields() {
 </div>
 
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}</label>
+  <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: Ask Lalit about what failure probability really means')">?</button>
+  </label>
       <div class="col-sm-8">
 	{{ form.failure_probability(class_="form-control", form="save") }}
         {% for error in form.failure_probability.errors %}
@@ -140,7 +161,11 @@ add_row = function(div_id) {
 
 <!-- table for adding algs -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix">Algorithm Definition</label>
+  <label class="col-sm-2 text-right clearfix">Algorithm Definition
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: What does random sampling here mean?')">?</button>
+  </label>
   <div class="col-sm-8">
     <table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
       <thead>
@@ -151,34 +176,34 @@ add_row = function(div_id) {
       <tr>
         <td style="vertical-align:middle">
           Test
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_label" 
-            name="params-alg_rows-0-alg_label" 
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_label"
+            name="params-alg_rows-0-alg_label"
             form="save"
             style="display:none"
             value="Test"
           >
         </td>
-        <td style="vertical-align:middle"> 
-          RandomSampling 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_id" 
-            name="params-alg_rows-0-alg_id" 
+        <td style="vertical-align:middle">
+          RandomSampling
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_id"
+            name="params-alg_rows-0-alg_id"
             form="save"
             style="display:none"
             value="RandomSampling"
           >
         </td>
-        <td> 
-          <input 
-            class="form-control" 
-            type="text" 
-            id="params-alg_rows-0-alg_proportion" 
-            name="params-alg_rows-0-alg_proportion" 
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            id="params-alg_rows-0-alg_proportion"
+            name="params-alg_rows-0-alg_proportion"
             form="save"
             style="padding:2px; width:100%; height:100%; margin:0px"
             value="1.0"
@@ -202,11 +227,15 @@ add_row = function(div_id) {
 
 <!-- alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: What does alg management mean?')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
         dummy text explaining the above option
       </div>
@@ -220,11 +249,15 @@ add_row = function(div_id) {
 
 <!-- participant to alg management -->
 <div class="form-group clearfix">
-  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}</label>
+  <label class="col-sm-2 text-right clearfix" for="params">{{ form.participant_to_algorithm_management.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+      onclick="popup_alert('TODO: What is participant to alg management?')">?</button>
+  </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.participant_to_algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
-      {{ subfield.label(style="font-weight:500; margin:2px;") }} 
+      {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
         dummy text explaining the above option
       </div>
@@ -233,5 +266,5 @@ add_row = function(div_id) {
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </div>
-  <br>      
+  <br>
 </div>
