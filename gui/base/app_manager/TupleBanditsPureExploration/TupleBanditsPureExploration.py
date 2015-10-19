@@ -112,6 +112,13 @@ class TupleBanditsPureExploration(AppResourcePrototype):
         participant_responses = []
         participant_responses.append(",".join(["Participant Id", "Timestamp","Left","Right","Answer","Alg Label"]))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
+            # I believe this line is needed to get rid of the underscore
+            # The underscore issue is described in GitHub issue #15
+            # I did not include this line because I can not test it
+            # For more detail, see the GitHub issue
+            # --Scott Sievert, 2015-10-18
+            #exp_uid, participant_id = participant_id.split('_')
+
             for response in response_list:
                 line = [participant_id, response['timestamp_query_generated']]
                 targets = {}

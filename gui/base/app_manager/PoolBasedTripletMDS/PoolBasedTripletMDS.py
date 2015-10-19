@@ -88,6 +88,8 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         participant_responses = []
         participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label"]))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
+            exp_uid, participant_id = participant_id.split('_')
+
             for response in response_list:
                 line = [participant_id, response['timestamp_query_generated']]
                 targets = {}
