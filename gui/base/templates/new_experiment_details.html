@@ -28,6 +28,7 @@ popup_alert = function(text){
   $("#info").modal().show()
 };
 </script>
+
 <!-- Question mark/info Modal -->
 <div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
   <div class="modal-dialog modal-lg">
@@ -62,7 +63,7 @@ popup_alert = function(text){
   <label class="col-sm-2 text-right" for="name">{{ form.name.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('This is the main name behind your project')">?</button>
+      onclick="popup_alert('This is the main name behind your project. This is visible only to this web interface and is not visible in the URL of the query page.')">?</button>
   </label>
   <div class="col-sm-4">
     {{ form.name(class_="form-control", form="save") }}
@@ -77,7 +78,7 @@ popup_alert = function(text){
   <label class="col-sm-2 text-right" for="description">{{ form.description.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('This is the main description of the project')">?</button>
+      onclick="popup_alert('This is the main description of the project. This is visible only to this web interface and is not visible in the URL of the query page.')">?</button>
   </label>
   <div class="col-sm-8">
     {{ form.description(class_="form-control", form="save") }}
@@ -102,7 +103,7 @@ popup_alert = function(text){
   <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('These are the instructions that appear with every question/query.')">?</button>
+                        onclick="popup_alert('These are the instructions that appear with every question/query. By default, they appear at the top of each question. They can also be changed to a popup, as described on the GitHub wiki on the page <a href=\'https://github.com/kgjamieson/NEXT-psych/wiki/Customization\'>Customization</a>')">?</button>
   </label>
   <div class="col-sm-8">
     <div class="instructions-text">
@@ -147,7 +148,7 @@ parse_html = function(text){
   <label class="col-sm-2 text-right" for="debrief">{{ form.debrief.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('This is the message the user sees when they are done with the experiment.')">?</button>
+      onclick="popup_alert('This is the message the user sees when they are done answering questions. The number of questions to be answered can be specified below.')">?</button>
   </label>
   <div class="col-sm-8">
     {{ form.debrief(class_="form-control", form="save") }}
@@ -172,7 +173,7 @@ parse_html = function(text){
   <br>
   <button type="button" class="btn btn-primary btn-xs"
       onclick="popup_alert('This is the dataset that where the data from each question ' +
-      'will be drawn from. This can be uploaded with the \'Manage Targets\' tab.')">?</button>
+      'will be drawn from. This can be uploaded with the \'Manage Targets\' tab. \nNote: this can take a fair amount of time when uploading images or videos. It takes a while, but wait for the page to load.')">?</button>
   </label>
   <div class="col-sm-8">
     {{ form.target_set(class_="form-control", form="save") }}
