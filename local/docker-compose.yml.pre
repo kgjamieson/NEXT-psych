@@ -124,3 +124,26 @@ rabbitmqmonitor:
 ###########################
 
 
+######### GUI #########
+nextfrontenddocker:
+  build: gui
+  command: gunicorn --worker-class=gevent -R --log-level=debug --logger-class=simple --reload -b 0.0.0.0:8000 -w 
+{{NEXT_FRONTEND_NUM_GUNICORN_WORKERS}}  gui.next_frontend_run:app
+  volumes:
+   - {{NEXT_DIR}}:/next_frontend
+  ports:
+    - "0.0.0.0:8192:8000"
+  links:
+    - mongodb:MONGODB
+  environment:
+   - PYTHONUNBUFFERED=TRUE
+   - PYTHONPATH=:/next_frontend/gui
+   - NEXT_BACKEND_GLOBAL_HOST
+   - NEXT_BACKEND_GLOBAL_PORT
+   - NEXT_FRONTEND_GLOBAL_HOST
+   - NEXT_FRONTEND_GLOBAL_PORT
+   - AWS_ACCESS_ID
+   - AWS_SECRET_ACCESS_KEY
+   - AWS_BUCKET_NAME
+###########################
+
