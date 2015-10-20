@@ -126,13 +126,12 @@ rabbitmqmonitor:
 
 ######### GUI #########
 nextfrontenddocker:
-  build: gui
-  command: gunicorn --worker-class=gevent -R --log-level=debug --logger-class=simple --reload -b 0.0.0.0:8000 -w 
-{{NEXT_FRONTEND_NUM_GUNICORN_WORKERS}}  gui.next_frontend_run:app
+  build: {{NEXT_DIR}}/gui
+  command: gunicorn --worker-class=gevent -R --log-level=debug --logger-class=simple --reload -b 0.0.0.0:8000 -w 1 gui.next_frontend_run:app
   volumes:
    - {{NEXT_DIR}}:/next_frontend
   ports:
-    - "0.0.0.0:8192:8000"
+    - "0.0.0.0:80:8000"
   links:
     - mongodb:MONGODB
   environment:
