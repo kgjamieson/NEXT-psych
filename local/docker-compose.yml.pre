@@ -131,7 +131,7 @@ nextfrontenddocker:
   volumes:
    - {{NEXT_DIR}}:/next_frontend
   ports:
-    - "0.0.0.0:80:8000"
+    - "0.0.0.0:8192:8000"
   links:
     - mongodb:MONGODB
   environment:
