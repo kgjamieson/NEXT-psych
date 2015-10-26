@@ -5,35 +5,30 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, RadioField, FieldList, IntegerField, FormField, validators
 
-
+import base
 from base import cache
 from base.forms import LoginForm, NewExperimentForm, NewProjectForm
 from base.models import User, Experiment
 from base.current import *
-from base.settings import Config
 from base.app_manager import app_manager
 
 experiment = Blueprint('experiment', __name__)
-config = Config()
+config = base.config
 
 @experiment.route('/<experiment_id>')
 @login_required
 @project_required
 def _experiment(experiment_id):
     set_experiment(experiment_id=experiment_id)
-
     # Frontend base url needed for stats and widgets
     next_backend_url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT
-
+    print 'Global Port', config.NEXT_BACKEND_GLOBAL_PORT
     # Frontend url needed for queries
     next_frontend_url = "http://"+config.NEXT_FRONTEND_GLOBAL_HOST+":"+config.NEXT_FRONTEND_GLOBAL_PORT
-
     # query the app_manager for app specific params
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
-
     # This is an html string containing the necessary app dashboard.
     app_dashboard_html = app_resource.get_experiment_dashboard(current_experiment)
-
     return render_template('experiment.html', experiment_id=experiment_id,
                                             next_backend_url=next_backend_url,
                                             next_frontend_url=next_frontend_url,
@@ -142,7 +137,7 @@ def run_experiment(experiment_id):
         return redirect(url_for('experiment._experiment', experiment_id = current_experiment.id))
 
     # Get the experiment info and store it in our current model
-    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/experiment"
+    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
     response = requests.get(url+"/"+current_experiment.exp_uid+"/"+current_experiment.exp_key)
     current_experiment.set_info(eval(response.text))
 
@@ -153,7 +148,7 @@ def run_experiment(experiment_id):
     create_target_mapping_dict['exp_key'] = current_experiment.exp_key
     # Do this more cleanly. The problem is that mongoengine fields can't be json serialized.
     create_target_mapping_dict['target_blob'] = [mongo_to_dict(doc) for doc in current_experiment.target_set.targets]
-    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/targets/createtargetmapping"
+    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"
     response = requests.post(url,
                              json.dumps(create_target_mapping_dict),
                              headers={'content-type':'application/json'})
@@ -169,8 +164,8 @@ def run_experiment(experiment_id):
 def get_temp_keys():
     n = int(request.args.get("keys_count",0))
     # Use local links to to local request
-    # url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/widgets/temp-widget-keys"
-    url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/temp-widget-keys"
+    # url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/widgets/temp-widget-keys"
+    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
     args = {
         'exp_uid':current_experiment.exp_uid,
         'exp_key':current_experiment.exp_key,

@@ -5,9 +5,9 @@ import copy
 from base.models import Experiment
 from flask import render_template
 
-from base.settings import Config
+import base
 from base.app_manager.app_resource_prototype import AppResourcePrototype
-config = Config()
+config = base.config
 
 TEMPLATES_DIRECTORY = os.path.dirname(__file__)
 loader = FileSystemLoader(TEMPLATES_DIRECTORY)
@@ -73,7 +73,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         Return formatted participant logs that are app specific.
         """
         # Use frontend base local url
-        url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
+        url = "http://"+config.NEXT_BACKEND_GLOBALHOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
 
         # Make a request to next_backend for the responses
         try:
@@ -149,7 +149,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
 
         # Make request  for initExp
         try:
-            url = "http://"+config.NEXT_BACKEND_HOST+":"+config.NEXT_BACKEND_PORT+"/api/experiment"
+            url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
             response = requests.post(url,
                                      json.dumps(initExp_dict),
                                      headers={'content-type':'application/json'})

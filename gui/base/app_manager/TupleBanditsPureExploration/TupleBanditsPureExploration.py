@@ -2,7 +2,7 @@ import csv, json, os, requests, sys
 from wtforms import Form, FieldList, FloatField, FormField, TextField, IntegerField,  SelectField, validators, RadioField, FileField
 from jinja2 import Environment, FileSystemLoader
 import copy
-from base.settings import Config
+import base
 from base.app_manager.app_resource_prototype import AppResourcePrototype
 from flask import render_template
 from base.current import *
@@ -14,7 +14,7 @@ from boto.s3.key import Key
 from StringIO import StringIO
 import random, string
 
-config = Config()
+config = base.config
 TEMPLATES_DIRECTORY = os.path.dirname(__file__)
 loader = FileSystemLoader(TEMPLATES_DIRECTORY)
 env = Environment(loader=loader)

@@ -10,7 +10,9 @@ config = Config()
 def home():
     print "config.AUTHENTICATE {}".format(config.AUTHENTICATE)
     if config.AUTHENTICATE:
-        return render_template('index.html', login_form=LoginForm(), create_form=CreateAccountForm())
+        return render_template('index.html',
+                               login_form=LoginForm(),
+                               create_form=CreateAccountForm())
     else:
         email = 'default'
         password = 'password'
@@ -35,7 +37,9 @@ def login():
             flash("Login failed.", "login_error")
             # login is not valid
             return redirect('#create')
-    return render_template('index.html', login_form=login_form, create_form=CreateAccountForm())
+    return render_template('index.html',
+                           login_form=login_form,
+                           create_form=CreateAccountForm())
     
 
 @main.route('/create', methods=["GET", "POST"])

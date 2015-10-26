@@ -13,6 +13,17 @@ from wtforms import (TextField,
                      validators)
 from bson.objectid import ObjectId
 
+class SecretForm(Form):
+    access_key_id = TextField('Access Key ID',
+                              validators = [validators.required()])
+    secret_access_key = TextField('Secret Access Key',
+                                  validators = [validators.required()])
+    bucket_name = TextField('Bucket',
+                            validators = [validators.required()])
+    next_backend_global_host = TextField('Next Backend Host',
+                            validators = [validators.required()])
+
+
 class CreateAccountForm(Form):
     new_email = TextField('Email', validators=[validators.required()])
     new_password = PasswordField('Password', validators=[validators.required()])

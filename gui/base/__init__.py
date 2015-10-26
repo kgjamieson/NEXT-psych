@@ -10,9 +10,8 @@ from flask.ext.mongoengine import MongoEngine
 from webassets.loaders import PythonLoader as PythonAssetsLoader
 
 from base import assets
-import mongoengine
-
 from base.settings import Config
+
 config = Config()
 
 # Setup flask cache
@@ -27,7 +26,6 @@ debug_toolbar = DebugToolbarExtension()
 # Initialize Flask Login login manager
 login_manager = LoginManager()
 login_manager.login_view = "main.home"
-
 
 # Initialize mongoengine db
 db = MongoEngine()
@@ -94,8 +92,9 @@ def create_app(object_name, env="prod"):
         account_settings,
         project,
         experiment,
-        targets
-        )
+        targets,
+        setup
+    )
     
     app.register_blueprint(main)
     app.register_blueprint(error,url_prefix="/error")
@@ -106,6 +105,7 @@ def create_app(object_name, env="prod"):
     app.register_blueprint(project,url_prefix="/project")
     app.register_blueprint(experiment,url_prefix="/experiment")
     app.register_blueprint(targets,url_prefix="/targets")
+    app.register_blueprint(setup,url_prefix="/setup")
 
     return app
 

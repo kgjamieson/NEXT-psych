@@ -23,17 +23,15 @@ class Config(object):
     AWS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', None)
     AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME','next.discovery')
 
-    # Local docker frontend base links (This is not set, therefor always is localhost, which is fine)
-    NEXT_BACKEND_HOST = os.environ.get("NEXT_BACKEND_GLOBAL_HOST", 'localhost')
-    NEXT_BACKEND_PORT = os.environ.get("NEXT_BACKEND_GLOBAL_PORT", "8000")
-    
     # Global frontend base links. Used for widgets and stats calls.
-    NEXT_BACKEND_GLOBAL_HOST = os.environ.get("NEXT_BACKEND_GLOBAL_HOST", 'localhost')
-    NEXT_BACKEND_GLOBAL_PORT = os.environ.get("NEXT_BACKEND_GLOBAL_PORT", "8000")
+    NEXT_BACKEND_GLOBAL_HOST = os.environ.get('NEXT_BACKEND_GLOBAL_HOST',
+                                              None)
+    NEXT_BACKEND_GLOBAL_PORT = '8000'
 
     # Global frontend links. Used for widgets and stats calls.
-    NEXT_FRONTEND_GLOBAL_HOST = os.environ.get("NEXT_FRONTEND_GLOBAL_HOST", 'localhost')
-    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get("NEXT_FRONTEND_GLOBAL_PORT", '80')
+    NEXT_FRONTEND_GLOBAL_HOST = os.environ.get('NEXT_FRONTEND_GLOBAL_HOST',
+                                               None)
+    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get('NEXT_FRONTEND_GLOBAL_PORT','80')
 
     # Site ID and Key for Next Frontend Base.
     SITE_ID = '99eb2f19d5a303acc8fa1a6e9e05cd'

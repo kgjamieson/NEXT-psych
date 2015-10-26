@@ -7,3 +7,4 @@ from account_settings import account_settings
 from experiment import experiment
 from project import project
 from targets import targets
+from setup import setup

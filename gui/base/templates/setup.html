@@ -1,0 +1,85 @@
+{% extends "outline.html" %}
+
+{%block style_include %}
+<link rel="stylesheet" type="text/css" href="/static/css/datatable.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/datatable-bootstrap.min.css"/>
+
+{%endblock %}
+
+{%block script_include %}
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+{%endblock %}
+
+{% block title %} Account Settings {% endblock %}
+
+{% block body %}
+<h1 class="page-header">Account Settings</h1>
+
+<form class="form-horizontal" method="post">
+  {{ form.hidden_tag() }}
+  <fieldset>
+
+    <!-- access_key_id Field -->
+    <div class="form-group">
+      <label class="col-sm-2 text-right" for="name">{{ form.access_key_id.label }}</label>
+      <div class="col-sm-4">
+        {{ form.access_key_id(class_="form-control") }}
+        {% for error in form.access_key_id.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+      </div>
+    </div>
+
+    <!-- secret_access_key Field -->
+    <div class="form-group">
+      <label class="col-sm-2 text-right" for="name">{{ form.secret_access_key.label }}</label>
+      <div class="col-sm-4">
+        {{ form.secret_access_key(class_="form-control") }}
+        {% for error in form.secret_access_key.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+      </div>
+    </div>
+
+
+    <!-- bucket_name Field -->
+    <div class="form-group">
+      <label class="col-sm-2 text-right" for="name">{{ form.bucket_name.label }}</label>
+      <div class="col-sm-4">
+        {{ form.bucket_name(class_="form-control") }}
+        {% for error in form.bucket_name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+      </div>
+    </div>
+
+    <!-- next_backend_global_host Field -->
+    <div class="form-group">
+      <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }}</label>
+      <div class="col-sm-4">
+        {{ form.next_backend_global_host(class_="form-control") }}
+        {% for error in form.next_backend_global_host.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+      </div>
+    </div>
+
+
+
+    
+    {% for message in get_flashed_messages() %}
+    <div class="form-group">{{ message }}</div>
+    {% endfor %}
+    
+    <!-- Submit button -->
+    <h2>
+      <div class="col-sm-offset-5">
+        <button type="submit" class="btn btn-primary"> Set Data</button>
+      </div>
+    </h2>
+  
+  </fieldset>
+</form>
+
+ 
+{% endblock %}  
