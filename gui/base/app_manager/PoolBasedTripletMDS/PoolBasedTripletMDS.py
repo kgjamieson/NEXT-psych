@@ -73,7 +73,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         Return formatted participant logs that are app specific.
         """
         # Use frontend base local url
-        url = "http://"+config.NEXT_BACKEND_GLOBALHOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
+        url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
 
         # Make a request to next_backend for the responses
         try:
