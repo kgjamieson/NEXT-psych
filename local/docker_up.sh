@@ -11,8 +11,8 @@ export AWS_BUCKET_NAME=next-database-backups
 export ACTIVE_MASTER=$HOST
 export SLAVE_LIST=
 export NEXT_BACKEND_GLOBAL_HOST=$HOST
-
-
+export GUNICORN_WORKERS=$(python -c "print(int(0.15*$(nproc)+1))")
+echo $GUNICORN_WORKERS;
 # this comes 
 	# http://www.speedguide.net/articles/linux-tweaking-121
 	# from https://code.google.com/p/lusca-cache/issues/detail?id=89#c4
@@ -43,6 +43,7 @@ fi
 
 cp -f docker-compose.yml.pre docker-compose.yml
 sed -i 's|{{NEXT_DIR}}|'"$dir"'|g' docker-compose.yml
+sed -i 's|{{GUNICORN_WORKERS}}|'"$GUNICORN_WORKERS"'|g' docker-compose.yml
 
 docker-compose stop
 
