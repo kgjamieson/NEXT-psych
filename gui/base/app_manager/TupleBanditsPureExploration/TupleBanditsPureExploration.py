@@ -112,29 +112,30 @@ class TupleBanditsPureExploration(AppResourcePrototype):
         participant_responses = []
         participant_responses.append(",".join(["Participant Id", "Timestamp","Left","Right","Answer","Alg Label"]))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
-            # I believe this line is needed to get rid of the underscore
-            # The underscore issue is described in GitHub issue #15
-            # I did not include this line because I can not test it
-            # For more detail, see the GitHub issue
-            # --Scott Sievert, 2015-10-18
-            #exp_uid, participant_id = participant_id.split('_')
+            exp_uid, participant_id = participant_id.split('_')
 
             for response in response_list:
                 line = [participant_id, response['timestamp_query_generated']]
                 targets = {}
+                target_winner = None
                 for index in response['target_indices']:
                     targets[index['label']] = index
                     # Check for the index winner in this response
                     # Shouldn't there be a target_winner? This is weird.
                     if 'index_winner' in response.keys() and response["index_winner"] == index['index']:
                             target_winner = index
-                # Append the left and right targets
-                line.extend([targets['left']['target']['target_id'], targets['right']['target']['target_id']])
-                # Append the index winner
-                line.append(target_winner['target']['target_id'])
-                # Append the alg_label
-                line.append(response['alg_label'])
-                participant_responses.append(",".join(line))
+
+                # Some questions may not get answered; this makes sure that
+                # we're looking at an answered question (GitHub issue #15)
+                # --Scott Sievert, 2015-10-28
+                if target_winner:
+                    # Append the left and right targets
+                    line.extend([targets['left']['target']['target_id'], targets['right']['target']['target_id']])
+                    # Append the index winner
+                    line.append(target_winner['target']['target_id'])
+                    # Append the alg_label
+                    line.append(response['alg_label'])
+                    participant_responses.append(",".join(line))
 
         return participant_responses
 
