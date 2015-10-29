@@ -31,7 +31,8 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         """
         Return a form and a template with specific params for the new experiment form.
         """
-        alg_list = ['BR_LilUCB']
+        alg_list = ['BR_LilUCB','BR_Random','BR_SuccElim','BeatTheMean','BR_Thompson']
+
         # Alg row: follow this post: http://stackoverflow.com/questions/11402627/how-to-get-a-build-a-form-with-repeated-elements-well
         class AlgorithmDefinitionRowForm(Form):
             alg_label = TextField('Algorithm Label')

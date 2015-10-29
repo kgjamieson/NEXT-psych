@@ -113,6 +113,8 @@ add_row = function(div_id) {
 
 		      )
                // add second cell (alg_id)
+    // return ['BR_LilUCB','BR_Random','BR_SuccElim','BeatTheMean','BR_Thompson']
+
                .append($('<td>')
 		       .append($('<select>')
 			       .attr({
@@ -122,12 +124,18 @@ add_row = function(div_id) {
 				   form:'save',
 				   style:'padding:2px; width:100%; height:100%; margin:0px'
 			       })
-			       .append($('<option>')
-				       .attr({value:"RandomSampling"})
-				       .html('Random Sampling'))
-			       .append($('<option>')
-				       .attr({value:"UncertaintySampling"})
-				       .html('Uncertainty Sampling'))
+			        .append($('<option>')
+				        .attr({value:'BR_Random'})
+				        .html('BR Random'))
+			        .append($('<option>')
+				        .attr({value:'BR_SuccElim'})
+				        .html('BR Successive Elimination'))
+			        .append($('<option>')
+				        .attr({value:'BeatTheMean'})
+				        .html('Beat the Mean'))
+			        .append($('<option>')
+				        .attr({value:'BR_Thompson'})
+				        .html('BR Thompson'))
 			      )
 		      )
                // add third cell (alg_proportion)

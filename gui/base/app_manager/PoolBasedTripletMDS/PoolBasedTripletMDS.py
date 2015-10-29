@@ -26,7 +26,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         """
         Return a form with specific params for the new experiment form.
         """
-        alg_list = ['RandomSampling', 'UncertaintySampling','CrowdKernel']
+        alg_list = ['RandomSampling', 'UncertaintySampling','CrowdKernel', 'STE']
         # Alg row: follow this post: http://stackoverflow.com/questions/11402627/how-to-get-a-build-a-form-with-repeated-elements-well
         class AlgorithmDefinitionRowForm(Form):
             alg_label = TextField('Algorithm Label')
