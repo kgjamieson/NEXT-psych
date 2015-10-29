@@ -35,6 +35,14 @@
     {% endif %}
 </div> -->
 
+<!--Let people know you can only edit name/description when the experiment is running-->
+{% if current_experiment.status == 'running' %}
+<br><br>
+<div class="alert alert-info" role="alert">
+    This experiment is already running, which means that only the experiment name and description can be edited.
+</div>
+{% endif %}
+
 <h2 class="page-header">Edit Experiment Details</h2>
 <div class="description">
   <p>Give your experiment a name and a short description.</p>
