@@ -90,9 +90,14 @@ function toggleFields() {
       </div>
 </div>
 
-    <script>
-    index = 1;
-add_row = function(div_id) {
+<script>
+  {% if form.alg_rows|length >0 %}
+  index = {{form.alg_rows|length}};
+  {% else %}
+  index = 1;
+  {% endif %}
+
+    add_row = function(div_id) {
     console.log ( 'In add_row function' );
     // get last row
     $('#algs tr:last')
@@ -113,7 +118,6 @@ add_row = function(div_id) {
 
 		      )
                // add second cell (alg_id)
-    // return ['BR_LilUCB','BR_Random','BR_SuccElim','BeatTheMean','BR_Thompson']
 
                .append($('<td>')
 		       .append($('<select>')
@@ -170,6 +174,7 @@ add_row = function(div_id) {
         <th> Algorithm Id </th>
         <th> Proportion </th>
       </thead>
+      {% if form.alg_rows|length == 0 %}
       <tr>
         <td style="vertical-align:middle">
           Test
@@ -207,6 +212,16 @@ add_row = function(div_id) {
           >
         </td>
       </tr>
+      {% else %}
+      {% for alg_row in form.alg_rows %}
+      <tr>
+	<td style="vertical-align:middle"> {{alg_row.alg_label(form='save')}} </td>
+	<td style="vertical-align:middle"> {{alg_row.alg_id(form='save')}} </td>
+	<td style="vertical-align:middle"> {{alg_row.alg_proportion(form='save')}} </td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+
     </table>
   </div>
 
