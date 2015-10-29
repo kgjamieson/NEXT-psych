@@ -38,7 +38,7 @@ function toggleFields() {
   <label class="col-sm-2 text-right" for="params">{{ form.context_type.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('TODO: Ask Lalit for specific details on what \'context\' means. I think it means will each question display image or text or audio or video?')">?</button>
+      onclick="popup_alert('The context appears above every query (e.g., a static comic when finding funniest caption). Will that context be a text or an image?')">?</button>
   </label>
       <div class="col-sm-8">
   {{ form.context_type(class_="form-control", form="save") }}
@@ -52,7 +52,7 @@ function toggleFields() {
   <label class="col-sm-2 text-right" for="params">{{ form.context_image.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('2015-10-16 Scott Sievert: I could not see this anywhere in my simple test... TODO: I need to ask Lalit to provide more detail. This shows up, at least on the frontend client.')">?</button>
+      onclick="popup_alert('The context that the user will see every query. e.g., if the instructions are \'Choose the funniest algorithm for the following comic\' the context image would be the comic.')">?</button>
   </label>
       <div class="col-sm-8">
         {{ form.context_image(class_="form-control", form="save") }}
@@ -165,7 +165,12 @@ function toggleFields() {
   <label class="col-sm-2 text-right clearfix">Algorithm Definition
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('TODO: What does BR_LilUCB mean? TODO: What does Crowd Kernel mean?')">?</button>
+                        onclick="popup_alert('<h5 style=\'text-align: left;\'>'+'BR_LilUCB implements the lilUCB algorithm described in Jamieson, Malloy, Nowak, Bubeck, <a href=\'http://arxiv.org/abs/1312.7308\'>\'lil\' UCB : An Optimal Exploration Algorithm for Multi-Armed Bandits</a>,\' COLT 2014 using the Borda reduction described in detail in Jamieson et al <a href=\'http://arxiv.org/abs/1502.00133\'>\'Sparse Dueling Bandits,\'</a> AISTATS 2015.'+
+                        '<br><br>We encourage use of BR_LilUCB<br><br>' +
+                        '<ul><li>BR_Random implements random sampling  using the Borda reduction described in detail in Jamieson et al \'Sparse Dueling Bandits,\' AISTATS 2015.</li>'+
+                        '<li>BR_LilUCB implements the lilUCB algorithm described in Jamieson, Malloy, Nowak, Bubeck, \'lil\' UCB : <a href=\'http://arxiv.org/abs/1312.7308\'>An Optimal Exploration Algorithm for Multi-Armed Bandits</a>,\' COLT 2014 using the Borda reduction described in detail in Jamieson et al \'Sparse Dueling Bandits,\' AISTATS 2015.</li> ' +
+                        '<li>BR_Thompson implements the Thompson Sampling algorithm described in Chapelle and Li <a href=\'http://papers.nips.cc/paper/4321-an-empirical-evaluation-of-thompson-sampling\'>\'An Empirical Evaluation of Thompson Sampling</a>,\' NIPS 2012 using the Borda reduction described in detail in Jamieson et al \'Sparse Dueling Bandits,\' AISTATS 2015.</li>' +
+                        '<li>Beat The Mean described in Yue and Joachims <a href=\'http://machinelearning.wustl.edu/mlpapers/paper_files/ICML2011Yue_200.pdf\'>Beat the Mean Bandit</a></li></ul>'+'</h5>')">?</button>
   </label>
   <div class="col-sm-8">
     <table class="table table-bordered left" id="algs" style="margin-bottom:-1px">
