@@ -66,7 +66,7 @@ function toggleFields() {
   <label class="col-sm-2 text-right" for="params">{{ form.context_text.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('TOOD: What does context mean?')">?</button>
+      onclick="popup_alert('The context that the user will see every query. e.g., if the instructions are \'Choose the funniest algorithm for the following comic\' the context image would be the comic.')">?</button>
   </label>
       <div class="col-sm-8">
   {{ form.context_text(class_="form-control", form="save") }}
