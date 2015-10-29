@@ -170,15 +170,35 @@ $(document).ready( function() {
   {% endif %}
   {% endwith %}
 
+  <script>
+    loading = function(){
+        console.log('please wait!');
+        $('#pleaseWaitDialog').modal('show');//.show();
+    };
+  </script>
+  <!-- Waiting for dialog -->
+  <div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="notice" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" id="question-info" style='text-align:center;'>
+        </div>
+        <center>
+            <img src="/static/img/waiting.gif" style="width:300px; height:75;" />
+            <br>
+            Uploading...
+        </center>
+        <br>
+      </div>
+    </div>
+  </div>
   <h2>
     <div class="col-sm-1">
-      <button type="submit" class="btn btn-primary" style="margin-bottom:20px">Upload</button>
+      <input type='submit' onclick="loading();" class="btn btn-primary" style="margin-bottom:20px" value="Upload" />
     </div>
     <div class="clearfix"></div>
   </h2>
 
 </form>
-
 
 <!-- <br/>
 <h4>Externally Hosted</h4>
