@@ -18,8 +18,8 @@ class SecretForm(Form):
                               validators = [validators.required()])
     secret_access_key = TextField('Secret Access Key',
                                   validators = [validators.required()])
-    bucket_name = TextField('Bucket',
-                            validators = [validators.required()])
+    # bucket_name = TextField('Bucket',
+    #                         validators = [validators.required()])
     next_backend_global_host = TextField('Next Backend Host',
                             validators = [validators.required()])
 

@@ -43,7 +43,8 @@ def _setup():
         except e:
             flash("Please check your aws credentials")
             return render_template('setup.html', form = SecretForm())
+        return redirect(url_for('dashboard._dashboard'))
     return render_template('setup.html', form = form)
     # else:                       
-    #     return redirect(url_for('dashboard._dashboard'))
+    #     
         
