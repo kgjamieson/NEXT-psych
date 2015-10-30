@@ -247,14 +247,14 @@ function toggleFields() {
   <label class="col-sm-2 text-right clearfix" for="params">{{ form.algorithm_management.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('TODO: Remove the dummy text, explain what each option is')">?</button>
+      onclick="popup_alert('Currently NEXT can only assign queries to algorithms in fixed proportions.')">?</button>
   </label>
   <div class="col-sm-8 clearfix">
     {% for subfield in form.algorithm_management %}
       {{ subfield(style="list-style-type:none; margin:2px;", form="save") }}
       {{ subfield.label(style="font-weight:500; margin:2px;") }}
       <div style="padding-left:21px; padding-bottom:10px">
-        dummy text explaining the above option
+          Currently NEXT can only assign queries to algorithms in fixed proportions.
       </div>
     {% endfor %}
     {% for error in form.algorithm_management.errors %}

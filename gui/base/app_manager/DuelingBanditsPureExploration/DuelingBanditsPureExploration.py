@@ -45,10 +45,9 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
             context_text = TextField('Context Text')
             failure_probability = FloatField('Confidence Level', validators=[validators.required()], default=0.95)
             algorithm_management = RadioField('Algorithm Management',
-                                                choices=[('fixed_proportions','Fixed Proportions'),
-                                                        ('pure_exploration','Pure Exploration'),
-                                                        ('explore_exploit','Explore Exploit')],
-                                                default='fixed_proportions')
+                                                choices=[('fixed_proportions','Fixed Proportions')],
+                                                default='fixed_proportions',
+                                                description='Currently NEXT can only assign queries to algorithms in fixed proportions.')
             participant_to_algorithm_management = RadioField('Participant to Algorithm Management',
                                                                 choices=[('one_to_many','One-to-many'),
                                                                           ('one_to_one','One-to-one')],
