@@ -18,8 +18,9 @@ from base import cache
 from base.forms import LoginForm, NewExperimentForm, NewProjectForm
 from base.models import User
 from base.current import *
+import base.settings
 
-config = base.config
+config = base.settings.Config()
 dashboard = Blueprint('dashboard', __name__)
 
 @dashboard.route('/')

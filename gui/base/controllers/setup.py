@@ -1,3 +1,4 @@
+import os
 import random
 
 import boto
@@ -22,9 +23,12 @@ setup = Blueprint('setup', __name__)
 def _setup():
     form = SecretForm()
     if form.validate_on_submit():
-        config.AWS_ID = form.access_key_id.data
-        config.AWS_KEY = form.secret_access_key.data
-        config.NEXT_BACKEND_GLOBAL_HOST = form.next_backend_global_host.data            
+        #config.AWS_ID = form.access_key_id.data
+        os.environ['AWS_ACCESS_ID'] = form.access_key_id.data
+        #config.AWS_KEY = form.secret_access_key.data
+        os.environ['AWS_SECRET_ACCESS_KEY'] = form.secret_access_key.data
+        #config.NEXT_BACKEND_GLOBAL_HOST = form.next_backend_global_host.data
+        os.environ['NEXT_BACKEND_GLOBAL_HOST'] = form.next_backend_global_host
         gotbucket = False
         try:
             conn = boto.connect_s3(config.AWS_ID, config.AWS_KEY )
@@ -35,7 +39,8 @@ def _setup():
                     gotbucket = True
                 except boto.exception.S3CreateError, e:
                     pass
-            config.AWS_BUCKET_NAME = bucket_uid
+            os.environ['AWS_BUCKET_NAME'] = form.next_backend_global_host
+            #config.AWS_BUCKET_NAME = bucket_uid
         except e:
             flash("Please check your aws credentials")
             return render_template('setup.html', form = SecretForm())
