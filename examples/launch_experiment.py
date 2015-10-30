@@ -120,7 +120,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
                 targets.append(target)
     return {'target_blob' : targets}
 
-def get_AWS_bucket(AWS_BUCKET_NAME,AWS_ID, AWS_KEY):
+def get_AWS_bucket(AWS_BUCKET_NAME, AWS_ID, AWS_KEY):
     """
     Creates a bucket for an S3 account 
     """

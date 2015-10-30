@@ -45,7 +45,7 @@
                 <ul class="nav navbar-nav">
                     {% if current_user.is_authenticated() %}
                     <li><a href="{{ url_for('main.home') }}">Home</a></li>
-                    <li><a href="{{ url_for('account_settings._account_settings') }}">Settings</a>
+                    <li><a href="{{ url_for('setup._setup') }}">Settings</a>
 		    <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
                     {% endif %}
                 </ul>
