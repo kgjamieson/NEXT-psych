@@ -147,6 +147,7 @@ def run_experiment(experiment_id):
     create_target_mapping_dict['app_id'] = current_experiment.app_id
     create_target_mapping_dict['exp_uid'] = current_experiment.exp_uid
     create_target_mapping_dict['exp_key'] = current_experiment.exp_key
+    
     # Do this more cleanly. The problem is that mongoengine fields can't be json serialized.
     create_target_mapping_dict['target_blob'] = [mongo_to_dict(doc) for doc in current_experiment.target_set.targets]
     url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"

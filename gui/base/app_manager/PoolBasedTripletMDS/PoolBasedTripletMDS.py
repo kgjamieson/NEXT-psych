@@ -110,7 +110,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
 
         return participant_responses
 
-    def run_experiment(self, current_experiment, args=None):
+    def run_experiment(self, current_experiment, url, args=None):
         """
         Run an initExp call on the frontend base level.
         """
@@ -149,7 +149,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
 
         # Make request  for initExp
         try:
-            url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
+            #url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
             response = requests.post(url,
                                      json.dumps(initExp_dict),
                                      headers={'content-type':'application/json'})
