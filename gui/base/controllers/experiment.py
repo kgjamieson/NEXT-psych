@@ -190,7 +190,7 @@ def get_temp_keys():
 @project_required
 @experiment_required
 def get_participant_responses():
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
+    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     participant_responses = app_resource.get_formatted_participant_data(current_experiment, url)
     return "\n".join(participant_responses), 200, {'Content-Disposition':'attachment', 'Content-Type': 'text/csv; charset=utf-8'}
