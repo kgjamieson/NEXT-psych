@@ -34,6 +34,27 @@ $(document).ready( function() {
 
 {% block body %}
 
+<script>
+popup_alert = function(text){
+    document.getElementById("question-info").innerHTML = '<h4>' + text + '</h4>';
+  $("#info").modal().show()
+};
+</script>
+
+<!-- Question mark/info Modal -->
+<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="question-info" style='text-align:center;'>
+      </div>
+      <center>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
+      </center>
+      <br>
+    </div>
+  </div>
+</div>
+
 <h1 class="page-header">Manage Targets</h1>
 
 <!--Print errors out-->
@@ -103,7 +124,10 @@ $(document).ready( function() {
   <!-- Name -->
   <div class="form-group">
     <div class="col-sm-6">
-      <label for="usr">Target Set Name:</label>
+      <label for="usr">Target Set Name
+      &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs"
+                onclick="popup_alert('A name describing this dataset. This will never be visible to the user.')">?</button>
+      </label>
       <input type="text" class="form-control" id="name" name="name">
     </div>
     <div class="clearfix"></div>
@@ -115,7 +139,15 @@ $(document).ready( function() {
     <label> Primary Targets</label>
     <p class="help-block"> Zip or txt file containing targets.</p>
     <div class="col-sm-6">
-      <label for="primary_type">Select primary target type:</label>
+      <label for="primary_type">Select primary target type&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary btn-xs"
+                onclick="popup_alert('The choices the user will decide between.<br><br>'+
+                '<b>Images:</b> Images must be of filetype PNG, JPEG or GIF.<br>' +
+                '<b>Text:</b> Raw text, as a txt file.<br>'+
+                '<b>Video</b>: This is experimental!'+
+                '<br><br>See upload ? button for more detail and warnings.'
+                )">?</button>
+      </label>
       <select class="form-control" id="primary_type" name="primary_type">
 	<option>image</option>
 	<option>text</option>
@@ -123,6 +155,19 @@ $(document).ready( function() {
 	<option>audio (coming soon)</option>
       </select>
 
+      <br>
+      <label>
+          Upload a file&nbsp;&nbsp;
+          <button type="button" class="btn btn-primary btn-xs"
+                onclick="popup_alert(''+
+                '<b>Making this file for images/video:</b><br> Select your images/videos and compress as zip<br>'+
+                '<i>Warning!</i> No spaces in file names.<br>'+
+                '<i>Warning!</i> Subdirectories are not supported!<br><br>'+
+                '<b>Making this file for text:</b><br> Make a .txt file. There should be one text target on each line. <br><i>Warning</i>: No quotes in this file!<br>'+
+                '<i>Warning</i> No empty lines in this file!<br><br>' +
+                'Example<br><code>Text target 1.</code><br><code>Text target 2.</code><br><code>Text target 3.</code><br><code>Text target 4.</code><br><br>'+
+                '')">?</button>
+      </label>
       <div class="input-group" name="primary_file">
         <span class="input-group-btn">
 	  <span class="btn btn-primary btn-file">
