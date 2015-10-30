@@ -7,12 +7,34 @@
 {%endblock %}
 
 {%block script_include %}
-<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 {%endblock %}
 
 {% block title %} Account Settings {% endblock %}
 
 {% block body %}
+
+<script>
+popup_alert = function(text){
+    document.getElementById("question-info").innerHTML = '<h4>' + text + '</h4>';
+  $("#info").modal().show()
+};
+</script>
+
+<!-- Question mark/info Modal -->
+<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="question-info" style='text-align:center;'>
+      </div>
+      <center>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
+      </center>
+      <br>
+    </div>
+  </div>
+</div>
+
 <h1 class="page-header">Account Settings</h1>
 
 <form class="form-horizontal" method="post">
@@ -20,7 +42,11 @@
   <fieldset>
     <!-- access_key_id Field -->
     <div class="form-group">
-      <label class="col-sm-2 text-right" for="name">{{ form.access_key_id.label }}</label>
+      <label class="col-sm-2 text-right" for="name">{{ form.access_key_id.label }}
+  <br>
+  <button type="button" class="btn btn-primary btn-xs"
+          onclick="popup_alert('Amazon AWS docs: <a href=\'http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html\'>Getting your Access Key ID and Sercret Access Key</a> ')">?</button>
+      </label>
       <div class="col-sm-4">
         {{ form.access_key_id(class_="form-control") }}
         {% for error in form.access_key_id.errors %}
@@ -31,7 +57,11 @@
 
     <!-- secret_access_key Field -->
     <div class="form-group">
-      <label class="col-sm-2 text-right" for="name">{{ form.secret_access_key.label }}</label>
+      <label class="col-sm-2 text-right" for="name">{{ form.secret_access_key.label }}
+      <br>
+      <button type="button" class="btn btn-primary btn-xs"
+              onclick="popup_alert('Amazon AWS docs: <a href=\'http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html\'>Getting your Access Key ID and Sercret Access Key</a> ')">?</button>
+      </label>
       <div class="col-sm-4">
         {{ form.secret_access_key(class_="form-control") }}
         {% for error in form.secret_access_key.errors %}
@@ -43,7 +73,11 @@
 
     <!-- next_backend_global_host Field -->
     <div class="form-group">
-      <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }}</label>
+      <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }}
+      <br>
+      <button type="button" class="btn btn-primary btn-xs"
+              onclick="popup_alert('The URL the backend is running on. This URL is part of the URL this page is on, without <code>http://</code> and ending in <code>.com</code><br><br>e.g., <code>ec2-52-27-72-216.us-west-2.compute.amazonaws.com</code>')">?</button>
+      </label>
       <div class="col-sm-4">
         {{ form.next_backend_global_host(class_="form-control") }}
         {% for error in form.next_backend_global_host.errors %}
@@ -54,20 +88,20 @@
 
 
 
-    
+
     {% for message in get_flashed_messages() %}
     <div class="form-group">{{ message }}</div>
     {% endfor %}
-    
+
     <!-- Submit button -->
     <h2>
       <div class="col-sm-offset-5">
         <input type="submit" class="btn btn-primary" value="Submit"></input>
       </div>
     </h2>
-    
+
   </fieldset>
 </form>
 
- 
-{% endblock %}  
+
+{% endblock %}
