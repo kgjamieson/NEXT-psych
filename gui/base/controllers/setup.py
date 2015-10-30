@@ -9,7 +9,7 @@ from flask import (Blueprint,
                    redirect,
                    url_for,
                    session)
-from flask.ext.login import login_required
+from flask.ext.login import login_required, current_user
 
 import base
 from base.forms import SecretForm
@@ -26,13 +26,10 @@ def _setup():
         current_user.access_key_id = form.access_key_id.data
         current_user.secret_access_key = form.secret_access_key.data
         current_user.next_backend_global_host = form.next_backend_global_host.data
-        #os.environ['AWS_ACCESS_ID'] = form.access_key_id.data
-        #config.AWS_KEY = form.secret_access_key.data
-        #os.environ['AWS_SECRET_ACCESS_KEY'] = form.secret_access_key.data
-        #os.environ['NEXT_BACKEND_GLOBAL_HOST'] = form.next_backend_global_host.data
         gotbucket = False
         try:
-            conn = boto.connect_s3(config.AWS_ID, config.AWS_KEY )
+            conn = boto.connect_s3(current_user.access_key_id,
+                                   current_user.secret_access_key)
             while not gotbucket:
                 bucket_uid = '%030x' % random.randrange(16**30)
                 try:
@@ -42,8 +39,6 @@ def _setup():
                     pass
             current_user.aws_bucket_name = bucket_uid
             current_user.save()
-            #os.environ['AWS_BUCKET_NAME'] = bucket_uid
-            #config.AWS_BUCKET_NAME = bucket_uid
         except e:
             flash("Please check your aws credentials")
             return render_template('setup.html', form = SecretForm())
@@ -52,3 +47,9 @@ def _setup():
     # else:                       
     #     
         
+        #os.environ['AWS_ACCESS_ID'] = form.access_key_id.data
+        #config.AWS_KEY = form.secret_access_key.data
+        #os.environ['AWS_SECRET_ACCESS_KEY'] = form.secret_access_key.data
+        #os.environ['NEXT_BACKEND_GLOBAL_HOST'] = form.next_backend_global_host.data
+            #os.environ['AWS_BUCKET_NAME'] = bucket_uid
+            #config.AWS_BUCKET_NAME = bucket_uid
