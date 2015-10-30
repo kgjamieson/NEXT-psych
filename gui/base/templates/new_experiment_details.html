@@ -173,7 +173,7 @@ parse_html = function(text){
   <br>
   <button type="button" class="btn btn-primary btn-xs"
       onclick="popup_alert('This is the dataset that where the data from each question ' +
-      'will be drawn from. This can be uploaded with the \'Manage Targets\' tab. \nNote: this can take a fair amount of time when uploading images or videos. It takes a while, but wait for the page to load.')">?</button>
+      'will be drawn from. This can be uploaded with the \'Manage Targets\' tab. ')">?</button>
   </label>
   <div class="col-sm-8">
     {{ form.target_set(class_="form-control", form="save") }}
@@ -208,12 +208,10 @@ parse_html = function(text){
   <label class="col-sm-2 text-right" for="instructions">{{ form.query_duration.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('TODO: clarify this. On 2015-10-16, Scott Sievert believes that '+
-      'this parameter does not matter and is never looked at; I changed it to 1min and saw '+
-      'no change.')">?</button>
+            onclick="popup_alert('This is a feature coming in the future. Currently this field is never looked.<br>Scott Sievert, 2015-10-29')">?</button>
   </label>
   <div class="col-sm-8">
-    {{ form.query_duration(class_="form-control", form="save") }}
+    {{ form.query_duration(class_="form-control", readonly=true, form="save") }}
     {% for error in form.query_duration.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}<br>
