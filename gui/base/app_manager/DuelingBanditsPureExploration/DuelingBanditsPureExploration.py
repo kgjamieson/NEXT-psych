@@ -8,7 +8,7 @@ from flask import render_template
 from base.current import *
 from base.models import Experiment
 
-from base.upload_manager import *
+
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from StringIO import StringIO

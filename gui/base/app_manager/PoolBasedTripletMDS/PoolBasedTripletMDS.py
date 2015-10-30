@@ -68,12 +68,12 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         html = render_template(template)
         return html
 
-    def get_formatted_participant_data(self, current_experiment, args=None):
+    def get_formatted_participant_data(self, current_experiment, url, args=None):
         """
         Return formatted participant logs that are app specific.
         """
         # Use frontend base local url
-        url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
+        url = url+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
 
         # Make a request to next_backend for the responses
         try:
