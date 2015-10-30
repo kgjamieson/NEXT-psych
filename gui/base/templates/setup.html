@@ -72,19 +72,19 @@ popup_alert = function(text){
 
 
     <!-- next_backend_global_host Field -->
-    <div class="form-group">
-      <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }}
-      <br>
-      <button type="button" class="btn btn-primary btn-xs"
-              onclick="popup_alert('The URL the backend is running on. This URL is part of the URL this page is on, without <code>http://</code> and ending in <code>.com</code><br><br>e.g., <code>ec2-52-27-72-216.us-west-2.compute.amazonaws.com</code>')">?</button>
-      </label>
-      <div class="col-sm-4">
-        {{ form.next_backend_global_host(class_="form-control") }}
-        {% for error in form.next_backend_global_host.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}<br>
-      </div>
-    </div>
+    <!-- <div class="form-group"> -->
+    <!--   <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }} -->
+    <!--   <br> -->
+    <!--   <button type="button" class="btn btn-primary btn-xs" -->
+    <!--           onclick="popup_alert('The URL the backend is running on. This URL is part of the URL this page is on, without <code>http://</code> and ending in <code>.com</code><br><br>e.g., <code>ec2-52-27-72-216.us-west-2.compute.amazonaws.com</code>')">?</button> -->
+    <!--   </label> -->
+    <!--   <div class="col-sm-4"> -->
+    <!--     {{ form.next_backend_global_host(class_="form-control") }} -->
+    <!--     {% for error in form.next_backend_global_host.errors %} -->
+    <!--       <span style="color: red;">[{{ error }}]</span> -->
+    <!--     {% endfor %}<br> -->
+    <!--   </div> -->
+    <!-- </div> -->
 
 
 
