@@ -16,8 +16,16 @@ def home():
     else:
         email = 'default'
         password = 'password'
+        access_key_id = config.AWS_ID
+        secret_access_key = config.AWS_KEY
+        aws_bucket_name = config.AWS_BUCKET_NAME
+        next_backend_global_host = config.NEXT_BACKEND_GLOBAL_HOST
         if not User.objects(email=email):
-            user = User(email=email)
+            user = User(email=email,
+                        access_key_id=access_key_id,
+                        secret_acces_key=secret_access_key,
+                        aws_bucket_name=aws_bucket_name,
+                        next_backend_global_host=next_backend_global_host)
             user.set_password(password)
             user.save()
         else:

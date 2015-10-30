@@ -7,6 +7,10 @@ class User(db.Document, UserMixin):
     email = db.StringField(max_length=255, required=True)
     password = db.StringField(max_length=255)
     projects = db.ListField(db.ReferenceField('Project'))
+    access_key_id = db.StringField(required=True)
+    secret_access_key = db.StringField(required=True)
+    aws_bucket_name = db.StringField(required=True)
+    next_backend_global_host = db.StringField(required=True)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
