@@ -20,8 +20,8 @@ class SecretForm(Form):
                                   validators = [validators.required()])
     # bucket_name = TextField('Bucket',
     #                         validators = [validators.required()])
-    next_backend_global_host = TextField('Next Backend Host',
-                            validators = [validators.required()])
+    # next_backend_global_host = TextField('Next Backend Host',
+    #                         validators = [validators.required()])
 
 
 class CreateAccountForm(Form):
