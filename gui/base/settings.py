@@ -42,6 +42,9 @@ class Config(object):
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///../next_baseDB.db'
     CACHE_TYPE = 'simple'
+    DEBUG = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel']
 
 
 class DevConfig(Config):
