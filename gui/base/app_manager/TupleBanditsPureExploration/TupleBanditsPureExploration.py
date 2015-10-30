@@ -43,7 +43,7 @@ class TupleBanditsPureExploration(AppResourcePrototype):
             context_image = FileField('Context Image')
             context_text = TextField('Context Text')
             k = IntegerField('Number of targets to choose from', default=4)
-            failure_probability = FloatField('Confidence Level', validators=[validators.required()], default=0.95)
+            failure_probability = FloatField('Failure Probability', validators=[validators.required()], default=0.05)
             algorithm_management = RadioField('Algorithm Management',
                                                 choices=[('fixed_proportions','Fixed Proportions'),
                                                         ('pure_exploration','Pure Exploration'),
