@@ -28,7 +28,7 @@ def _setup():
         #config.AWS_KEY = form.secret_access_key.data
         os.environ['AWS_SECRET_ACCESS_KEY'] = form.secret_access_key.data
         #config.NEXT_BACKEND_GLOBAL_HOST = form.next_backend_global_host.data
-        os.environ['NEXT_BACKEND_GLOBAL_HOST'] = form.next_backend_global_host
+        os.environ['NEXT_BACKEND_GLOBAL_HOST'] = form.next_backend_global_host.data
         gotbucket = False
         try:
             conn = boto.connect_s3(config.AWS_ID, config.AWS_KEY )
@@ -39,7 +39,7 @@ def _setup():
                     gotbucket = True
                 except boto.exception.S3CreateError, e:
                     pass
-            os.environ['AWS_BUCKET_NAME'] = form.next_backend_global_host
+            os.environ['AWS_BUCKET_NAME'] = bucket_uid
             #config.AWS_BUCKET_NAME = bucket_uid
         except e:
             flash("Please check your aws credentials")
