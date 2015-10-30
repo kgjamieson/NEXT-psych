@@ -89,24 +89,25 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label"]))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
             exp_uid, participant_id = participant_id.split('_')
-
             for response in response_list:
                 line = [participant_id, response['timestamp_query_generated']]
                 targets = {}
                 # This index is not a backend index! It is just one of the target_indices
+                target_winner = None
                 for index in response['target_indices']:
                     targets[index['label']] = index
                     # Check for the index winner in this response
                     # Shouldn't we check for target_winner?
                     if 'index_winner' in response.keys() and response["index_winner"] == index['index']:
                             target_winner = index
-                # Append the center, left, right targets
-                line.extend([targets['center']['target']['target_id'], targets['left']['target']['target_id'], targets['right']['target']['target_id']])
-                # Append the target winner
-                line.append(target_winner['target']['target_id'])
-                # Append the alg_label
-                line.append(response['alg_label'])
-                participant_responses.append(",".join(line))
+                if target_winner:
+                    # Append the center, left, right targets
+                    line.extend([targets['center']['target']['target_id'], targets['left']['target']['target_id'], targets['right']['target']['target_id']])
+                    # Append the target winner
+                    line.append(target_winner['target']['target_id'])
+                    # Append the alg_label
+                    line.append(response['alg_label'])
+                    participant_responses.append(",".join(line))
 
         return participant_responses
 
