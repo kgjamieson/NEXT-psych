@@ -31,7 +31,7 @@ def _dashboard():
         #     not config.NEXT_BACKEND_GLOBAL_HOST):   
         #         return redirect(url_for('setup._setup'))
         # else:
-        return render_template('dashboard.html', config)
+        return render_template('dashboard.html', config=config)
 
 @dashboard.route('/edit_project/<project_id>', methods=["GET","POST"])
 @login_required
