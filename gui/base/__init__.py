@@ -36,9 +36,6 @@ from base.current import Current
 # Initialize current for current_experiment and current_project decorators
 current = Current()
 
-
-
-
 def create_app(object_name, env="prod"):
     """
     A flask application factory, as explained here:

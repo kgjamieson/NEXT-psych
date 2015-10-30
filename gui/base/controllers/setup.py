@@ -20,10 +20,6 @@ setup = Blueprint('setup', __name__)
 @setup.route('/', methods=['GET','POST'])
 @login_required
 def _setup():
-    # if (not config.AWS_BUCKET_NAME or
-    #     not config.AWS_ID or
-    #     not config.AWS_KEY or
-    #     not config.NEXT_BACKEND_GLOBAL_HOST):   
     form = SecretForm()
     if form.validate_on_submit():
         config.AWS_ID = form.access_key_id.data

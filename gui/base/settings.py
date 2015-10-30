@@ -21,17 +21,15 @@ class Config(object):
     # AWS S3 info
     AWS_ID = os.environ.get('AWS_ACCESS_ID', None)
     AWS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', None)
-    AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME','next.discovery')
+    AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME', None)
 
     # Global frontend base links. Used for widgets and stats calls.
-    NEXT_BACKEND_GLOBAL_HOST = os.environ.get('NEXT_BACKEND_GLOBAL_HOST',
-                                              None)
+    NEXT_BACKEND_GLOBAL_HOST = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', None)
     NEXT_BACKEND_GLOBAL_PORT = '8000'
 
     # Global frontend links. Used for widgets and stats calls.
-    NEXT_FRONTEND_GLOBAL_HOST = os.environ.get('NEXT_FRONTEND_GLOBAL_HOST',
-                                               None)
-    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get('NEXT_FRONTEND_GLOBAL_PORT','80')
+    NEXT_FRONTEND_GLOBAL_HOST = os.environ.get('NEXT_FRONTEND_GLOBAL_HOST', None)
+    NEXT_FRONTEND_GLOBAL_PORT = os.environ.get('NEXT_FRONTEND_GLOBAL_PORT', '80')
 
     # Site ID and Key for Next Frontend Base.
     SITE_ID = '99eb2f19d5a303acc8fa1a6e9e05cd'
@@ -44,7 +42,9 @@ class ProdConfig(Config):
     CACHE_TYPE = 'simple'
     DEBUG = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel']
+    DEBUG_TB_TEMPLATE_EDITOR_ENABLED  = True
+    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel',
+                       'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel']
 
 
 class DevConfig(Config):
