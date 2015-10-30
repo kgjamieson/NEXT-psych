@@ -42,17 +42,6 @@
     </div>
 
 
-    <!-- bucket_name Field -->
-    <div class="form-group">
-      <label class="col-sm-2 text-right" for="name">{{ form.bucket_name.label }}</label>
-      <div class="col-sm-4">
-        {{ form.bucket_name(class_="form-control") }}
-        {% for error in form.bucket_name.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}<br>
-      </div>
-    </div>
-
     <!-- next_backend_global_host Field -->
     <div class="form-group">
       <label class="col-sm-2 text-right" for="name">{{ form.next_backend_global_host.label }}</label>
