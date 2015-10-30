@@ -13,7 +13,7 @@ from base.current import *
 from base.app_manager import app_manager
 
 experiment = Blueprint('experiment', __name__)
-config = base.config
+
 
 @experiment.route('/<experiment_id>')
 @login_required
@@ -21,18 +21,18 @@ config = base.config
 def _experiment(experiment_id):
     set_experiment(experiment_id=experiment_id)
     # Frontend base url needed for stats and widgets
-    next_backend_url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT
-    print 'Global Port', config.NEXT_BACKEND_GLOBAL_PORT
+    next_backend_url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     # Frontend url needed for queries
     next_frontend_url = "http://"+config.NEXT_FRONTEND_GLOBAL_HOST+":"+config.NEXT_FRONTEND_GLOBAL_PORT
     # query the app_manager for app specific params
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     # This is an html string containing the necessary app dashboard.
     app_dashboard_html = app_resource.get_experiment_dashboard(current_experiment)
-    return render_template('experiment.html', experiment_id=experiment_id,
-                                            next_backend_url=next_backend_url,
-                                            next_frontend_url=next_frontend_url,
-                                            app_dashboard_html=app_dashboard_html)
+    return render_template('experiment.html',
+                           experiment_id=experiment_id,
+                           next_backend_url=next_backend_url,
+                           next_frontend_url=next_frontend_url,
+                           app_dashboard_html=app_dashboard_html)
 
 @experiment.route('/clone/<experiment_id>',methods=["GET","POST"])
 @login_required
@@ -137,7 +137,7 @@ def run_experiment(experiment_id):
         return redirect(url_for('experiment._experiment', experiment_id = current_experiment.id))
 
     # Get the experiment info and store it in our current model
-    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
+    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
     response = requests.get(url+"/"+current_experiment.exp_uid+"/"+current_experiment.exp_key)
     current_experiment.set_info(eval(response.text))
 
@@ -148,7 +148,7 @@ def run_experiment(experiment_id):
     create_target_mapping_dict['exp_key'] = current_experiment.exp_key
     # Do this more cleanly. The problem is that mongoengine fields can't be json serialized.
     create_target_mapping_dict['target_blob'] = [mongo_to_dict(doc) for doc in current_experiment.target_set.targets]
-    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"
+    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"
     response = requests.post(url,
                              json.dumps(create_target_mapping_dict),
                              headers={'content-type':'application/json'})
@@ -164,8 +164,7 @@ def run_experiment(experiment_id):
 def get_temp_keys():
     n = int(request.args.get("keys_count",0))
     # Use local links to to local request
-    # url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/widgets/temp-widget-keys"
-    url = "http://"+config.NEXT_BACKEND_GLOBAL_HOST+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
+    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
     args = {
         'exp_uid':current_experiment.exp_uid,
         'exp_key':current_experiment.exp_key,
@@ -182,8 +181,6 @@ def get_temp_keys():
 
     keys = eval(response.text)["keys"]
     # Use the global host and port since these are external links
-    print config.NEXT_FRONTEND_GLOBAL_HOST, config.NEXT_FRONTEND_GLOBAL_PORT
-    # links = ["http://"+ config.NEXT_FRONTEND_GLOBAL_HOST+":"+str(config.NEXT_FRONTEND_GLOBAL_PORT)+"/experiment/query/"+current_experiment.app_id+"/"+current_experiment.exp_uid+"/"+key for key in keys]
     links = ["http://"+ config.NEXT_FRONTEND_GLOBAL_HOST+":"+str(config.NEXT_BACKEND_GLOBAL_PORT)+"/query/query_page/query_page/"+current_experiment.exp_uid+"/"+key for key in keys]
     return "\n".join(links),200, {'Content-Disposition':'attachment'}
 
@@ -209,10 +206,8 @@ def mongo_to_dict(doc):
 def getquery(app_id, exp_uid, widget_key):
     # get experiment
     requested_experiment = Experiment.objects(exp_uid=exp_uid)[0]
-
     # query the app_manager for app specific params
     app_resource = app_manager.get_app_resource(requested_experiment.app_id)
-
     # This is an html string containing the necessary app dashboard.
     app_query_html = app_resource.get_query(
                             app_id=app_id,

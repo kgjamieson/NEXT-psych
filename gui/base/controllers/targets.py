@@ -3,7 +3,7 @@ import datetime
 
 from mongoengine import *
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask.ext.login import login_required
+from flask.ext.login import login_required, current_user
 
 import base
 from base.current import *
@@ -15,8 +15,6 @@ import examples.launch_experiment as launch_experiment
 
 launch_experiment.generate_target_blob
 targets = Blueprint('targets', __name__)
-
-config = base.config
 
 @targets.route('/manage',methods=["GET","POST"])
 @login_required
@@ -33,13 +31,11 @@ def manage():
 
         primary_type = request.form['primary_type']
         alt_type  = 'text' if request.form['alt_type']=='None' else request.form['alt_type']
-
-        print "config stuff", "bucket", config.AWS_BUCKET_NAME, "id", config.AWS_ID, "key", config.AWS_KEY 
         
         target_set = TargetSet(name=name)
-        target_list = launch_experiment.generate_target_blob(config.AWS_BUCKET_NAME,
-                                                             config.AWS_ID,
-                                                             config.AWS_KEY,
+        target_list = launch_experiment.generate_target_blob(current_user.aws_bucket_name,
+                                                             current_user.access_key_id,
+                                                             current_user.secret_access_key,
                                                              str(datetime.date.today()),
                                                              primary_file,
                                                              primary_type,

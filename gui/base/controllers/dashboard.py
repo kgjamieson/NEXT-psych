@@ -26,13 +26,13 @@ dashboard = Blueprint('dashboard', __name__)
 @dashboard.route('/')
 @login_required
 def _dashboard():
-        # if (not current_user.AWS_BUCKET_NAME or
-        #     not config.AWS_ID or
-        #     not config.AWS_KEY or
-        #     not config.NEXT_BACKEND_GLOBAL_HOST):   
-        #         return redirect(url_for('setup._setup'))
-        # else:
-        return render_template('dashboard.html')
+        if (not current_user.aws_bucket_name or
+            not current_user.access_key_id or
+            not current_user.secret_access_key or
+            not current_user.next_backend_global_host):   
+                return redirect(url_for('setup._setup'))
+        else:
+                return render_template('dashboard.html')
 
 @dashboard.route('/edit_project/<project_id>', methods=["GET","POST"])
 @login_required
