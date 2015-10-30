@@ -12,6 +12,7 @@ from base.models import User, Experiment
 from base.current import *
 from base.app_manager import app_manager
 
+config = base.Config()
 experiment = Blueprint('experiment', __name__)
 
 
