@@ -125,9 +125,9 @@ def delete(experiment_id):
 def run_experiment(experiment_id):
     # Get the appropriate app manager resource
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
-
     # Run the experiment using this app resource
-    response_dict = app_resource.run_experiment(current_experiment)
+    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
+    response_dict = app_resource.run_experiment(current_experiment, url)
 
     if 'exp_uid' in response_dict.keys() and 'exp_key' in response_dict.keys():
         current_experiment.set_exp_uid(response_dict['exp_uid'])
@@ -138,7 +138,6 @@ def run_experiment(experiment_id):
         return redirect(url_for('experiment._experiment', experiment_id = current_experiment.id))
 
     # Get the experiment info and store it in our current model
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
     response = requests.get(url+"/"+current_experiment.exp_uid+"/"+current_experiment.exp_key)
     current_experiment.set_info(eval(response.text))
 
