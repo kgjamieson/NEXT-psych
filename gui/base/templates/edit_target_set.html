@@ -62,116 +62,118 @@
 
 <div class="col-lg-6">
   <!-- new target button and modal -->
-  <div style="float:left;">
-    <button style="margin-bottom:15px" type="button" class="btn btn-primary" data-toggle="modal" data-target='#new'>New Target</button>
-  </div>
-  <div class="modal fade" id='new' tabindex="-1" role="dialog" aria-labelledby="new" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <form id="new" name="new" action="{{ url_for('targets.edit', target_set_id=target_set.id) }}">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h1 class="modal-title" id="new">New Target</h1>
-          </div>
-          <div class="modal-body">
-            <!-- Dropdown to choose target type -->
-            <div class="form-group clearfix">
-              <h4>Choose the target type:</h4>
-              {#{{ form.target_type(class_="form-control") }}#}
-              <div style="padding-top:10px;" class="col-lg-3 col-xs-12">
-                <select class="form-control" form="new" name="select_type">
-                  <option value="text">text</option>
-                  <option value="image">image</option>
-                </select>
-              </div>
-            </div>
-            <!-- Table of target info -->
-            <h4 style="padding-top:10px;">New descriptions of the target:</h4>
-            <table class="table table-bordered left">
-              <thead>
-                <tr>
-                  <th> Primary Description </th>
-                  <th> Alternative Description </th>
-                </tr>
-              </thead>
-              <tr>
-                <td>
-                  <!-- <textarea name="primary" class="form-control" rows="5"></textarea> -->
-                  <input type="text" name="primary"></input>
-                </td>
-                <td>              
-                  <textarea name="alt" class="form-control" rows="5"></textarea>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <!--<div style="float:left;">-->
+    <!--<button style="margin-bottom:15px" type="button" class="btn btn-primary" data-toggle="modal" data-target='#new'>New Target</button>-->
+  <!--</div>-->
+  <!--<div class="modal fade" id='new' tabindex="-1" role="dialog" aria-labelledby="new" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-lg">-->
+      <!--<div class="modal-content">-->
+        <!--<form id="new" name="new" action="{{ url_for('targets.edit', target_set_id=target_set.id) }}">-->
+          <!--<div class="modal-header">-->
+            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+            <!--<h1 class="modal-title" id="new">New Target</h1>-->
+          <!--</div>-->
+          <!--<div class="modal-body">-->
+            <!--[> Dropdown to choose target type <]-->
+            <!--<div class="form-group clearfix">-->
+              <!--<h4>Choose the target type:</h4>-->
+              <!--[>{{ form.target_type(class_="form-control") }}<]-->
+              <!--<div style="padding-top:10px;" class="col-lg-3 col-xs-12">-->
+                <!--<select class="form-control" form="new" name="select_type">-->
+                  <!--<option value="text">text</option>-->
+                  <!--<option value="image">image</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--[> Table of target info <]-->
+            <!--<h4 style="padding-top:10px;">New descriptions of the target:</h4>-->
+            <!--<table class="table table-bordered left">-->
+              <!--<thead>-->
+                <!--<tr>-->
+                  <!--<th> Primary Description </th>-->
+                  <!--<th> Alternative Description </th>-->
+                <!--</tr>-->
+              <!--</thead>-->
+              <!--<tr>-->
+                <!--<td>-->
+                  <!--[> <textarea name="primary" class="form-control" rows="5"></textarea> <]-->
+                  <!--<input type="text" name="primary"></input>-->
+                <!--</td>-->
+                <!--<td>              -->
+                  <!--<textarea name="alt" class="form-control" rows="5"></textarea>-->
+                <!--</td>-->
+              <!--</tr>-->
+            <!--</table>-->
+          <!--</div>-->
+          <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <!-- delete selected button -->
-  <div style="float:left;">
-    <button type="button" class="btn btn-primary" style="margin-left:6px" data-toggle="modal" data-target='#confirm-delete'>Delete Selected</button> 
-  </div>
-  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="text-align:center">
-              <h4>Are you sure you want to delete selected targets?</h4>
-            </div>
-            <div class="modal-footer" style="text-align:center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <form id="delete_selected" style="display:inline" action="{{ url_for('.delete_selected',target_set_id=target_set.id) }}" method="post">
-                  <button type="submit" name='delete_selected' class="btn btn-danger btn-ok">Delete Selected</a>
-                </form> 
-            </div>
-        </div>
-    </div>
-  </div>
+  <!--<div style="float:left;">-->
+    <!--<button type="button" class="btn btn-primary" style="margin-left:6px" data-toggle="modal" data-target='#confirm-delete'>Delete Selected</button>-->
+  <!--</div>-->
+  <!--<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header" style="text-align:center">-->
+              <!--<h4>Are you sure you want to delete selected targets?</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-footer" style="text-align:center">-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+                <!--<form id="delete_selected" style="display:inline" action="{{ url_for('.delete_selected',target_set_id=target_set.id) }}" method="post">-->
+                  <!--<button type="submit" name='delete_selected' class="btn btn-danger btn-ok">Delete Selected</a>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <!-- delete all button -->
-  <div style="float:left;">
-    <button type="button" class="btn btn-primary" style="margin-left:6px" data-toggle="modal" data-target='#confirm-delete-all'>Delete All</button> 
-  </div>
-  <div class="modal fade" id="confirm-delete-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="text-align:center">
-              <h4>Are you sure you want to delete all targets?</h4>
-            </div>
-            <div class="modal-footer" style="text-align:center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <form style="display:inline" action="{{ url_for('.delete_all',target_set_id=target_set.id) }}" method="post">
-                  <button type="submit" value="delete" class="btn btn-danger btn-ok">Delete All</a>
-                </form> 
-            </div>
-        </div>
-    </div>
-  </div>
-</div>
+  <!--<div style="float:left;">-->
+    <!--<button type="button" class="btn btn-primary" style="margin-left:6px" data-toggle="modal" data-target='#confirm-delete-all'>Delete All</button>-->
+  <!--</div>-->
+  <!--<div class="modal fade" id="confirm-delete-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header" style="text-align:center">-->
+              <!--<h4>Are you sure you want to delete all targets?</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-footer" style="text-align:center">-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+                <!--<form style="display:inline" action="{{ url_for('.delete_all',target_set_id=target_set.id) }}" method="post">-->
+                  <!--<button type="submit" value="delete" class="btn btn-danger btn-ok">Delete All</a>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 
 <div class="col-lg-12" style="padding-right:0px;">
   <table class="table table-bordered left" id="left_table">
     <thead>
       <tr>
-        <th> Select </th>
+        <!--2015-10-29: Commented out - add in the edit functionality when we *need* it.-->
+        <!--<th> Select </th>-->
       	<th> Primary Description </th>
       	<th> Alternative Description </th>
-        <th> Actions </th>
+        <!--2015-10-29: Commented out - add in the edit functionality when we *need* it.-->
+        <!--<th> Actions </th>-->
       </tr>
     </thead>
 
     {% for target in target_set.targets %}
     <tr>
       <!-- Select column -->
-      <td style="vertical-align:middle;width:1%;white-space:nowrap; text-align:center">
-          <input type="checkbox" name= 'targets' class="targets" value ={{ target.id }} form="delete_selected">
-      </td>
+      <!--<td style="vertical-align:middle;width:1%;white-space:nowrap; text-align:center">-->
+          <!--<input type="checkbox" name= 'targets' class="targets" value ={{ target.id }} form="delete_selected">-->
+      <!--</td>-->
 
       <!-- Primary desc column -->
       <td style="vertical-align:middle">
@@ -192,77 +194,78 @@
         {{ target.alt_description }}
       </td>
 
+      <!--2015-10-29: Commented out add in the edit functionality when we *need* it-->
       <!-- Edit column -->
-      <td style="width:1%;white-space:nowrap;">
-        <!-- Button trigger modal -->
-        <div style="padding:5px">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#edit-{{ target.id }}'>Edit</button>
-        </div>
-        <!-- Modal that is a form -->
-        <form action="{{ url_for('.edit',target_set_id=target_set.id) }}" method="post" >
-          {{ form.csrf_token }}
-          {% set f = form.target_id.process_data(target.id) %}
-          {{ form.target_id() }}
-          <div class="modal fade" id='edit-{{ target.id }}' tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h1 class="modal-title" id="edit">Edit Target</h1>
-                </div>
-                <div class="modal-body">
-                  <h4 style="padding-top:10px;">Update descriptions of the target:</h4>
-                  <!-- Table of target info -->                  
-                  {% set f = form.target_type.process_data(target.primary_type) %}
-                  <div style="display:none;">{{ form.target_type() }}</div>
-                  <table class="table table-bordered left">
-                    <thead>
-                      <tr>
-                        <th> Primary Description </th>
-                        <th> Alternative Description </th>
-                      </tr>
-                    </thead>
-                    <tr>
-                      <td>
-                        {% if target.primary_type == "image" %}
-                          {% set f = form.primary_description.process_data(target.primary_description) %}
-                          <div style="display:none;">{{ form.primary_description() }}</div>
-                          <div class= "col-xs-6 col-md-3">
-                            <img  src={{ target.primary_description }} style="width: 100px"></img>
-                          </div>
-                          <div class="col-xs-1 col-md-1">
-                            <button class="btn btn-primary" type="button">New File</button>
-                          </div>
-                          <p>{{selected}}</p>
-                        {% else %}
-                          {% set f = form.primary_description.process_data(target.primary_description) %}
-                          {{ form.primary_description(class_="form-control", rows=7) }}
-                          <!-- <textarea class="form-control" rows='7'>{{ target.primary_description }}</textarea> -->
-                        {% endif %}
-                      </td>
-                      <td>
-                        {% if target.alt_type == "image" %}
-                        <div  class="col-xs-6 col-md-3">
-                             <img  src={{ target.alt_description }}></img>
-                        </div>
-                        {% else %}
-                          {% set f = form.alt_description.process_data(target.alt_description) %}
-                          {{ form.alt_description(class_="form-control", rows=7) }}
-                          <!-- <textarea class="form-control" rows="7">{{ target.alt_description }}</textarea> -->
-                        {% endif %}
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </td>
+      <!--<td style="width:1%;white-space:nowrap;">-->
+        <!--[> Button trigger modal <]-->
+        <!--<div style="padding:5px">-->
+          <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target='#edit-{{ target.id }}'>Edit</button>-->
+        <!--</div>-->
+        <!--[> Modal that is a form <]-->
+        <!--<form action="{{ url_for('.edit',target_set_id=target_set.id) }}" method="post" >-->
+          <!--{{ form.csrf_token }}-->
+          <!--{% set f = form.target_id.process_data(target.id) %}-->
+          <!--{{ form.target_id() }}-->
+          <!--<div class="modal fade" id='edit-{{ target.id }}' tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">-->
+            <!--<div class="modal-dialog modal-lg">-->
+              <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                  <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                  <!--<h1 class="modal-title" id="edit">Edit Target</h1>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                  <!--<h4 style="padding-top:10px;">Update descriptions of the target:</h4>-->
+                  <!--[> Table of target info <]-->
+                  <!--{% set f = form.target_type.process_data(target.primary_type) %}-->
+                  <!--<div style="display:none;">{{ form.target_type() }}</div>-->
+                  <!--<table class="table table-bordered left">-->
+                    <!--<thead>-->
+                      <!--<tr>-->
+                        <!--<th> Primary Description </th>-->
+                        <!--<th> Alternative Description </th>-->
+                      <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tr>-->
+                      <!--<td>-->
+                        <!--{% if target.primary_type == "image" %}-->
+                          <!--{% set f = form.primary_description.process_data(target.primary_description) %}-->
+                          <!--<div style="display:none;">{{ form.primary_description() }}</div>-->
+                          <!--<div class= "col-xs-6 col-md-3">-->
+                            <!--<img  src={{ target.primary_description }} style="width: 100px"></img>-->
+                          <!--</div>-->
+                          <!--<div class="col-xs-1 col-md-1">-->
+                            <!--<button class="btn btn-primary" type="button">New File</button>-->
+                          <!--</div>-->
+                          <!--<p>{{selected}}</p>-->
+                        <!--{% else %}-->
+                          <!--{% set f = form.primary_description.process_data(target.primary_description) %}-->
+                          <!--{{ form.primary_description(class_="form-control", rows=7) }}-->
+                          <!--[> <textarea class="form-control" rows='7'>{{ target.primary_description }}</textarea> <]-->
+                        <!--{% endif %}-->
+                      <!--</td>-->
+                      <!--<td>-->
+                        <!--{% if target.alt_type == "image" %}-->
+                        <!--<div  class="col-xs-6 col-md-3">-->
+                             <!--<img  src={{ target.alt_description }}></img>-->
+                        <!--</div>-->
+                        <!--{% else %}-->
+                          <!--{% set f = form.alt_description.process_data(target.alt_description) %}-->
+                          <!--{{ form.alt_description(class_="form-control", rows=7) }}-->
+                          <!--[> <textarea class="form-control" rows="7">{{ target.alt_description }}</textarea> <]-->
+                        <!--{% endif %}-->
+                      <!--</td>-->
+                    <!--</tr>-->
+                  <!--</table>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                  <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                  <!--<button type="submit" class="btn btn-primary">Save changes</button>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</td>-->
     </tr>
     {% endfor %}
   </table>

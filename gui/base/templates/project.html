@@ -1,7 +1,7 @@
 {% extends "outline.html" %}
 
 {%block script_include %}
-<script type="text/javascript" src="/static/js/datatable.min.js"></script>    
+<script type="text/javascript" src="/static/js/datatable.min.js"></script>
 {%endblock %}
 
 {% block title %} Project: {{ current_project.name }} {% endblock %}
@@ -27,8 +27,8 @@
 	</thead>
 	{% for experiment in current_project.experiments %}
 	<tr>
-		<td style="vertical-align:middle;"> 
-			<a href="{{ url_for('experiment._experiment', experiment_id = experiment.id ) }}"> {{ experiment.name }}</a> 
+		<td style="vertical-align:middle;">
+			<a href="{{ url_for('experiment._experiment', experiment_id = experiment.id ) }}"> {{ experiment.name }}</a>
 		</td>
 		<td style="vertical-align:middle;"> {{ experiment.description }}</td>
 		<td style="vertical-align:middle;width:1%;white-space:nowrap;"> {{ experiment.status }} </td>
@@ -39,16 +39,16 @@
 				<div style="display:inline-block; padding:5px;" >
 			  		<button type="submit" value="edit" class="btn btn-primary">Edit</button>
 				</div>
-			</form>  
+			</form>
 			<!-- clone button -->
-			<form style="display:inline" action="{{ url_for('.clone_experiment', experiment_id=experiment.id) }}" method="post">
-	    		<div style="display:inline-block; padding:5px;">
-	      			<button type="submit" value="clone" class="btn btn-primary">Clone</button>
-	    		</div>
-			</form> 
+			<!--<form style="display:inline" action="{{ url_for('.clone_experiment', experiment_id=experiment.id) }}" method="post">-->
+				<!--<div style="display:inline-block; padding:5px;">-->
+					  <!--<button type="submit" value="clone" class="btn btn-primary">Clone</button>-->
+				<!--</div>-->
+			<!--</form> -->
 			<!-- delete button with confirmation -->
 			<div style="display:inline-block; padding:5px;">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-{{experiment.id}}'>Delete</button> 
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target='#confirm-{{experiment.id}}'>Delete</button>
 			</div>
 	      	<div class="modal fade" id="confirm-{{experiment.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	        	<div class="modal-dialog">
@@ -60,14 +60,14 @@
 		                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 		                    <form style="display:inline" action="{{ url_for('.delete_experiment', experiment_id=experiment.id) }}" method="post">
 		                      	<button type="submit" value="delete" class="btn btn-danger btn-ok">Delete</a>
-		                    </form> 
+		                    </form>
 	                	</div>
 	            	</div>
 	        	</div>
-	      </div> 
+	      </div>
 		</td>
 	</tr>
 	{% endfor %}
 </table>
 
-{% endblock %}  
+{% endblock %}
