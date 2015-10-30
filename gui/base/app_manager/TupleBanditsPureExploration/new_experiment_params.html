@@ -95,7 +95,7 @@ function toggleFields() {
   <label class="col-sm-2 text-right" for="params">{{ form.failure_probability.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('Many algorithms provide statistical guarantees. A confidence level of alpha indicates that with probability at least 1-alpha the algorithm will eventually converge to the underlying truth, assuming standard independent and identically distributed data assumptions.<br><br>A typical value for this field is 0.95.')">?</button>
+      onclick="popup_alert('Many algorithms provide statistical guarantees. A confidence level of alpha indicates that with probability at least 1-alpha the algorithm will eventually converge to the underlying truth, assuming standard independent and identically distributed data assumptions.<br><br>A typical value for this field is 0.05.')">?</button>
   </label>
       <div class="col-sm-8">
 	{{ form.failure_probability(class_="form-control", form="save") }}
