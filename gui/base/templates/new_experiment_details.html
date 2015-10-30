@@ -103,7 +103,7 @@ popup_alert = function(text){
   <label class="col-sm-2 text-right" for="instructions">{{ form.instructions.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-                        onclick="popup_alert('These are the instructions that appear with every question/query. By default, they appear at the top of each question. They can also be changed to a popup, as described on the GitHub wiki on the page <a href=\'https://github.com/kgjamieson/NEXT-psych/wiki/Customization\'>Customization</a>')">?</button>
+                        onclick="popup_alert('These are the instructions that appear with every question/query. By default, they appear at the top of each question. They can also be changed to a popup, as described on the GitHub wiki on the page <a href=\'https://github.com/kgjamieson/NEXT-psych/wiki/Customization\'>Customization</a><br><br>This form can accept arbitrary HTML.')">?</button>
   </label>
   <div class="col-sm-8">
     <div class="instructions-text">
@@ -148,7 +148,7 @@ parse_html = function(text){
   <label class="col-sm-2 text-right" for="debrief">{{ form.debrief.label }}
   <br>
   <button type="button" class="btn btn-primary btn-xs"
-      onclick="popup_alert('This is the message the user sees when they are done answering questions. The number of questions to be answered can be specified below.')">?</button>
+      onclick="popup_alert('This is the message the user sees when they are done answering questions. The number of questions to be answered can be specified below.<br><br>This form can accept arbitrary HTML.')">?</button>
   </label>
   <div class="col-sm-8">
     {{ form.debrief(class_="form-control", form="save") }}
