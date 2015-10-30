@@ -39,9 +39,9 @@ class PoolBasedTripletMDS(AppResourcePrototype):
             d = IntegerField('Dimension',
                              validators=[validators.required()],
                              default=2)
-            failure_probability = FloatField('Confidence Level',
+            failure_probability = FloatField('Failure Probability',
                                              validators=[validators.required()],
-                                             default=0.95)
+                                             default=0.05)
             algorithm_management = RadioField('Algorithm Management',
                                                 choices=[('fixed_proportions',
                                                           'Fixed Proportions')],
