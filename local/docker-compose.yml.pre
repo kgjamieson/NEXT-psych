@@ -127,7 +127,7 @@ rabbitmqmonitor:
 ######### GUI #########
 nextfrontenddocker:
   build: {{NEXT_DIR}}/gui
-  command: gunicorn --worker-class=gevent -R --log-level=debug --logger-class=simple --reload -b 0.0.0.0:8000 -w {{GUNICORN_WORKERS}} gui.next_frontend_run:app
+  command: gunicorn --worker-class=gevent -R --log-level=debug --logger-class=simple --reload -b 0.0.0.0:8000 -w 1 gui.next_frontend_run:app
   volumes:
    - {{NEXT_DIR}}:/next_frontend
   ports:
