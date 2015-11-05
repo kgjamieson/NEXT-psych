@@ -16,14 +16,14 @@ HOSTNAME = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', 'localhost')+':'+os.enviro
 def run_all(assert_200):
 
   app_id = 'DuelingBanditsPureExploration'
-  num_arms = 25
+  num_arms = 300
   true_means = numpy.array(range(num_arms))/float(num_arms)
-  total_pulls_per_client = 1000
+  total_pulls_per_client = 100
 
   num_experiments = 1
 
   # clients run in simultaneous fashion using multiprocessing library
-  num_clients = 200
+  num_clients = 1000
 
   pool = Pool(processes=num_clients)           
 
@@ -31,7 +31,7 @@ def run_all(assert_200):
   # input test parameters
   n = num_arms
   delta = 0.05
-  supported_alg_ids = ['BR_LilUCB','BR_Random','BR_SuccElim','BeatTheMean','BR_Thompson']
+  supported_alg_ids = ['BR_LilUCB','BR_Random','BR_Thompson','BR_LilUCB_b2','BR_Random_b2','BR_Thompson_b2']
 
   alg_list = []
   for alg_id in supported_alg_ids:

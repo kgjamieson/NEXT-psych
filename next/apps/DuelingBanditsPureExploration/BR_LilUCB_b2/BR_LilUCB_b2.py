@@ -1,10 +1,10 @@
 """
-BR_Thompson implements DuelingBanditsPureExplorationPrototype
+BR_LilUCB app implements DuelingBanditsPureExplorationPrototype
 author: Kevin Jamieson, kevin.g.jamieson@gmail.com
-last updated: 5/20/2015
+last updated: 1/11/2015
 
-BR_Thompson implements the Thompson Sampling algorithm described in 
-Chapelle and Li "An Empirical Evaluation of Thompson Sampling," NIPS 2012
+BR_LilUCB implements the lilUCB algorithm described in 
+Jamieson, Malloy, Nowak, Bubeck, "lil' UCB : An Optimal Exploration Algorithm for Multi-Armed Bandits," COLT 2014
 using the Borda reduction described in detail in
 Jamieson et al "Sparse Borda Bandits," AISTATS 2015. 
 """
@@ -13,21 +13,11 @@ import numpy
 import numpy.random
 from next.apps.DuelingBanditsPureExploration.Prototype import DuelingBanditsPureExplorationPrototype
 
-class BR_Thompson(DuelingBanditsPureExplorationPrototype):
+class BR_LilUCB_b2(DuelingBanditsPureExplorationPrototype):
 
   def daemonProcess(self,resource,daemon_args_dict):
-
-    if 'task' in daemon_args_dict and 'args' in daemon_args_dict:
-      task = daemon_args_dict['task']
-      args = daemon_args_dict['args']
-      if task == '__update_sufficient_statistics':
-        self.__update_sufficient_statistics(resource,args)
-    else:
-      return False
-
     return True
   
-
   def initExp(self,resource,n=0,failure_probability=0.05):
     """
     initialize the experiment 
@@ -41,6 +31,7 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       (boolean) didSucceed : did everything execute correctly
     """
     resource.set('n',n)
+    resource.set('failure_probability',failure_probability)
     resource.increment('total_pulls',0)
     for i in range(n):
       resource.increment('Xsum_'+str(i),0.)
@@ -61,10 +52,10 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       (int) index_right : index of arm must be in {0,1,2,...,n-1} - index_left
       (int) index_painted : index of arm must be in {0,1,2,...,n-1}
     """
-    alpha = 2
+    beta = 0.0 # algorithm parameter
 
     n = resource.get('n')
-    key_list = []
+    key_list = ['failure_probability']
     for i in range(n):
       key_list.append( 'Xsum_'+str(i) )
       key_list.append( 'T_'+str(i) )
@@ -77,11 +68,26 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       sumX.append( key_value_dict['Xsum_'+str(i)] )
       T.append( key_value_dict['T_'+str(i)] )
 
-    theta = numpy.zeros(n)
-    for i in range(n):
-      theta[i] = numpy.random.beta(max(1,(1+sumX[i])/alpha),max(1,(1+T[i]-sumX[i])/alpha))
+    delta = key_value_dict['failure_probability']
+    sigma_sq = .25
 
-    index = numpy.argmax(theta)
+    mu = numpy.zeros(n)
+    UCB = numpy.zeros(n)
+    A = []
+    for i in range(n):
+      if T[i]==0:
+        mu[i] = float('inf')
+        UCB[i] = float('inf')
+        A.append(i)
+      else:
+        mu[i] = sumX[i] / T[i]
+        # UCB[i] = mu[i] + (1+beta)*numpy.sqrt( 2.0*sigma_sq*numpy.log( numpy.log(4*T[i])/delta ) / T[i] )
+        UCB[i] = mu[i] + (1+beta)*numpy.sqrt( 2.0*sigma_sq*numpy.log( 4*T[i]*T[i]/delta ) / T[i] )
+
+    if len(A)>0:
+      index = numpy.random.choice(A)
+    else:
+      index = numpy.argmax(UCB)
 
     alt_index = numpy.random.choice(n)
     while alt_index==index:
@@ -118,7 +124,7 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       reward = 1.
 
     resource.increment_many({'Xsum_'+str(index_painted):reward,'T_'+str(index_painted):1,'total_pulls':1})
-
+    
     return True
 
   def predict(self,resource):
@@ -156,4 +162,4 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
     prec = [ numpy.sqrt(1./max(1,t)) for t in T]
     
     return mu.tolist(),prec
-
+    

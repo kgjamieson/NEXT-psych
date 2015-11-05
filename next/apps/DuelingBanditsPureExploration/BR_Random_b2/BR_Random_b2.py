@@ -1,11 +1,9 @@
 """
-BR_Thompson implements DuelingBanditsPureExplorationPrototype
+BR_Random app implements DuelingBanditsPureExplorationPrototype
 author: Kevin Jamieson, kevin.g.jamieson@gmail.com
-last updated: 5/20/2015
+last updated: 11/4/2015
 
-BR_Thompson implements the Thompson Sampling algorithm described in 
-Chapelle and Li "An Empirical Evaluation of Thompson Sampling," NIPS 2012
-using the Borda reduction described in detail in
+BR_Random implements random sampling  using the Borda reduction described in detail in
 Jamieson et al "Sparse Borda Bandits," AISTATS 2015. 
 """
 
@@ -13,21 +11,11 @@ import numpy
 import numpy.random
 from next.apps.DuelingBanditsPureExploration.Prototype import DuelingBanditsPureExplorationPrototype
 
-class BR_Thompson(DuelingBanditsPureExplorationPrototype):
+class BR_Random_b2(DuelingBanditsPureExplorationPrototype):
 
   def daemonProcess(self,resource,daemon_args_dict):
-
-    if 'task' in daemon_args_dict and 'args' in daemon_args_dict:
-      task = daemon_args_dict['task']
-      args = daemon_args_dict['args']
-      if task == '__update_sufficient_statistics':
-        self.__update_sufficient_statistics(resource,args)
-    else:
-      return False
-
     return True
   
-
   def initExp(self,resource,n=0,failure_probability=0.05):
     """
     initialize the experiment 
@@ -41,6 +29,7 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       (boolean) didSucceed : did everything execute correctly
     """
     resource.set('n',n)
+    resource.set('failure_probability',failure_probability)
     resource.increment('total_pulls',0)
     for i in range(n):
       resource.increment('Xsum_'+str(i),0.)
@@ -61,28 +50,9 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       (int) index_right : index of arm must be in {0,1,2,...,n-1} - index_left
       (int) index_painted : index of arm must be in {0,1,2,...,n-1}
     """
-    alpha = 2
 
     n = resource.get('n')
-    key_list = []
-    for i in range(n):
-      key_list.append( 'Xsum_'+str(i) )
-      key_list.append( 'T_'+str(i) )
-
-    key_value_dict = resource.get_many(key_list)
-
-    sumX = []
-    T = []
-    for i in range(n):
-      sumX.append( key_value_dict['Xsum_'+str(i)] )
-      T.append( key_value_dict['T_'+str(i)] )
-
-    theta = numpy.zeros(n)
-    for i in range(n):
-      theta[i] = numpy.random.beta(max(1,(1+sumX[i])/alpha),max(1,(1+T[i]-sumX[i])/alpha))
-
-    index = numpy.argmax(theta)
-
+    index = numpy.random.choice(n)
     alt_index = numpy.random.choice(n)
     while alt_index==index:
       alt_index = numpy.random.choice(n)
@@ -118,7 +88,7 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
       reward = 1.
 
     resource.increment_many({'Xsum_'+str(index_painted):reward,'T_'+str(index_painted):1,'total_pulls':1})
-
+    
     return True
 
   def predict(self,resource):
@@ -156,4 +126,5 @@ class BR_Thompson(DuelingBanditsPureExplorationPrototype):
     prec = [ numpy.sqrt(1./max(1,t)) for t in T]
     
     return mu.tolist(),prec
+
 

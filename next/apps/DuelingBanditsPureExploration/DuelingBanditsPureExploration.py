@@ -22,7 +22,7 @@ from next.resource_client.ResourceClient import ResourceClient
 # import next.logging_client.LoggerHTTP as ell
 import next.utils as utils
 from next.apps.AppPrototype import AppPrototype
-from next.apps.DuelingBanditsPureExploration.Dashboard import DuelingBanditsPureExplorationDashboard
+from next.apps.DuelingBanditsPureExploration.dashboard.Dashboard import DuelingBanditsPureExplorationDashboard
 
 class DuelingBanditsPureExploration(AppPrototype):
 
@@ -550,6 +550,7 @@ class DuelingBanditsPureExploration(AppPrototype):
       # get specific algorithm to make calls to 
       alg = utils.get_app_alg(self.app_id,alg_id)
 
+      n,didSucceed,message = db.get(app_id+':experiments',exp_uid,'n')
       targets,didSucceed,message = db.get(app_id+':queries',query_uid,'target_indices')
       for target in targets:
         if target['label'] == 'left':
@@ -560,6 +561,7 @@ class DuelingBanditsPureExploration(AppPrototype):
           index_painted = target['index']
 
       index_winner = args_dict['index_winner']
+      query_meta = args_dict.get('query_meta',{})
 
       # update query doc
       timestamp_query_generated,didSucceed,message = db.get(app_id+':queries',query_uid,'timestamp_query_generated')
@@ -575,6 +577,7 @@ class DuelingBanditsPureExploration(AppPrototype):
       db.set(app_id+':queries',query_uid,'response_time',response_time)
       db.set(app_id+':queries',query_uid,'network_delay',round_trip_time-response_time)
       db.set(app_id+':queries',query_uid,'index_winner',index_winner)
+      db.set(app_id+':queries',query_uid,'query_meta',query_meta)
 
       # call processAnswer
       didSucceed,dt = utils.timeit(alg.processAnswer)(resource=rc,index_left=index_left,index_right=index_right,index_painted=index_painted,index_winner=index_winner)
@@ -584,12 +587,13 @@ class DuelingBanditsPureExploration(AppPrototype):
       meta = {'log_entry_durations':log_entry_durations}
 
       ###############
-      predict_id = 'arm_ranking'
-      params = {'alg_label':alg_label}
-      predict_args_dict = {'predict_id':predict_id,'params':params}
-      predict_args_json = json.dumps(predict_args_dict)
+      if num_reported_answers % ((n+4)/4) == 0:
+        predict_id = 'arm_ranking'
+        params = {'alg_label':alg_label}
+        predict_args_dict = {'predict_id':predict_id,'params':params}
+        predict_args_json = json.dumps(predict_args_dict)
 
-      db.submit_job(app_id,exp_uid,'predict',predict_args_json,ignore_result=True)
+        db.submit_job(app_id,exp_uid,'predict',predict_args_json,ignore_result=True)
       ###############
 
       response_args_dict = {}
