@@ -26,8 +26,11 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         """
         Return a form with specific params for the new experiment form.
         """
-        alg_list = ['RandomSampling', 'UncertaintySampling','CrowdKernel']#, 'STE']
-        # Alg row: follow this post: http://stackoverflow.com/questions/11402627/how-to-get-a-build-a-form-with-repeated-elements-well
+        alg_list = ['RandomSampling', 'UncertaintySampling','CrowdKernel']
+        
+        # Alg row: follow this post:
+        # http://stackoverflow.com/questions/11402627/how-to-get-a-build-a-form-with-repeated-elements-well
+        
         class AlgorithmDefinitionRowForm(Form):
             alg_label = TextField('Algorithm Label')
             alg_id = SelectField('Algorithm Id',
@@ -46,11 +49,13 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                                                 choices=[('fixed_proportions',
                                                           'Fixed Proportions')],
                                                 default='fixed_proportions')
-            participant_to_algorithm_management = RadioField('Participant to Algorithm Management',
-                                                             choices=[('one_to_many','One-to-many'),
-                                                                      ('one_to_one','One-to-one')],
+            participant_to_algorithm_management = RadioField(('Participant to '
+                                                              'Algorithm Management'),
+                                                             choices=[('one_to_many',
+                                                                       'One-to-many'),
+                                                                      ('one_to_one',
+                                                                       'One-to-one')],
                                                              default='one_to_many')
-
             # process the experiment parameters
             def process_experiment_params(self):
                 return True
@@ -86,7 +91,80 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         # Parse them into a csv
         # The rows are participant_id, timestamp, center, left, right, target winner, alg_label
         participant_responses = []
-        participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label", 'Response Time']))
+        participant_responses.append(",".join(["Participant ID",
+                                               "Timestamp",
+                                               "Center",
+                                               "Left",
+                                               "Right",
+                                               "Answer",
+                                               "Alg Label",
+                                               'Response Time']))
+        for participant_id, response_list in response_dict['participant_responses'].iteritems():
+            exp_uid, participant_id = participant_id.split('_')
+            for response in response_list:
+                line = [participant_id, response['timestamp_query_generated']]
+                targets = {}
+                # This index is not a backend index! It is just one of the target_indices
+                target_winner = None
+                for index in response['target_indices']:
+                    targets[index['label']] = index
+                    # Check for the index winner in this response
+                    # Shouldn't we check for target_winner?
+                    if 'index_winner' in response.keys() and response["index_winner"] == index['index']:
+                            target_winner = index
+
+                if target_winner:
+                    # Append the center, left, right targets
+                    line.extend([targets['center']['target']['target_id'],
+                                 targets['left']['target']['target_id'],
+                                 targets['right']['target']['target_id']])
+                    # Append the target winner
+                    line.append(target_winner['target']['target_id'])
+                    # Append the alg_label
+                    line.append(response['alg_label'])
+                    print line.keys()
+                    participant_responses.append(",".join(line))
+
+        return participant_responses
+
+    
+    def get_formatted_embedding_data(self, current_experiment, url, args=None):
+        #url = url+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
+        #url = url+'/api/widgets/getwidget/'
+        #url = url + '/experiment/stats/'
+        url = url+'/api/widgets/getwidget' # seems to work, throws a 500 error
+
+        print current_experiment.app_id,
+        print current_experiment.exp_uid,
+        args = {'app_id' : current_experiment.app_id,
+                'exp_uid': current_experiment.exp_uid,
+                'name': 'getStats',
+                'widget_key': current_experiment.perm_key}
+
+        args['args'] = { 'stat_id' : 'most_current_embedding',
+                         'params' : {'alg_label': 'Test'}
+                       }
+        print args
+        # Make a request to next_backend for the responses
+        try:
+            response = requests.post(url,
+                                     json.dumps(args),
+                                     headers={'content-type':'application/json'})
+            embedding = eval(response.text)['json']['data']
+        except (requests.HTTPError, requests.ConnectionError) as e:
+            print "excepted e", e
+            raise
+        embedding = []
+        
+        participant_responses.append(",".join(["Target",
+                                               "",
+                                               "Center",
+                                               "Left",
+                                               "Right",
+                                               "Answer",
+                                               "Alg Label",
+                                               'Response Time']))
+
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
             exp_uid, participant_id = participant_id.split('_')
             for response in response_list:
@@ -102,7 +180,9 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                             target_winner = index
                 if target_winner:
                     # Append the center, left, right targets
-                    line.extend([targets['center']['target']['target_id'], targets['left']['target']['target_id'], targets['right']['target']['target_id']])
+                    line.extend([targets['center']['target']['target_id'],
+                                 targets['left']['target']['target_id'],
+                                 targets['right']['target']['target_id']])
                     # Append the target winner
                     line.append(target_winner['target']['target_id'])
                     # Append the alg_label
@@ -111,40 +191,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                     participant_responses.append(",".join(line))
 
         return participant_responses
-    def get_embedding(self, current_experiment, url, args=None):
-        #url = url+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
-        #url = url+'/api/widgets/getwidget/'
-        #url = url + '/experiment/stats/'
-        url = url+'/api/widgets/getwidget' # seems to work, throws a 500 error
 
-        args = {'app_id' : current_experiment.app_id,
-                'exp_uid': current_experiment.exp_uid,
-                'name': 'getStats',
-                'widget_key': current_experiment.perm_key
-                }
-
-        args['args'] = { 'stat_id' : 'most_current_embedding',
-                           'params' : {'alg_label': 'Test'}
-                       }
-        print args
-        # Make a request to next_backend for the responses
-        try:
-            response = requests.post(url, data=args)
-            embedding = eval(response.text)
-        except (requests.HTTPError, requests.ConnectionError) as e:
-            print "excepted e", e
-            raise
-
-        print '\n'*4
-        print '*'*20
-        print '\n'*1
-        print response
-        print '\n'*1
-        print embedding
-        print '\n'*1
-        print args
-        print '*'*20
-        print '\n'*4
 
         return embedding
 

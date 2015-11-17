@@ -202,7 +202,8 @@ def get_participant_responses():
 def get_embedding():
     url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
-    embedding = app_resource.get_embedding(current_experiment, url)
+    embedding = app_resource.get_formatted_embedding_data(current_experiment,
+                                                          url)
     print embedding
 
     return "\n".join(embedding), 200, {'Content-Disposition':'attachment', 'Content-Type': 'text/csv; charset=utf-8'}
