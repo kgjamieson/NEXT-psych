@@ -86,7 +86,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         # Parse them into a csv
         # The rows are participant_id, timestamp, center, left, right, target winner, alg_label
         participant_responses = []
-        participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label"]))
+        participant_responses.append(",".join(["Participant ID", "Timestamp","Center", "Left", "Right", "Answer", "Alg Label", 'Response Time']))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
             exp_uid, participant_id = participant_id.split('_')
             for response in response_list:
@@ -107,9 +107,46 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                     line.append(target_winner['target']['target_id'])
                     # Append the alg_label
                     line.append(response['alg_label'])
+                    print line.keys()
                     participant_responses.append(",".join(line))
 
         return participant_responses
+    def get_embedding(self, current_experiment, url, args=None):
+        #url = url+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
+        #url = url+'/api/widgets/getwidget/'
+        #url = url + '/experiment/stats/'
+        url = url+'/api/widgets/getwidget' # seems to work, throws a 500 error
+
+        args = {'app_id' : current_experiment.app_id,
+                'exp_uid': current_experiment.exp_uid,
+                'name': 'getStats',
+                'widget_key': current_experiment.perm_key
+                }
+
+        args['args'] = { 'stat_id' : 'most_current_embedding',
+                           'params' : {'alg_label': 'Test'}
+                       }
+        print args
+        # Make a request to next_backend for the responses
+        try:
+            response = requests.post(url, data=args)
+            embedding = eval(response.text)
+        except (requests.HTTPError, requests.ConnectionError) as e:
+            print "excepted e", e
+            raise
+
+        print '\n'*4
+        print '*'*20
+        print '\n'*1
+        print response
+        print '\n'*1
+        print embedding
+        print '\n'*1
+        print args
+        print '*'*20
+        print '\n'*4
+
+        return embedding
 
     def run_experiment(self, current_experiment, url, args=None):
         """

@@ -162,10 +162,36 @@
     The results are available on the backend:
     <p></p>
     <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
-        <a href="{{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}">{{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}</a>
+        <a href="{{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}">
+            {{ next_backend_url }}/dashboard/experiment_dashboard/{{current_experiment.exp_uid}}/{{current_experiment.app_id}}/{{current_experiment.exp_key}}
+        </a>
     </div>
   </div>
 </div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p><b>Embedding</b></p>
+    Get the embedding as a CSV file. This embedding is shown on the results page, on the backend. This CSV file is a numerical representation of that image.
+    <p></p>
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
+        <a href="get-embedding" download="embedding.csv">embedding.csv</a>
+    </div>
+    <div class="col-lg-6">
+    This file includes coordinates for each embedding. These coordinates are associated with an stimulus label.
+    <p>
+    i.e.<br>
+    <code>
+        stimulus_name,x_cord,y_cord<br>
+        vonn.png,0.5,-0.5<br>
+        bode.png,-1.0,-0.5<br>
+        ligety.png,-0.5,-0.75<br>
+    </code>
+    </p>
+  </div>
+  </div>
+</div>
+
 
 <div class="panel panel-default">
   <div class="panel-body">
