@@ -5,6 +5,7 @@ from flask import Blueprint, Response, render_template, flash, request, redirect
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, RadioField, FieldList, IntegerField, FormField, validators
+from werkzeug.local import Local
 
 import base
 from base import cache
@@ -16,12 +17,13 @@ from base.app_manager import app_manager
 config = base.Config()
 experiment = Blueprint('experiment', __name__)
 
+var next_backend_global_host = LocalProxy(lambda: urlparse(request.url).hostname)
 
 @experiment.route('/<experiment_id>')
 @login_required
 @project_required
 def _experiment(experiment_id):
-    next_backend_global_host = urlparse(request.url).hostname
+    print("ASDASD: "+next_backend_global_host)
     set_experiment(experiment_id=experiment_id)
     # Frontend base url needed for stats and widgets
     next_backend_url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT

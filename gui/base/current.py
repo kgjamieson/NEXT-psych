@@ -79,7 +79,6 @@ def project_required(func):
         if current_project == None:
             # Eventually generalize this!!
             return redirect(url_for('dashboard._dashboard'))
-        print(request.url)
         return func(*args, **kwargs)
     return decorated_view
 
