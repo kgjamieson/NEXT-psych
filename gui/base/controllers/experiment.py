@@ -1,5 +1,6 @@
 import csv, json, os, requests
-from  bson.json_util import dumps
+from urlparse import urlparse
+from bson.json_util import dumps
 from flask import Blueprint, Response, render_template, flash, request, redirect, url_for, session,jsonify
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from flask_wtf import Form
