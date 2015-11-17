@@ -20,9 +20,10 @@ experiment = Blueprint('experiment', __name__)
 @login_required
 @project_required
 def _experiment(experiment_id):
+    next_backend_global_host = urlparse(request.url).hostname
     set_experiment(experiment_id=experiment_id)
     # Frontend base url needed for stats and widgets
-    next_backend_url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
+    next_backend_url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     # Frontend url needed for queries
     next_frontend_url = "http://"+config.NEXT_FRONTEND_GLOBAL_HOST+":"+config.NEXT_FRONTEND_GLOBAL_PORT
     # query the app_manager for app specific params
