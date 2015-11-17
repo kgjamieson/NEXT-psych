@@ -2,6 +2,7 @@ from functools import wraps
 from flask import current_app, g, request, redirect, url_for, session, _app_ctx_stack, _request_ctx_stack
 from werkzeug.local import LocalProxy
 from models import User, Project, Experiment
+from urlparse import urlparse
 
 current_project = LocalProxy(lambda: _get_project())
 current_experiment = LocalProxy(lambda: _get_experiment())
