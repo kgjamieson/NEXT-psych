@@ -1,3 +1,4 @@
+
 {% extends "outline.html" %}
 
 {% block title %} Experiment Dashboard {% endblock %}
@@ -9,6 +10,9 @@
 <div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm; text-align: center'>
     <h2 id="header">Experiment Dashboard: {{ exp_uid }}</h2>
 
+    <div class="col-lg-10 col-lg-offset-1" style"display: inline-block">
+        <div id = "api_activity_histogram_processAnswer"></div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -17,7 +21,7 @@
         data.json['height'] = 100
         mpld3.draw_figure("api_activity_histogram_processAnswer", data.json);
     }
-
+      
     data = next_widget.getWidget(
     {
     'app_id': "{{ app_id }}",
@@ -33,70 +37,32 @@
     );
 </script>
 
-<script>
-// To pop up documnetation on the plots
-popup_alert = function(text){
-    document.getElementById("question-info").innerHTML = '<h4>' + text + '</h4>';
-  $("#info").modal().show()
-};
-</script>
-
-<!-- Question mark/info Modal -->
-<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body" id="question-info" style='text-align:center;'>
-      </div>
-      <center>
-      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
-      </center>
-      <br>
-    </div>
-  </div>
-</div>
-
-
-<div class="container-fluid" style ='padding-bottom: 1cm'>
+<div class="container-fluid" style ='padding-bottom: 1cm'>   
     <div class="col-lg-10 col-lg-offset-1">
         <div class="row">
-            <h2> Experiment info </h2>
+            <h2> Experiment info </h2> 
         </div>
         <div class="row">
-            <p>
+            <p> 
             <b> app_id: </b> {{ app_id }} <br>
             <b> exp_id: </b> {{ exp_uid }} <br>
             <b> exp_key: </b> {{ exp_key }} <br>
             <b> Start date: </b> {{ exp_start_data }} <br>
             <b> Number of participants: </b> {{ num_participants }} <br>
-            <b> Number of answers: </b> {{ num_queries }} <br>
-            <b> Logs: </b> {{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/logs
+            <b> Number of answers: </b> {{ num_queries }} <br> 
+            <b> Backend Exceptions: </b> <a href="{{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/logs/APP-EXCEPTION" target="_blank">Open in new tab</a>  <br>
+            <b> Participant data: </b> <a href="{{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/participants" target="_blank">Open in new tab</a>  <br>
+            <b> Query page: </b> <a href="{{ host_url }}/query/query_page/query_page_popup/{{ exp_uid }}/{{ exp_key }}" target="_blank">Open in new tab</a>  <br>
             </p>
         </div>
     </div>
 </div>
 
-<!--################## activity #################### -->
-<div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm'>
-    <div class="col-lg-10 col-lg-offset-1">
-        <div class="row">
-            <h2> Activity
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('This is a graph of when people responded. The x-axis is a datetime string and the y-axis is the number of responses recorded.')">?</button>
-            </h2>
-        </div>
-    <div class="col-lg-10 col-lg-offset-1" style"display: inline-block">
-        <div id = "api_activity_histogram_processAnswer"></div>
-    </div>
-</div>
-
 <!--################## compute_duration_multiline_plot #################### -->
-<div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm'>
+<div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm'>   
     <div class="col-lg-10 col-lg-offset-1">
         <div class="row">
-            <h2> Algorithm timing comparison
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('How long each leg in <a href=\'\'>this image</a> takes. This is shown for each algorithm.<br>x-axis: API call.<br>y-axis: Time in seconds.<br>title: The leg in the image')">?</button>
-            </h2>
+            <h2> Algorithm timing comparison </h2> 
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -130,7 +96,7 @@ popup_alert = function(text){
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "getQuery" } }
+        "params"  : {"task": "getQuery" } } 
         },
         plot_response
         )
@@ -149,7 +115,7 @@ popup_alert = function(text){
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "processAnswer" } }
+        "params"  : {"task": "processAnswer" } } 
         },
         plot_response
         )
@@ -168,7 +134,7 @@ popup_alert = function(text){
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "predict" } }
+        "params"  : {"task": "predict" } } 
         },
         plot_response
         )
@@ -187,7 +153,7 @@ popup_alert = function(text){
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "daemonProcess" } }
+        "params"  : {"task": "daemonProcess" } } 
         },
         plot_response
         )
@@ -196,17 +162,14 @@ popup_alert = function(text){
 
 
 <!--###################### compute_duration_detailed_stacked_atea_plots for each algorithm ###################-->
-<div class="container-fluid" style ='padding-bottom: 1cm'>
+<div class="container-fluid" style ='padding-bottom: 1cm'>   
     <div class="col-lg-10 col-lg-offset-1">
-        <h2> Individual algorithm timing breakdown
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('The same graphs \'Algorithm timing comparison\' but now shown with tabs for each different algorithm. In each call for a particular algorithm and particular API call (i.e., getQuery\'s compute) is graphed so you can see the relative time each one takes.')">?</button>
-        </h2>
+        <h2> Individual algorithm timing breakdown </h2>  
     </div>
     <div class="col-lg-10 col-lg-offset-1">
 
         <ul class="nav nav-tabs" role="tablist">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#compute_duration_detailed_{{ alg.alg_label_clean }}" aria-controls="compute_duration_detailed_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% else %}
@@ -216,7 +179,7 @@ popup_alert = function(text){
         </ul>
 
         <div class="tab-content">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <div role="tabpanel" class="tab-pane active" id="compute_duration_detailed_{{ alg.alg_label_clean }}">
                         <div class="col-md-3">
@@ -258,7 +221,7 @@ popup_alert = function(text){
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_getQuery_{{ alg.alg_label_clean }}", data.json);
                     }
-
+                  
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -278,8 +241,8 @@ popup_alert = function(text){
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_processAnswer_{{ alg.alg_label_clean }}", data.json);
-                    }
-
+                    }  
+                  
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -299,9 +262,9 @@ popup_alert = function(text){
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_predict_{{ alg.alg_label_clean }}", data.json);
-                    }
-
-
+                    }  
+                  
+                  
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -321,9 +284,9 @@ popup_alert = function(text){
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_daemonProcess_{{ alg.alg_label_clean }}", data.json);
-                    }
+                    }  
 
-
+                  
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -337,7 +300,7 @@ popup_alert = function(text){
                     },
                     plot_response
                     );
-
+                  
                 </script>
             {% endfor %}
         </div>
@@ -347,17 +310,14 @@ popup_alert = function(text){
 
 
 <!--###################### network_delay_histogram #######################-->
-<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>
+<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>  
     <div class="col-lg-10 col-lg-offset-1">
-        <h2> Client-side timing
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('A histogram showing how long it took for each query. For each algorithm it is shown (a) the time it took for participants to answer a question (response time) and (b) the time required to present a question (network delay).')">?</button>
-        </h2>
+        <h2> Client-side timing </h2>  
     </div>
     <div class="col-lg-10 col-lg-offset-1">
 
         <ul class="nav nav-tabs" role="tablist">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#client_times_{{ alg.alg_label_clean }}" aria-controls="client_times_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% else %}
@@ -367,7 +327,7 @@ popup_alert = function(text){
         </ul>
 
         <div class="tab-content">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <div role="tabpanel" class="tab-pane active" id="client_times_{{ alg.alg_label_clean }}">
                         <div class="col-md-3">
@@ -388,7 +348,7 @@ popup_alert = function(text){
                     </div>
                 {% endif %}
             <!-- <div role="tabpanel" class="tab-pane active" id="home"> -->
-
+            
 
             <script>
                 plot_response = function(data) {
@@ -396,7 +356,7 @@ popup_alert = function(text){
                     data.json['height'] = 250
                     mpld3.draw_figure("response_time_histogram_{{ alg.alg_label_clean }}", data.json);
                 }
-
+                  
                 data = next_widget.getWidget(
                 {
                 'app_id': "{{ app_id }}",
@@ -430,7 +390,7 @@ popup_alert = function(text){
                 },
                 plot_response
                 );
-
+              
             </script>
             {% endfor %}
         </div>
@@ -438,56 +398,15 @@ popup_alert = function(text){
     </div>
 </div>
 
-<!--###################### test_error_multiline_plot ###################-->
-<div class="container-fluid" style ='padding-bottom: 1cm'>
-    <div class="col-lg-10 col-lg-offset-1">
-        <h2> Test Error Plot
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('The error against a hold out set. This hold out set is labeled \'Test\' on the new experiment page. We\'d like these errors to converge to 0 quickly.')">?</button>
-        </h2>
-    </div>
-  <div class="col-lg-10 col-lg-offset-1" style='text-align: center'>
-    <div id="test_error_multiline_plot"></div>
-  </div>
-</div>
-<script>
-
-  plot_response = function(data) {
-    data.json['width'] = 800
-    data.json['height'] = 350
-    mpld3.draw_figure("test_error_multiline_plot", data.json);
-  }
-
-
-
-  data = next_widget.getWidget(
-  {
-  'app_id': "{{ app_id }}",
-  'exp_uid': "{{ exp_uid }}",
-  'name': 'getStats',
-  'widget_key': "{{ perm_key }}",
-  'args':{
-  'stat_id' : 'test_error_multiline_plot',
-  'params'  : {'task':''}
-  }
-  },
-  plot_response
-  );
-</script>
-
-
 <!--##################### most_current_embedding ################ -->
-<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>
+<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>  
     <div class="col-lg-10 col-lg-offset-1">
-        <h2> Rankings
-            <button type="button" class="btn btn-primary btn-xs"
-                  onclick="popup_alert('How similar are all of the objects? Objects that are similar will be grouped together. <br><br>e.g., words like \'happy\' and \'excited\' will be close together and a long ways away from \'hate\'.')">?</button>
-        </h2>
+        <h2> Rankings </h2>  
     </div>
     <div class="col-lg-10 col-lg-offset-1">
 
         <ul class="nav nav-tabs" role="tablist">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#ranking_{{ alg.alg_label_clean }}" aria-controls="ranking_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% else %}
@@ -496,57 +415,40 @@ popup_alert = function(text){
             {% endfor %}
         </ul>
 
+
         <div class="tab-content">
-            {% for alg in alg_list %}
+            {% for alg in alg_list %} 
                 {% if loop.first %}
                     <div role="tabpanel" class="tab-pane active" id="ranking_{{ alg.alg_label_clean }}">
-                        <div id = "download_embedding_{{ alg.alg_label_clean }}"></div>
-                        <div id = "most_current_embedding_{{ alg.alg_label_clean }}" class="embedding"></div>
+                        <div id = "most_current_ranking_{{ alg.alg_label_clean }}"></div>
                     </div>
                 {% else %}
                     <div role="tabpanel" class="tab-pane" id="ranking_{{ alg.alg_label_clean }}">
-                        <div id = "download_embedding_{{ alg.alg_label_clean }}"></div>
-                        <div id = "most_current_embedding_{{ alg.alg_label_clean }}" class="embedding"></div>
+                        <div id = "most_current_ranking_{{ alg.alg_label_clean }}"></div>
                     </div>
                 {% endif %}
             <!-- <div role="tabpanel" class="tab-pane active" id="home"> -->
-
+            
 
             <script>
-              plot_response = function(data) {
-                var data_list = JSON.parse(JSON.stringify(data.json.data));
-                // var data_list = data.json.data.slice();
-                for (var i = 0; i < data_list.length; i++) { 
-                    delete data_list[i]['x'];
-                    delete data_list[i]['y'];
-                    delete data_list[i]['index'];
-                }                
-                var tmp_data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data_list));
-                var a = document.createElement('a');
-                a.href = 'data:' + tmp_data;
-                a.download = 'embedding.txt';
-                a.innerHTML = 'Download embedding (Generated '+ data.json.timestamp + ' UTC)';
-                var container = document.getElementById("download_embedding_{{ alg.alg_label_clean }}");
-                container.appendChild(a);
+            plot_response = function(data) {
+            charts.createDynamicTable(data.json, "most_current_ranking_{{ alg.alg_label_clean }}")
+            }
 
-                charts.plotCurrentEmbedding(data.json.data,"most_current_embedding_{{ alg.alg_label_clean }}");
-              }
-
-
-              data = next_widget.getWidget(
-              {
-              'app_id': "{{ app_id }}",
-              'exp_uid': "{{ exp_uid }}",
-              'name': 'getStats',
-              'widget_key': "{{ perm_key }}",
-              'args':{
-              'stat_id' : 'most_current_embedding',
-              'params'  : {'alg_label': '{{ alg.alg_label }}' }
-              }
-              },
-              plot_response
-              );
-            </script>
+            data = next_widget.getWidget(
+            {
+            'app_id': "{{ app_id }}",
+            'exp_uid': "{{ exp_uid }}",
+            'name': 'getStats',
+            'widget_key': "{{ perm_key }}",
+            'args':{
+            'stat_id' : 'most_current_ranking',
+            'params'  : {'alg_label': "{{ alg.alg_label }}" }
+            }
+            },
+            plot_response
+            );
+          </script>
             {% endfor %}
         </div>
 
@@ -554,4 +456,6 @@ popup_alert = function(text){
 </div>
 
 
-{% endblock %}
+
+
+{% endblock %} 

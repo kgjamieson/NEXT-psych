@@ -39,9 +39,7 @@ class WidgetGenerator(Widget):
         response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"getQuery",args_json)        
         response_dict = eval(response_json)
         for target_index in response_dict["target_indices"]:
-            print target_index
             target_index['target'] = targetmapper.get_target_data(exp_uid, target_index["index"])
-            print target_index
 
         query = {}
         targets = []
