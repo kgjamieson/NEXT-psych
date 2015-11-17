@@ -3,9 +3,9 @@ from flask import current_app, g, request, redirect, url_for, session, _app_ctx_
 from werkzeug.local import LocalProxy
 from models import User, Project, Experiment
 
-
 current_project = LocalProxy(lambda: _get_project())
 current_experiment = LocalProxy(lambda: _get_experiment())
+next_backend_global_host = LocalProxy(lambda: urlparse(request.url).hostname)
 
 class Current(object):
     '''
