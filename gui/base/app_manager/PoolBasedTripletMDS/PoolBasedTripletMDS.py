@@ -154,46 +154,26 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         except (requests.HTTPError, requests.ConnectionError) as e:
             print "excepted e", e
             raise
-        embedding = []
+
+        n = len(embedding[0]['darray'])
+        embedding_rows = []
+
         
-        participant_responses.append(",".join(["Target",
-                                               "",
-                                               "Center",
-                                               "Left",
-                                               "Right",
-                                               "Answer",
-                                               "Alg Label",
-                                               'Response Time']))
+        top_row = ",".join(['Target',
+                            'x',
+                            'y'].extend(['x_{}'.format(i) for i in range(n)]))
+        embedding_rows.append(top_row)
+        for target in embedding:
+            target_id = target['target']['target_id']
+            x = target['x']
+            y = target['y']
+            darray = target['darray']
+            line = ','.join([target_id,
+                             x,
+                             y].extend([str(t) for t in darray]))
+            embedding_rows.append(line)
+        return embedding_rows
 
-        for participant_id, response_list in response_dict['participant_responses'].iteritems():
-            exp_uid, participant_id = participant_id.split('_')
-            for response in response_list:
-                line = [participant_id, response['timestamp_query_generated']]
-                targets = {}
-                # This index is not a backend index! It is just one of the target_indices
-                target_winner = None
-                for index in response['target_indices']:
-                    targets[index['label']] = index
-                    # Check for the index winner in this response
-                    # Shouldn't we check for target_winner?
-                    if 'index_winner' in response.keys() and response["index_winner"] == index['index']:
-                            target_winner = index
-                if target_winner:
-                    # Append the center, left, right targets
-                    line.extend([targets['center']['target']['target_id'],
-                                 targets['left']['target']['target_id'],
-                                 targets['right']['target']['target_id']])
-                    # Append the target winner
-                    line.append(target_winner['target']['target_id'])
-                    # Append the alg_label
-                    line.append(response['alg_label'])
-                    print line.keys()
-                    participant_responses.append(",".join(line))
-
-        return participant_responses
-
-
-        return embedding
 
     def run_experiment(self, current_experiment, url, args=None):
         """
