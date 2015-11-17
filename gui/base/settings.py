@@ -40,19 +40,14 @@ class Config(object):
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///../next_baseDB.db'
     CACHE_TYPE = 'simple'
-    DEBUG = True
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
-    DEBUG_TB_TEMPLATE_EDITOR_ENABLED  = True
-    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel',
-                       'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel']
-
 
 class DevConfig(Config):
     # Config variables for the debug panel
     DEBUG = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel']
-    
+    DEBUG_TB_TEMPLATE_EDITOR_ENABLED  = True
+    DEBUG_TB_PANELS = ['flask.ext.mongoengine.panels.MongoDebugPanel',
+                       'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel']    
     CACHE_TYPE = 'null'
 
     # This allows us to test the forms from WTForm
