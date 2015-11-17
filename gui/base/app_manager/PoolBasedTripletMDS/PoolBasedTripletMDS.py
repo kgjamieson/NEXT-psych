@@ -133,24 +133,26 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         #url = url+'/api/widgets/getwidget/'
         #url = url + '/experiment/stats/'
         url = url+'/api/widgets/getwidget' # seems to work, throws a 500 error
-
-        print current_experiment.app_id,
-        print current_experiment.exp_uid,
+        alg_labels = [alg['alg_label']
+                      for alg in current_experiment['params']['alg_rows']]
         args = {'app_id' : current_experiment.app_id,
                 'exp_uid': current_experiment.exp_uid,
                 'name': 'getStats',
                 'widget_key': current_experiment.perm_key}
 
-        args['args'] = { 'stat_id' : 'most_current_embedding',
-                         'params' : {'alg_label': 'Test'}
-                       }
         print args
         # Make a request to next_backend for the responses
+        embeddings = []
         try:
-            response = requests.post(url,
-                                     json.dumps(args),
-                                     headers={'content-type':'application/json'})
-            embedding = eval(response.text)['json']['data']
+            for alg_label in alg_labels:
+                args['args'] = { 'stat_id' : 'most_current_embedding',
+                                 'params' : {'alg_label': alg_label}
+                }
+                response = requests.post(url,
+                                         json.dumps(args),
+                                         headers={'content-type':'application/json'})
+                embedding = eval(response.text)['json']['data']
+                embeddings.append(embedding)
         except (requests.HTTPError, requests.ConnectionError) as e:
             print "excepted e", e
             raise
@@ -158,20 +160,23 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         n = len(embedding[0]['darray'])
         embedding_rows = []
 
-        
-        top_row = ",".join(['Target',
-                            'x',
-                            'y'].extend(['x_{}'.format(i) for i in range(n)]))
+        top_row = ['alg_label', 'Target','x', 'y']
+        top_row.extend(['x_{}'.format(i) for i in range(n)])
+        top_row = ",".join(top_row)
         embedding_rows.append(top_row)
-        for target in embedding:
-            target_id = target['target']['target_id']
-            x = target['x']
-            y = target['y']
-            darray = target['darray']
-            line = ','.join([target_id,
-                             x,
-                             y].extend([str(t) for t in darray]))
-            embedding_rows.append(line)
+        for i in range(len(alg_labels)):
+            alg_label = alg_labels[i]
+            embedding = embeddings[i]
+            for target in embedding:
+                target_id = target['target']['target_id']
+                x = target['x']
+                y = target['y']
+                darray = target['darray']
+
+                line = [alg_label, target_id, str(x), str(y)]
+                line.extend([str(t) for t in darray])
+                line = ','.join(line)
+                embedding_rows.append(line)
         return embedding_rows
 
 
