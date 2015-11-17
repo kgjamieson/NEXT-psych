@@ -17,7 +17,7 @@ from base.app_manager import app_manager
 config = base.Config()
 experiment = Blueprint('experiment', __name__)
 
-var next_backend_global_host = LocalProxy(lambda: urlparse(request.url).hostname)
+next_backend_global_host = LocalProxy(lambda: urlparse(request.url).hostname)
 
 @experiment.route('/<experiment_id>')
 @login_required
