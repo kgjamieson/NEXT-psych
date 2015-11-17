@@ -172,7 +172,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <p><b>Embedding</b></p>
-    Get the embedding as a CSV file. This embedding is shown on the results page, on the backend. This CSV file is a numerical representation of that image.
+    Get the embedding as a CSV file. The two dimensional embedding is shown as an image on the backend, and this file also contains the n-dimensional embedding (n specified when experiment created).
     <p></p>
     <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
         <a href="get-embedding" download="embedding.csv">embedding.csv</a>
@@ -182,11 +182,13 @@
     <p>
     i.e.<br>
     <code>
-        stimulus_name,x_cord,y_cord<br>
-        vonn.png,0.5,-0.5<br>
-        bode.png,-1.0,-0.5<br>
-        ligety.png,-0.5,-0.75<br>
+        stimulus_name,x_cord,y_cord,x_1,x_2,x_3<br>
+        vonn.png,0.5,-0.5,0,1,2<br>
+        bode.png,-1.0,-0.5,0,2,1<br>
+        ligety.png,-0.5,-0.75,1,2,0<br>
     </code>
+    <br>
+    <code>{x,y}_cord</code> are for the two dimensional embedding and <code>x_i</code> are for the n-dimensional embedding.
     </p>
   </div>
   </div>
