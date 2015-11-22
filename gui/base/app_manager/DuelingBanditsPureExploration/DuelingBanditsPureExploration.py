@@ -164,9 +164,6 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         initExp_dict['args']['algorithm_management_settings'] = {}
         initExp_dict['args']['algorithm_management_settings']['mode'] = current_experiment.params['algorithm_management']
         initExp_dict['args']['algorithm_management_settings']['params'] = {}
-        initExp_dict['args']['algorithm_management_settings']['params']['context_type'] = current_experiment.params['context_type']
-        initExp_dict['args']['algorithm_management_settings']['params']['context_image'] = current_experiment.params['context_image']
-        initExp_dict['args']['algorithm_management_settings']['params']['context_text'] = current_experiment.params['context_text']
         initExp_dict['args']['algorithm_management_settings']['params']['proportions'] = []
 
         initExp_dict['args']['context_type'] = current_experiment.params['context_type']
