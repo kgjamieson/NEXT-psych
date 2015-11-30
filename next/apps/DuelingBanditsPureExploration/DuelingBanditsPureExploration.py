@@ -18,8 +18,6 @@ import time
 import traceback
 
 from next.resource_client.ResourceClient import ResourceClient
-# import next.database_client.DatabaseAPIHTTP as db
-# import next.logging_client.LoggerHTTP as ell
 import next.utils as utils
 from next.apps.AppPrototype import AppPrototype
 from next.apps.DuelingBanditsPureExploration.dashboard.Dashboard import DuelingBanditsPureExplorationDashboard
@@ -168,6 +166,8 @@ class DuelingBanditsPureExploration(AppPrototype):
       didSucceed,message = ell.ensure_index(app_id+':ALG-EVALUATION',{'timestamp':1})
       didSucceed,message = ell.ensure_index(app_id+':ALG-EVALUATION',{'exp_uid':1,'timestamp':1})
       
+      import next.constants
+      git_hash = next.constants.GIT_HASH
 
       db.set('experiments_admin',exp_uid,'exp_uid',exp_uid)
       db.set('experiments_admin',exp_uid,'app_id',app_id)
@@ -310,6 +310,7 @@ class DuelingBanditsPureExploration(AppPrototype):
       db.set(app_id+':experiments',exp_uid,'context_type',context_type)
       db.set(app_id+':experiments',exp_uid,'context',context)
       db.set(app_id+':experiments',exp_uid,'num_tries',num_tries)
+      db.set(app_id+':experiments',exp_uid,'git_hash',git_hash)
 
       # now create intitialize each algorithm
       for algorithm in alg_list:
@@ -707,7 +708,8 @@ class DuelingBanditsPureExploration(AppPrototype):
 
         ell.log( app_id+':ALG-EVALUATION', log_entry  )
 
-      response_args_dict = {}
+        response_args_dict = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'targets':targets,'num_reported_answers':num_reported_answers}
+
       args_out = {'args':response_args_dict,'meta':meta}
       predict_json = json.dumps(args_out)
 

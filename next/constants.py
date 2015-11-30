@@ -26,6 +26,13 @@ NEXT_BACKEND_GLOBAL_PORT = os.environ.get('NEXT_BACKEND_GLOBAL_PORT', '8000')
 AWS_ACCESS_ID = os.environ.get('AWS_ACCESS_ID', '')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
 
+GIT_HASH = os.environ.get('GIT_HASH', '')
+if GIT_HASH=='':
+    import subprocess
+    try:
+        GIT_HASH = subprocess.check_output(['git', 'rev-parse', 'HEAD'])[0:-1]
+    except:
+        GIT_HASH = ''
 
 MINIONREDIS_HOST = os.environ.get('MINIONREDIS_PORT_6379_TCP_ADDR', 'localhost')
 MINIONREDIS_PORT = int(os.environ.get('MINIONREDIS_PORT_6379_TCP_PORT', 6379))
@@ -67,20 +74,20 @@ CELERY_TASK_RESULT_EXPIRES=60
 CELERY_TASK_SERIALIZER='json'
 CELERY_ACCEPT_CONTENT=['json']  # Ignore other content
 CELERY_RESULT_SERIALIZER='json'
-CELERYD_PREFETCH_MULTIPLIER=2
+CELERYD_PREFETCH_MULTIPLIER=4
 
-from kombu import Exchange, Queue
-exchange_name = 'sync@{hostname}'.format(
-        hostname=os.environ.get('HOSTNAME', 'localhost'))
-sync_exchange = Exchange(name=exchange_name, type='fanout')
 
 CELERY_SYNC_WORKER_COUNT = int(os.environ.get('CELERY_SYNC_WORKER_COUNT',1))
-all_queues = ()
-for i in range(1,CELERY_SYNC_WORKER_COUNT+1):
-    queue_name = 'sync_queue_{worker_number}@{hostname}'.format(
-        worker_number=i,
-        hostname=os.environ.get('HOSTNAME', 'localhost'))
-    all_queues += (Queue(name=queue_name,exchange=sync_exchange),)
+# from kombu import Exchange, Queue
+# exchange_name = 'sync@{hostname}'.format(
+#         hostname=os.environ.get('HOSTNAME', 'localhost'))
+# sync_exchange = Exchange(name=exchange_name, type='fanout')
+# all_queues = ()
+# for i in range(1,CELERY_SYNC_WORKER_COUNT+1):
+#     queue_name = 'sync_queue_{worker_number}@{hostname}'.format(
+#         worker_number=i,
+#         hostname=os.environ.get('HOSTNAME', 'localhost'))
+#     all_queues += (Queue(name=queue_name,exchange=sync_exchange),)
 
-CELERY_QUEUES = all_queues
+# CELERY_QUEUES = all_queues
 

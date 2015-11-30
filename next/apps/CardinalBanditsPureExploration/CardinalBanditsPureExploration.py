@@ -164,6 +164,8 @@ class CardinalBanditsPureExploration(AppPrototype):
       didSucceed,message = ell.ensure_index(app_id+':ALG-EVALUATION',{'timestamp':1})
       didSucceed,message = ell.ensure_index(app_id+':ALG-EVALUATION',{'exp_uid':1,'timestamp':1})
       
+      import next.constants
+      git_hash = next.constants.GIT_HASH
 
       db.set('experiments_admin',exp_uid,'exp_uid',exp_uid)
       db.set('experiments_admin',exp_uid,'app_id',app_id)
@@ -307,6 +309,7 @@ class CardinalBanditsPureExploration(AppPrototype):
       db.set(app_id+':experiments',exp_uid,'context_type',context_type)
       db.set(app_id+':experiments',exp_uid,'context',context)
       db.set(app_id+':experiments',exp_uid,'num_tries',num_tries)
+      db.set(app_id+':experiments',exp_uid,'git_hash',git_hash)
 
       # now create intitialize each algorithm
       for algorithm in alg_list:
@@ -693,7 +696,8 @@ class CardinalBanditsPureExploration(AppPrototype):
 
         ell.log( app_id+':ALG-EVALUATION', log_entry  )
 
-      response_args_dict = {}
+        response_args_dict = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'targets':targets,'num_reported_answers':num_reported_answers }
+
       args_out = {'args':response_args_dict,'meta':meta}
       predict_json = json.dumps(args_out)
 

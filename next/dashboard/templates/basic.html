@@ -2,23 +2,45 @@
 
 {% block title %} Experiment Dashboard {% endblock %}
 
-{% block sidebar %}{% endblock %}
-
 {% block body %}
 
+<script>
+// To pop up documnetation on the plots
+popup_alert = function(text){
+    document.getElementById("question-info").innerHTML = '<h4>' + text + '</h4>';
+  $("#info").modal().show()
+};
+</script>
 
+<!-- Question mark/info Modal -->
+<div class="modal fade" id="info" tabindex="-1" role="button" aria-labelledby="" aria-hidden="true" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="question-info" style='text-align:left;'>
+      </div>
+      <center>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Dismiss</button>
+      </center>
+      <br>
+    </div>
+  </div>
+</div>
+
+
+<!--################## activity #################### -->
 <div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm; text-align: center'>
     <h2 id="header">Experiment Dashboard: {{ exp_uid }}</h2>
 
     <div class="col-lg-10 col-lg-offset-1" style"display: inline-block">
-        <div id = "api_activity_histogram_processAnswer"></div>
+        <div id = "api_activity_histogram_processAnswer"></div><button type="button" class="btn btn-primary btn-xs"
+                  onclick="popup_alert('This is a graph depicting the relative frequency of activity over the course of the experiment starting from the launch and ending with the current time.<br><br><b>How it is measured:</b> Events are the timestamps of when answers to queries are received by the system. <br><br><b>How to use this information:</b> Gives the practitioner a qualitative idea of how load on the system has been distributed over time.')">?</button>
     </div>
 </div>
 
 <script type="text/javascript">
     plot_response = function(data) {
-        data.json['width'] = 1000
-        data.json['height'] = 100
+        // data.json['width'] = 1000
+        // data.json['height'] = 100
         mpld3.draw_figure("api_activity_histogram_processAnswer", data.json);
     }
       
@@ -47,20 +69,26 @@
             <b> app_id: </b> {{ app_id }} <br>
             <b> exp_id: </b> {{ exp_uid }} <br>
             <b> exp_key: </b> {{ exp_key }} <br>
+            <b> git_hash: </b> {{ git_hash }} <br>
             <b> Start date: </b> {{ exp_start_data }} <br>
             <b> Number of participants: </b> {{ num_participants }} <br>
             <b> Number of answers: </b> {{ num_queries }} <br> 
-            <b> Logs: </b> {{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/logs
+            <b> Backend Exceptions: </b> <a href="{{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/logs/APP-EXCEPTION" target="_blank">Open in new tab</a>  <br>
+            <b> Participant data: </b> <a href="{{ host_url }}/api/experiment/{{ exp_uid }}/{{ exp_key }}/participants?zip=True" target="_blank">Open in new tab</a>  <br>
+            <b> Query page: </b> <a href="{{ host_url }}/query/query_page/query_page_popup/{{ exp_uid }}/{{ exp_key }}" target="_blank">Open in new tab</a>  <br>
             </p>
         </div>
     </div>
 </div>
 
 <!--################## compute_duration_multiline_plot #################### -->
-<div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm'>   
+<div class="container-fluid" style ='background-color: #FFFFFF; padding-bottom: 1cm'>
     <div class="col-lg-10 col-lg-offset-1">
         <div class="row">
-            <h2> Algorithm timing comparison </h2> 
+            <h2> Algorithm timing comparison
+            <button type="button" class="btn btn-primary btn-xs"
+                  onclick="popup_alert('The outside world communicates with NEXT through requests to its HTTP API. A plot for each kind of request describes the amount of time the NEXT system took to respond to the sequence of requests. <br><br><b>How it is measured:</b> For {getQuery,processAnswer,predict} the timer starts when the request from the API is enqueued and stops when the response is sent back to the API. Because daemonComputes are jobs that are submitted by the algorithms (e.g. model updates) the timer starts on initial job submission and stopped when the job completes. Duration is measured in seconds. <br><br><b>How to use this information:</b>This timing information informs the practitioner how long each algorithm of NEXT is taking to respond to requests, which directly affects how long participants answering queries must wait between queries. Note, these times do not take into account the time it takes the response to get from NEXT to the user or the reverse direction. For this information see the Network Delay plots below. If daemonCompute times are large, this could indicate that it is taking a very long time for the model to update and queries are being served based on stale information. However, if much of this time is enqueued time, then depending on the implementation this may not be the case (see where time is being spent in the breakdown plots below).')">?</button>
+            </h2>
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -94,7 +122,7 @@
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "getQuery" } } 
+        "params"  : {"task": "getQuery" } }
         },
         plot_response
         )
@@ -113,7 +141,7 @@
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "processAnswer" } } 
+        "params"  : {"task": "processAnswer" } }
         },
         plot_response
         )
@@ -132,7 +160,7 @@
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "predict" } } 
+        "params"  : {"task": "predict" } }
         },
         plot_response
         )
@@ -151,7 +179,7 @@
         'widget_key': "{{ perm_key }}",
         "args":{
         "stat_id" : "compute_duration_multiline_plot",
-        "params"  : {"task": "daemonProcess" } } 
+        "params"  : {"task": "daemonProcess" } }
         },
         plot_response
         )
@@ -160,14 +188,17 @@
 
 
 <!--###################### compute_duration_detailed_stacked_atea_plots for each algorithm ###################-->
-<div class="container-fluid" style ='padding-bottom: 1cm'>   
+<div class="container-fluid" style ='padding-bottom: 1cm'>
     <div class="col-lg-10 col-lg-offset-1">
-        <h2> Individual algorithm timing breakdown </h2>  
+        <h2> Individual algorithm timing breakdown
+            <button type="button" class="btn btn-primary btn-xs"
+                  onclick="popup_alert('Here the line-graphs of \'Algorithm timing comparison\' are broken down further into stacked-area plots describing how that time is being spent for each algorithm. <br><br><b>How it is measured:</b> All times are the sum total of all time dedicate to the different operations and are measured in seconds. <br><i>- compute:</i> the time the algorithm spent executing its code for this kind of request. <br><i>- dbGet:</i> the time the algorithm spent waiting for \'get\' calls to the database <br><i>- dbSet:</i> the time the algorithm spent waiting for \'set\' calls to the database (includes increment and append operations). <br><i>- enqueued:</i> When the API retrieves a request (or a daemonCompute job is submitted) it is entered into a queue. This time refelects the amount of time that the job sat in the queue. For daemonCompute operations, each algorithm has its own queue and each submitted job is executed sequentially. If in each processAnswer, the query and answer are appended to a list, a daemonCompute is submitted to update the model, and this daemonCompute gets the most recent query,answer pairs from the database, then even if daemonCompute jobs pile up in the queues, the model will actually be up to date since each time a model update occurs it is working with the latest data at that particular time. <br><i>- admin:</i> the time spent by NEXT dedicated to bookkeeping and other administrative tasks, the algorithm developer has no control over this quantity. <br><i>dbGet</i> reflects all the time spent by NEXT dedicated to bookkeeping and other administrative tasks, the algorithm developer has no control over this quantity.  <br><br><b>How to use this information:</b>If an agorithm is performing too slowly, these plots can tell the developer where time is being spent so they can optimize this piece.')">?</button>
+        </h2>
     </div>
     <div class="col-lg-10 col-lg-offset-1">
 
         <ul class="nav nav-tabs" role="tablist">
-            {% for alg in alg_list %} 
+            {% for alg in alg_list %}
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#compute_duration_detailed_{{ alg.alg_label_clean }}" aria-controls="compute_duration_detailed_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% else %}
@@ -177,7 +208,7 @@
         </ul>
 
         <div class="tab-content">
-            {% for alg in alg_list %} 
+            {% for alg in alg_list %}
                 {% if loop.first %}
                     <div role="tabpanel" class="tab-pane active" id="compute_duration_detailed_{{ alg.alg_label_clean }}">
                         <div class="col-md-3">
@@ -219,7 +250,7 @@
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_getQuery_{{ alg.alg_label_clean }}", data.json);
                     }
-                  
+
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -239,8 +270,8 @@
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_processAnswer_{{ alg.alg_label_clean }}", data.json);
-                    }  
-                  
+                    }
+
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -260,9 +291,9 @@
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_predict_{{ alg.alg_label_clean }}", data.json);
-                    }  
-                  
-                  
+                    }
+
+
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -282,9 +313,9 @@
                         data.json['width'] = 250
                         data.json['height'] = 250
                         mpld3.draw_figure("compute_duration_detailed_stacked_area_plot_daemonProcess_{{ alg.alg_label_clean }}", data.json);
-                    }  
+                    }
 
-                  
+
                     data = next_widget.getWidget(
                     {
                     'app_id': "{{ app_id }}",
@@ -298,7 +329,7 @@
                     },
                     plot_response
                     );
-                  
+
                 </script>
             {% endfor %}
         </div>
@@ -308,14 +339,17 @@
 
 
 <!--###################### network_delay_histogram #######################-->
-<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>  
+<div class="container-fluid" style ='padding-bottom: 1cm; background-color: #FFFFFF'>
     <div class="col-lg-10 col-lg-offset-1">
-        <h2> Client-side timing </h2>  
+        <h2> Client-side timing
+            <button type="button" class="btn btn-primary btn-xs"
+                  onclick="popup_alert('Histograms showing client-side or participant-side timing information. For each algorithm it is shown (a) the time between the query being shown the participant and them selecting an answer (response time) and (b) the time between sending a query to the participant and receiving the answer at NEXT\'s API, with the response time subtracted off (network delay). This information, together with the internal timing of NEXT above, describes where all the time experienced by the participant is going. Different algorithms that request queries of differing difficulty may observe different response times.')">?</button>
+        </h2>
     </div>
     <div class="col-lg-10 col-lg-offset-1">
 
         <ul class="nav nav-tabs" role="tablist">
-            {% for alg in alg_list %} 
+            {% for alg in alg_list %}
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#client_times_{{ alg.alg_label_clean }}" aria-controls="client_times_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% else %}
@@ -325,7 +359,7 @@
         </ul>
 
         <div class="tab-content">
-            {% for alg in alg_list %} 
+            {% for alg in alg_list %}
                 {% if loop.first %}
                     <div role="tabpanel" class="tab-pane active" id="client_times_{{ alg.alg_label_clean }}">
                         <div class="col-md-3">
@@ -346,7 +380,7 @@
                     </div>
                 {% endif %}
             <!-- <div role="tabpanel" class="tab-pane active" id="home"> -->
-            
+
 
             <script>
                 plot_response = function(data) {
@@ -354,7 +388,7 @@
                     data.json['height'] = 250
                     mpld3.draw_figure("response_time_histogram_{{ alg.alg_label_clean }}", data.json);
                 }
-                  
+
                 data = next_widget.getWidget(
                 {
                 'app_id': "{{ app_id }}",
@@ -388,7 +422,7 @@
                 },
                 plot_response
                 );
-              
+
             </script>
             {% endfor %}
         </div>
@@ -397,5 +431,6 @@
 </div>
 
 
+{% block custom_dashboard %}{% endblock %} 
 
-{% endblock %} 
+{% endblock %}

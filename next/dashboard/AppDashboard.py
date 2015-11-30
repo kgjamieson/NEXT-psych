@@ -45,12 +45,6 @@ class AppDashboard(object):
     stat['necessary_params'] = ['task']
     stat_list.append(stat)
 
-    # stat = {}
-    # stat['stat_id'] = 'api_processAnswer_activity_stacked_histogram'
-    # stat['description'] = self.api_processAnswer_activity_stacked_histogram.__doc__
-    # stat['necessary_params'] = []
-    # stat_list.append(stat)
-
     stat = {}
     stat['stat_id'] = 'compute_duration_multiline_plot'
     stat['description'] = self.compute_duration_multiline_plot.__doc__
@@ -98,13 +92,19 @@ class AppDashboard(object):
 
     from datetime import datetime
     from datetime import timedelta
-    numerical_timestamps = [ ( utils.str2datetime(item['timestamp'])-datetime(1970,1,1)).total_seconds() for item in list_of_log_dict]
+    start_date_str,didSucceed,message = self.db.get('experiments_admin',exp_uid,'start_date')
+    start_date = utils.str2datetime(start_date_str)
+    numerical_timestamps = [ ( utils.str2datetime(item['timestamp'])-start_date).total_seconds() for item in list_of_log_dict]
 
     import matplotlib.pyplot as plt
     import mpld3
-    fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
+    fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'),figsize=(12,1.5))
     ax.hist(numerical_timestamps,int(1+4*numpy.sqrt(len(numerical_timestamps))),alpha=0.5,color='black')
-    ax.set_axis_off()
+    ax.set_frame_on(False)
+    ax.get_xaxis().set_ticks([])
+    ax.get_yaxis().set_ticks([])
+    ax.get_yaxis().set_visible(False)
+    ax.set_xlim(0, max(numerical_timestamps))
     plot_dict = mpld3.fig_to_dict(fig)
 
     
@@ -166,7 +166,7 @@ class AppDashboard(object):
       num_items = len(list_of_log_dict)
       multiplier = min(num_items,MAX_SAMPLES_PER_PLOT)
       incr_inds = [ k*num_items/multiplier for k in range(multiplier)]
-      max_inds = list(numpy.argsort(y)[0:multiplier])
+      max_inds = list(numpy.argsort(-y)[0:multiplier])
       final_inds = sorted(set(incr_inds + max_inds))
       x = list(x[final_inds])
       y = list(y[final_inds])
@@ -261,7 +261,7 @@ class AppDashboard(object):
     num_items = len(list_of_log_dict)
     multiplier = min(num_items,MAX_SAMPLES_PER_PLOT)
     incr_inds = [ k*num_items/multiplier for k in range(multiplier)]
-    max_inds = list(numpy.argsort(y)[0:multiplier])
+    max_inds = list(numpy.argsort(-y)[0:multiplier])
     final_inds = sorted(set(incr_inds + max_inds))
 
 
@@ -399,7 +399,8 @@ class AppDashboard(object):
     import matplotlib.pyplot as plt
     import mpld3
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t,int(1+4*numpy.sqrt(len(t))),alpha=0.5,color='black')
+    ax.hist(t,min(MAX_SAMPLES_PER_PLOT,int(1+4*numpy.sqrt(len(t)))),alpha=0.5,color='black')
+    ax.set_xlim(0, 30)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')
     ax.set_ylabel('Count')
@@ -441,7 +442,8 @@ class AppDashboard(object):
     import matplotlib.pyplot as plt
     import mpld3
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t,int(1+4*numpy.sqrt(len(t))),alpha=0.5,color='black')
+    ax.hist(t,min(MAX_SAMPLES_PER_PLOT,int(1+4*numpy.sqrt(len(t)))),alpha=0.5,color='black')
+    ax.set_xlim(0, 5)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')
     ax.set_ylabel('Count')
