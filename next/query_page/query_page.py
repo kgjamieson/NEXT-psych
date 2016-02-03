@@ -17,16 +17,24 @@ query_page = Blueprint('query_page',
 @query_page.route('/query_page/<page>/<exp_uid>/<widget_key>')
 def load_page(page, exp_uid=None, widget_key=None):
     experiment = resource_manager.get_experiment(exp_uid)
+    print "next/query_page:load_page, experiment = ", experiment
     num_tries = experiment['num_tries']
-    app_template = page+'.html'
+    app_template = page + '.html'
+
+    if request.args.get('participant_uid'):
+        participant_uid = request.args.get('participant_uid', None)
+        print "next/query_page:load_page, participant_uid = ", participant_uid
+    else:
+        participant_uid = None
 
     if constants.NEXT_BACKEND_GLOBAL_HOST:
         host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
                                          constants.NEXT_BACKEND_GLOBAL_PORT)
     else:
         host_url = ''
-        
+
     return render_template(app_template, host_url=host_url, exp_uid=exp_uid,
-                           widget_key=widget_key, num_tries=num_tries), \
+                           widget_key=widget_key, num_tries=num_tries,
+                           participant_uid=participant_uid), \
                            200, {'Cache-Control':'private, max-age=0, no-cache, no-store'}
 

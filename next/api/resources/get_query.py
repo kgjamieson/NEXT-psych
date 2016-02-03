@@ -1,7 +1,7 @@
 """
-next_backend Query Resource 
+next_backend Query Resource
 author: Christopher Fernandez, Lalit Jain
-Query resource for handling restful querying of experiments in next_backend. 
+Query resource for handling restful querying of experiments in next_backend.
 """
 
 from flask import Flask
@@ -20,11 +20,11 @@ from next.api.resource_manager import ResourceManager
 
 resource_manager = ResourceManager()
 broker = next.broker.broker.JobBroker()
-targetmapper = TargetMapper() 
+targetmapper = TargetMapper()
 keychain = KeyChain()
 
 # Request parser. Checks that necessary dictionary keys are available in a given resource.
-# We rely on learningLib functions to ensure that all necessary arguments are available and parsed. 
+# We rely on learningLib functions to ensure that all necessary arguments are available and parsed.
 post_parser = reqparse.RequestParser(argument_class=APIArgument)
 
 # Custom errors for GET and POST verbs on experiment resource
@@ -51,7 +51,7 @@ meta_success = {
 class getQuery(Resource):
     def post(self):
         """.. http:post:: /experiment/getQuery
-        
+
         Get an experiment query using post. Useful for situations in which a feature vector has to be uploaded.
 
         **Example request**:
@@ -63,16 +63,16 @@ class getQuery(Resource):
 
         {
         	exp_uid: exp_uid,
-        
+
         	args : {
-        		features: 
-        	}		
+        		features:
+        	}
    	 }
 
         **Example response**:
 
         .. sourcecode:: http
-        
+
         HTTP/1.1 200 OK
         Vary: Accept
         Content-Type: application/json
@@ -93,15 +93,15 @@ class getQuery(Resource):
 
         	alg_uid: ,
 		timestamp_query_generated: ,
-		participant_uid: 
+		participant_uid:
 
 
         }
-        
+
         :<json features: Optional feature vector.
 
-        :>json target_indices: Application specific target indices. 
-        :>json alg_uid: 
+        :>json target_indices: Application specific target indices.
+        :>json alg_uid:
         :>json timestamp_query_generated:
         :>json participant_uid:
 
@@ -117,32 +117,33 @@ class getQuery(Resource):
 
         # Validate args with post_parser
         args_data = post_parser.parse_args()
-        
+
         # Pull app_id and exp_uid from parsed args
         exp_uid = args_data["exp_uid"]
         exp_key = args_data["exp_key"]
         if not keychain.verify_exp_key(exp_uid, exp_key):
             return api_util.attach_meta({}, api_util.verification_dictionary), 401
-            
+
         # Fetch app_id data from resource manager
         app_id = resource_manager.get_app_id(exp_uid)
         # Standardized participant_uid
         if 'participant_uid' in args_data['args'].keys():
             args_data['args']['participant_uid'] = exp_uid+"_"+args_data['args']['participant_uid']
+
         # Args from dict to json type
         args_json = json.dumps(args_data["args"])
-        # Execute getQuery 
+        # Execute getQuery
         response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"getQuery",args_json)
-        
+
         if not didSucceed:
             return attach_meta({},meta_error['QueryGenerationError'], backend_error=message)
-        
+
         response_dict = eval(response_json)
         for target_index in response_dict["target_indices"]:
             target_index['target'] = targetmapper.get_target_data(exp_uid, target_index["index"])
 
-            
+
         return attach_meta(response_dict,meta_success), 200
-        
-            
+
+
 
