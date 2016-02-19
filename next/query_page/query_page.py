@@ -21,8 +21,8 @@ def load_page(page, exp_uid=None, widget_key=None):
     num_tries = experiment['num_tries']
     app_template = page + '.html'
 
-    if request.args.get('participant_uid'):
-        participant_uid = request.args.get('participant_uid', None)
+    if request.args.get('participant'):
+        participant_uid = request.args.get('participant', None)
         print "next/query_page:load_page, participant_uid = ", participant_uid
     else:
         participant_uid = None
