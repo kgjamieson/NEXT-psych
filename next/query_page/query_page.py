@@ -23,6 +23,7 @@ def load_page(page, exp_uid=None, widget_key=None):
 
     if request.args.get('participant'):
         participant_uid = request.args.get('participant', None)
+        participant_uid = str(participant_uid)
         print "next/query_page:load_page, participant_uid = ", participant_uid
     else:
         participant_uid = None
