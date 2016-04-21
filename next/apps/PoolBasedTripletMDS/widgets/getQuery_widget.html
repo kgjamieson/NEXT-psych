@@ -37,9 +37,19 @@
   <div class="col-xs-12" id="center" >
     {% if query.center.primary_type == "image" or query.center.primary_type == "img" %}
     <img class="center-block" src={{ query.center.primary_description }}></img>
+
     {% elif query.center.primary_type == "text" %}
     <div>
-      <div>{{ query.center.primary_description }}</div>
+      <div style="height:100%; 
+		  width: 100%;
+		  text-align:center; 
+		  vertical-align: middle;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  font-size:5vh">
+	{{ query.center.primary_description }}
+      </div>
     </div>
 
     {% elif query.center.primary_type == "video" %}
@@ -58,12 +68,21 @@
     <img class="center-block" src={{ query.left.primary_description }}></img>
 
     {% elif query.left.primary_type == "text"%}
-    <div>{{ query.left.primary_description }}</div>
+    <div style="height:100%; 
+		width: 100%;
+		text-align:center; 
+		vertical-align: middle;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size:5vh">
+
+      {{ query.left.primary_description }}</div>
 
     {% elif query.center.primary_type == "video" %}
     <video width="320" height="240" poster="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif" controls autoplay loop>
       <source src={{ query.left.primary_description }} type="video/mp4">
-	Your browser does not support the video tag.
+      Your browser does not support the video tag.
     </video>
     {% endif %}
   </div>
@@ -73,7 +92,15 @@
     {% if query.right.primary_type == "image" or query.right.primary_type == "img" %}
     <img class="center-block" src={{ query.right.primary_description }}> </img>
     {% elif query.right.primary_type == "text" %}
-    <div>{{ query.right.primary_description }}</div>
+    <div style="height:100%; 
+		width: 100%;
+		text-align:center; 
+		vertical-align: middle;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size:5vh">
+      {{ query.right.primary_description }}</div>
     {% elif query.center.primary_type == "video" %}
     <video width="320" height="240" poster="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif" controls autoplay loop>
       <source src={{ query.right.primary_description }} type="video/mp4">
