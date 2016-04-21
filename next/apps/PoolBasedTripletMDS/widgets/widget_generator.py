@@ -72,50 +72,14 @@ class WidgetGenerator():
         index_winner = int(targetmapper.get_index_given_targetID(exp_uid, target_winner))
         
         # Set the index winner.
-        args['args']["index_winner"] = index_winner
-
+        args['args']['index_winner'] = index_winner
+        print args
         # Args from dict to json type
         args_json = json.dumps(args["args"]) 
         # Execute processAnswer 
         response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"processAnswer",args_json)
-
+        print response_json, didSucceed, message
         return { 'html':"success"}
-
-
-    def getStats(self,args):
-        """
-        Generates a getStats widget. Uses the args format as specified in::\n
-        /next_backend/next/learningLibs/apps/PoolBasedTripletMDS
-
-        Returns a JSON object with the appropriate stats. Eventually modify to push the whole plot forward.
-        Input: ::\n
-        (dict) args 
-        """
-        
-        exp_uid = args["exp_uid"]
-        app_id = resource_manager.get_app_id(exp_uid)
-        args_json = json.dumps(args["args"])
-        
-        response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"getStats",args_json)
-        response_dict = json.loads(response_json,parse_float=lambda o:round(float(o),4))
-        
-        try:
-            for d in response_dict["data"]:
-                try:
-                    # If a datapoint (d) has a key, attach a target to that datapoint.
-                    if 'index' in d.keys():
-                        try:
-                            d["target"] = targetmapper.get_target_data(exp_uid, d["index"])
-                        except:
-                            print "failed to get target"
-                except:
-                    pass
-        except:
-            # e.g. response_dict does not contain key "data"
-            pass
-
-        return { 'json':response_dict }
-
 
     def getInfo(self,args):
         """

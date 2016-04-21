@@ -37,35 +37,17 @@ class WidgetGenerator():
                                                              exp_uid,
                                                              'getQuery',
                                                              args_json)        
-        response_dict = eval(response_json)
-        print 'response_dict', response_dict
 
+        response_dict = json.loads(response_json)
         index = response_dict['target_indices'][0]['index']
         query = {}
         query['context'] = response_dict['context']
         query['context_type'] = response_dict['context_type']
-        query['target'] = targetmapper.get_target_data(exp_uid, index)                                                       
+        query['target'] = targetmapper.get_target_data(exp_uid, index)
+        query['labels'] = response_dict['labels']
         template = env.get_template('getQuery_widget.html')
-
-        rating_options = []
-        rating_options.append({'target_id':1,
-                                   'primary_description':"unfunny",
-                                   'primary_type':'text',
-                                   'alt_description':1,
-                                   'alt_type':'text'})
-        rating_options.append({'target_id':2,
-                                   'primary_description':"somewhat funny",
-                                   'primary_type':'text',
-                                   'alt_description':2,
-                                   'alt_type':'text'})
-        rating_options.append({'target_id':3,
-                                   'primary_description':"funny",
-                                   'primary_type':'text',
-                                   'alt_description':3,
-                                   'alt_type':'text'})
             
-        return {'html': template.render(query = query,
-                                        rating_options = rating_options),
+        return {'html': template.render(query = query),
                 'args': response_dict }
 
 
@@ -82,17 +64,16 @@ class WidgetGenerator():
         app_id = resource_manager.get_app_id(exp_uid)
         
         try:
-            target_winner = args['args']['target_winner']
+            target_reward = args['args']['target_reward']
         except:
             return {'message':('Failed to specify all arguments '
                                'or misformed arguments'),
                     'code':400,
                     'status':'FAIL',
-                    'base_error':('[target_winner]. Missing required parameter'
+                    'base_error':('[target_reward]. Missing required parameter'
                                   'in the JSON body or the post body'
                                   'or the query string')}, 400
         
-        target_reward = int(target_winner)
         # Set the index winner.
         args['args']['target_reward'] = target_reward
 
@@ -104,45 +85,6 @@ class WidgetGenerator():
                                                              'processAnswer',
                                                              args_json)
         return { 'html':'success'}
-
-
-    
-    def getStats(self,args):
-        """
-        Generates a getStats widget. Uses the args format as specified in::\n
-        /next_backend/next/learningLibs/apps/TupleBanditsPureExploration
-
-        Returns a JSON object with the appropriate stats. 
-        Eventually modify to push the whole plot forward.
-        Input: ::\n
-        (dict) args 
-        """
-        
-        exp_uid = args["exp_uid"]
-        app_id = resource_manager.get_app_id(exp_uid)
-        args_json = json.dumps(args["args"])
-        
-        response_json,didSucceed,message = broker.applyAsync(app_id,
-                                                             exp_uid,
-                                                             'getStats',
-                                                             args_json)
-        response_dict = json.loads(response_json,parse_float=lambda o:round(float(o),4))
-        try:
-            for d in response_dict['data']:
-                try:
-                    # If a datapoint (d) has a key, attach a target to that datapoint.
-                    if 'index' in d.keys():
-                        try:
-                            d['target'] = targetmapper.get_target_data(exp_uid,
-                                                                       d["index"])
-                        except:
-                            print 'failed to get target'
-                except:
-                    pass
-        except:
-            # e.g. response_dict does not contain key "data"
-            pass
-        return { 'json':response_dict }
 
 
     def getInfo(self,args):

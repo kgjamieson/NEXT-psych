@@ -91,7 +91,6 @@ def create_app(object_name, env="prod"):
         experiment,
         targets,
         setup,
-        test_form
     )
     
     app.register_blueprint(main)
@@ -104,7 +103,7 @@ def create_app(object_name, env="prod"):
     app.register_blueprint(experiment,url_prefix="/experiment")
     app.register_blueprint(targets,url_prefix="/targets")
     app.register_blueprint(setup,url_prefix="/setup")
-    app.register_blueprint(test_form,url_prefix="/test_form")
+
 
     return app
 

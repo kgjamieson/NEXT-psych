@@ -1,9 +1,4 @@
 """
-PoolBasedTripletMDS app of the Online Learning Library for Next.Discovery
-author: Kevin Jamieson, kevin.g.jamieson@gmail.com
-last updated: 1/28/2015
-
-######################################
 PoolBasedTripletMDS
 
 This module manages the execution of different algorithms implemented to solve the 
@@ -97,26 +92,12 @@ class PoolBasedTripletMDS(AppPrototype):
             (string) alg_id : valid alg_id for this app_id
             (string) alg_label : unique identifier for algorithm (e.g. may have experiment with repeated alg_id's, but alg_labels must be unqiue, will also be used for plot legends
             [optional] (string) test_alg_label : must be one of the alg_label's in alg_list (Default is self)
+            [optional] (dict) params : algorithm-specific parameters
       [optional] (dict) algorithm_management_settings : dictionary with fields (string) 'mode' and (dict) 'params'. mode in {'pure_exploration','explore_exploit','fixed_proportions'}. Default is 'fixed_proportions' and allocates uniform probability to each algorithm. If mode=fixed_proportions then params is a dictionary that contains the field 'proportions' which is a list of dictionaries with fields 'alg_label' and 'proportion' for all algorithms in alg_list. All proportions must be positive and sum to 1 over all algs in alg_list 
       [optional] (string) participant_to_algorithm_management : in {'one_to_one','one_to_many'}. Default is 'one_to_many'.
       [optional] (string) instructions
       [optional] (string) debrief
       [optional] (int) num_tries
-
-    Expected output:
-      if error:
-        return (JSON) '{}', (bool) False, (str) error_str
-      else:
-        return (JSON) '{}', (bool) True,''
-
-    Usage:
-      initExp_response_json,didSucceed,message = app.initExp(db_API,exp_uid,initExp_args_json)
-
-    Example input:
-      initExp_args_json = {"alg_list": [{"alg_label": "Test", "alg_id": "RandomSampling", "params": {}, "test_alg_label": "Test"}, {"alg_label": "Random", "alg_id": "RandomSampling", "params": {}, "test_alg_label": "Test"}, {"alg_label": "Uncertainty Sampling", "alg_id": "UncertaintySampling", "params": {}, "test_alg_label": "Test"}], "failure_probability": 0.01, "n": 20, "participant_to_algorithm_management": "one_to_one", "algorithm_management_settings": {"params": {"proportions": [{"alg_label": "Test", "proportion": 0.2}, {"alg_label": "Random", "proportion": 0.4}, {"alg_label": "Uncertainty Sampling", "proportion": 0.4}]}, "mode": "fixed_proportions"}, "d": 2}
-
-    Example output:
-      initExp_response_json = {}
     """
 
     try:
@@ -205,7 +186,7 @@ class PoolBasedTripletMDS(AppPrototype):
         supportedAlgs = utils.get_app_supported_algs(self.app_id)
         for algorithm in alg_list:
           if algorithm['alg_id'] not in supportedAlgs:
-            error = "%s.initExp unsupported algorithm '%s' in alg_list" % (self.app_id,alg_id)
+            error = "%s.initExp unsupported algorithm '%s' in alg_list" % (self.app_id,algorithm['alg_id'])
             return '{}',False,error
       else:
         alg_list = utils.get_app_default_alg_list(self.app_id)
@@ -310,6 +291,8 @@ class PoolBasedTripletMDS(AppPrototype):
       for algorithm in alg_list:
         alg_id = algorithm['alg_id'] 
         alg_uid = algorithm['alg_uid']
+        params = algorithm.get('params',None)
+        params['num_tries']=num_tries
 
         # get sandboxed database for the specific app_id,alg_uid,exp_uid - closing off the rest of the database to the algorithm
         rc = ResourceClient(app_id,exp_uid,alg_uid,db)
@@ -318,7 +301,7 @@ class PoolBasedTripletMDS(AppPrototype):
         alg = utils.get_app_alg(self.app_id,alg_id)
 
         # call initExp
-        didSucceed,dt = utils.timeit(alg.initExp)(resource=rc,n=n,d=d,failure_probability=delta)
+        didSucceed,dt = utils.timeit(alg.initExp)(resource=rc,n=n,d=d,failure_probability=delta,params=params)
 
         log_entry = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'task':'initExp','duration':dt,'timestamp':utils.datetimeNow() } 
         ell.log( app_id+':ALG-DURATION', log_entry  )
@@ -353,17 +336,7 @@ class PoolBasedTripletMDS(AppPrototype):
               (int) flag : integer for algorithm's use
             }
       (str) query_uid : unique identifier of query (used to look up for processAnswer)
-      
-
-    Usage: 
-      getQuery_response_json,didSucceed,message = app.getQuery(db_API,exp_uid,getQuery_args_json)
-
-    Example input:
-      getQuery_args_json = {"participant_uid": "ecaf1d60ab995b3c57afb3a1f3f288f0"}
-
-    Example output:
-      getQuery_response_json = {"query_uid": "a061ce00742603afc540d23e08ab77b3", "target_indices": [{"index": 19, "flag": 0, "label": "center"}, {"index": 8, "flag": 0, "label": "left"}, {"index": 15, "flag": 0, "label": "right"}]}
-    """
+   """
 
     try: 
       app_id = self.app_id
@@ -417,13 +390,29 @@ class PoolBasedTripletMDS(AppPrototype):
         if (first_participant_query) and (participant_to_algorithm_management=='one_to_one'):
           db.set(app_id+':participants',participant_uid,'alg_id',alg_id)
           db.set(app_id+':participants',participant_uid,'alg_uid',alg_uid)
+          db.set(app_id+':participants',participant_uid,'alg_label',alg_label)
 
       elif (participant_to_algorithm_management=='one_to_one'):
         # If here, then alg_uid should already be assigned in participant doc
         alg_id,didSucceed,message = db.get(app_id+':participants',participant_uid,'alg_id')
         alg_uid,didSucceed,message = db.get(app_id+':participants',participant_uid,'alg_uid')
+        alg_label,didSucceed,message = db.get(app_id+':participants',participant_uid,'alg_label')
       else:
         raise Exception('participant_to_algorithm_management : '+participant_to_algorithm_management+' not implemented')
+
+      # figure out which queries have already been asked
+      queries,didSucceed,message = db.get_docs_with_filter(app_id+':queries',{'participant_uid':participant_uid})
+      do_not_ask_list = []
+      for q in queries:
+        h = [-1,-1,-1]
+        for t in q.get('target_indices',[]):
+          if t['label']=='center':
+            h[2] = t['index']
+          elif t['label']=='left':
+            h[0] = t['index']
+          elif t['label']=='right':
+            h[1] = t['index']
+        do_not_ask_list.append(h)
 
       # get sandboxed database for the specific app_id,alg_id,exp_uid - closing off the rest of the database to the algorithm
       rc = ResourceClient(app_id,exp_uid,alg_uid,db)
@@ -432,7 +421,7 @@ class PoolBasedTripletMDS(AppPrototype):
       alg = utils.get_app_alg(self.app_id,alg_id)
 
       # call getQuery
-      index_center,index_left,index_right,dt = utils.timeit(alg.getQuery)(resource=rc)
+      index_center,index_left,index_right,dt = utils.timeit(alg.getQuery)(resource=rc,do_not_ask_list=do_not_ask_list)
 
       log_entry_durations = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'task':'getQuery','duration':dt } 
       log_entry_durations.update( rc.getDurations() )
@@ -444,7 +433,7 @@ class PoolBasedTripletMDS(AppPrototype):
       query = {}
       query['query_uid'] = query_uid
       query['target_indices'] = [ {'index':index_center,'label':'center','flag':0},{'index':index_left,'label':'left','flag':0},{'index':index_right,'label':'right','flag':0} ]
-
+  
       # save query data to database
       query_doc = {}
       query_doc.update(query)
@@ -482,15 +471,6 @@ class PoolBasedTripletMDS(AppPrototype):
         return (JSON) '{}', (bool) False, (str) error
       else:
         return (JSON) '{}', (bool) True,''
-
-    Usage:
-      processAnswer_args_json,didSucceed,message = app.processAnswer(db_API,exp_uid,processAnswer_args_json)
-
-    Example input:
-      processAnswer_args_json = {"query_uid": "a061ce00742603afc540d23e08ab77b3", "index_winner": 15}
-
-    Example output:
-      processAnswer_response_json = {}
     """
 
     try:
@@ -793,10 +773,11 @@ class PoolBasedTripletMDS(AppPrototype):
         network_delay_stats = dashboard.network_delay_histogram(self.app_id,exp_uid,alg_label)
         stats = network_delay_stats
 
-
+      # input None
       elif stat_id == "test_error_multiline_plot":
         stats = dashboard.test_error_multiline_plot(self.app_id,exp_uid)
 
+      # input alg_label
       elif stat_id == "most_current_embedding":
         alg_label = params['alg_label']
         stats = dashboard.most_current_embedding(self.app_id,exp_uid,alg_label)
@@ -817,13 +798,3 @@ class PoolBasedTripletMDS(AppPrototype):
       log_entry = { 'exp_uid':exp_uid,'task':'getStats','error':error,'timestamp':utils.datetimeNow() } 
       ell.log( app_id+':APP-EXCEPTION', log_entry  )
       return '{}',False,error
-
-
-# >>> app_id = 'PoolBasedTripletMDS'
-# >>> from next.utils import utils
-# >>> app = utils.get_app(app_id)
-# >>> getStats_dict = {'stat_id':"compute_duration_multiline_plot","params"  : {"task": "predict" }}
-# >>> import json
-# >>> getStats_json =json.dumps(getStats_dict)
-# >>> exp_uid = '5647ba5617ea27fd5e886877e7ccdf'
-# >>> app.getStats(exp_uid,getStats_json)

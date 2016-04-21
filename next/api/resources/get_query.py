@@ -11,6 +11,7 @@ from flask.ext.restful import Resource, reqparse
 import json
 import next.utils
 import next.broker.broker
+import next.api.api_util as api_util
 from next.api.api_util import *
 from next.api.api_util import APIArgument
 
@@ -122,8 +123,8 @@ class getQuery(Resource):
         exp_uid = args_data["exp_uid"]
         exp_key = args_data["exp_key"]
         if not keychain.verify_exp_key(exp_uid, exp_key):
-            return api_util.attach_meta({}, api_util.verification_dictionary), 401
-
+            return api_util.attach_meta({}, api_util.verification_error), 401
+            
         # Fetch app_id data from resource manager
         app_id = resource_manager.get_app_id(exp_uid)
         # Standardized participant_uid
@@ -137,8 +138,8 @@ class getQuery(Resource):
 
         if not didSucceed:
             return attach_meta({},meta_error['QueryGenerationError'], backend_error=message)
-
-        response_dict = eval(response_json)
+        
+        response_dict = json.loads(response_json)
         for target_index in response_dict["target_indices"]:
             target_index['target'] = targetmapper.get_target_data(exp_uid, target_index["index"])
 

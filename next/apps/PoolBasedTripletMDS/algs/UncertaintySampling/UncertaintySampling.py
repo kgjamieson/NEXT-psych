@@ -26,7 +26,7 @@ class UncertaintySampling(PoolBasedTripletMDSPrototype):
     return True
 
 
-  def initExp(self,resource=None,n=0,d=0,failure_probability=0.05):
+  def initExp(self,resource,n,d,failure_probability,params):
     X = numpy.random.randn(n,d)
 
     resource.set('n',n)
@@ -36,7 +36,7 @@ class UncertaintySampling(PoolBasedTripletMDSPrototype):
     return True
 
 
-  def getQuery(self,resource):
+  def getQuery(self,resource,do_not_ask_list):
     n = resource.get('n')
     d = resource.get('d')
 

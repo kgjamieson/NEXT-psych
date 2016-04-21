@@ -26,7 +26,7 @@ class CrowdKernel(PoolBasedTripletMDSPrototype):
     return True
 
 
-  def initExp(self,resource=None,n=0,d=0,failure_probability=0.05):
+  def initExp(self,resource,n,d,failure_probability,params):
     X = numpy.random.randn(n,d)*.0001
     tau = numpy.random.rand(n,n)
     
@@ -40,7 +40,7 @@ class CrowdKernel(PoolBasedTripletMDSPrototype):
     return True
 
 
-  def getQuery(self,resource):
+  def getQuery(self,resource,do_not_ask_list):
     R = 10
     n = resource.get('n')
     d = resource.get('d')

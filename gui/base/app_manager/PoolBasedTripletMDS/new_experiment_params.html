@@ -90,7 +90,11 @@
 				       .html('Uncertainty Sampling'))
 			       .append($('<option>')
 				       .attr({value:"CrowdKernel"})
-				       .html('Crowd Kernel'))
+				   .html('Crowd Kernel'))
+			   .append($('<option>')
+			       .attr({value:"ValidationSampling"})
+			       .html('ValidationSampling'))
+
 		      )
 	      )
                // add third cell (alg_proportion)
@@ -141,19 +145,18 @@
 		 name="params-alg_rows-0-alg_label"
 		 form="save"
 		 style="display:none"
-		 value="Test"
-		 >
+		 value="Test">
             </td>
             <td style="vertical-align:middle">
-              Random Sampling
-              <input
+              <select
 		 class="form-control"
 		 type="text"
 		 id="params-alg_rows-0-alg_id"
 		 name="params-alg_rows-0-alg_id"
-		 form="save"
-		 style="display:none"
-		 value="RandomSampling">
+		 form="save">
+		<option value="RandomSampling"> RandomSampling</option>
+		<option value="ValidationSampling"> ValidationSampling</option>
+	      </select>
             </td>
             <td>
               <input

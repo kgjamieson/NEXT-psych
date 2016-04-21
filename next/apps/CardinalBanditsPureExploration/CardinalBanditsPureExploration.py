@@ -1,9 +1,4 @@
 """
-CardinalBanditsPureExploration app of the Online Learning Library for Next.Discovery
-author: Kevin Jamieson, kevin.g.jamieson@gmail.com
-last updated: 11/13/2015
-
-######################################
 CardinalBanditsPureExploration
 
 This module manages the execution of different algorithms implemented to solve the 
@@ -16,6 +11,8 @@ import numpy.random
 import json
 import time
 import traceback
+from collections import OrderedDict
+
 
 from next.resource_client.ResourceClient import ResourceClient
 import next.utils as utils
@@ -90,10 +87,12 @@ class CardinalBanditsPureExploration(AppPrototype):
     Expected input (in json structure with string keys):
       (int) n: number of arms
       [optional] (float) R: sub-Gaussian parameter, e.g. E[exp(t*X)]<=exp(t^2 R^2/2), defaults to R=0.5 (satisfies X \in [0,1])
+      [optional] (dict) labels: List of dictionaries with label and reward keys.
       (float) failure_probability : confidence
       [optional] (list of dicts) alg_list : with fields (Defaults given by Info.get_app_default_alg_list)
             (string) alg_id : valid alg_id for this app_id
             (string) alg_label : unique identifier for algorithm (e.g. may have experiment with repeated alg_id's, but alg_labels must be unqiue, will also be used for plot legends
+            [optional] (dict) params : algorithm-specific parameters
       [optional] (dict) algorithm_management_settings : dictionary with fields (string) 'mode' and (dict) 'params'. mode in {'pure_exploration','explore_exploit','fixed_proportions'}. Default is 'fixed_proportions' and allocates uniform probability to each algorithm. If mode=fixed_proportions then params is a dictionary that contains the field 'proportions' which is a list of dictionaries with fields 'alg_label' and 'proportion' for all algorithms in alg_list. All proportions must be positive and sum to 1 over all algs in alg_list 
       [optional] (string) participant_to_algorithm_management : in {'one_to_one','one_to_many'}. Default is 'one_to_many'.
       [optional] (int) num_tries
@@ -103,15 +102,6 @@ class CardinalBanditsPureExploration(AppPrototype):
         return (JSON) '{}', (bool) False, (str) error_str
       else:
         return (JSON) '{}', (bool) True,''
-
-    Usage:
-      initExp_response_json,didSucceed,message = app.initExp(exp_uid,initExp_args_json)
-
-    Example input:
-      initExp_args_json = 
-
-    Example output:
-      initExp_response_json = {}
     """
 
     try:
@@ -193,6 +183,7 @@ class CardinalBanditsPureExploration(AppPrototype):
 
       n = args_dict['n']
       R = args_dict.get('R',2) # default sufficient for scores in range [1,5]
+      labels = args_dict.get('labels', None) 
       delta = args_dict['failure_probability']
 
       if 'alg_list' in args_dict:
@@ -200,7 +191,7 @@ class CardinalBanditsPureExploration(AppPrototype):
         supportedAlgs = utils.get_app_supported_algs(self.app_id)
         for algorithm in alg_list:
           if algorithm['alg_id'] not in supportedAlgs:
-            error = "%s.initExp unsupported algorithm '%s' in alg_list" % (self.app_id,alg_id)
+            error = "%s.initExp unsupported algorithm '%s' in alg_list" % (self.app_id,algorithm['alg_id'])
             return '{}',False,error
       else:
         alg_list = utils.get_app_default_alg_list(self.app_id)
@@ -300,6 +291,7 @@ class CardinalBanditsPureExploration(AppPrototype):
       db.set(app_id+':experiments',exp_uid,'app_id',app_id)
       db.set(app_id+':experiments',exp_uid,'n',n)
       db.set(app_id+':experiments',exp_uid,'R',R)
+      db.set(app_id+':experiments',exp_uid,'labels',labels)
       db.set(app_id+':experiments',exp_uid,'failure_probability',delta)
       db.set(app_id+':experiments',exp_uid,'alg_list',alg_list)
       db.set(app_id+':experiments',exp_uid,'algorithm_management_settings',algorithm_management_settings)
@@ -315,6 +307,7 @@ class CardinalBanditsPureExploration(AppPrototype):
       for algorithm in alg_list:
         alg_id = algorithm['alg_id'] 
         alg_uid = algorithm['alg_uid']
+        params = algorithm.get('params',None)
 
         db.set(app_id+':algorithms',alg_uid,'alg_id',alg_id)
         db.set(app_id+':algorithms',alg_uid,'alg_uid',alg_uid)
@@ -327,7 +320,7 @@ class CardinalBanditsPureExploration(AppPrototype):
         alg = utils.get_app_alg(self.app_id,alg_id)
 
         # call initExp
-        didSucceed,dt = utils.timeit(alg.initExp)(resource=rc,n=n,R=R,failure_probability=delta)
+        didSucceed,dt = utils.timeit(alg.initExp)(resource=rc,n=n,R=R,failure_probability=delta,params=params)
 
         log_entry = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'task':'initExp','duration':dt,'timestamp':utils.datetimeNow() } 
         ell.log( app_id+':ALG-DURATION', log_entry  )
@@ -355,16 +348,6 @@ class CardinalBanditsPureExploration(AppPrototype):
     Expected output (in json structure with string keys):
       (int) target_index : target index
       (str) query_uid : unique identifier of query (used to look up for processAnswer)
-
-    Usage: 
-      getQuery_response_json,didSucceed,message = app.getQuery(exp_uid,getQuery_args_json)
-
-    Example input:
-      getQuery_args_json = {"k": 3, "participant_uid": "0077110d03cf06b8f77d11acc399e8a7"}
-
-    Example output:
-      getQuery_response_json = {"query_uid": "4d02a9924f92138287edd17ca5feb6e1", "target_indices": [ 3, 6, 9 ]
-
     """
     try: 
       app_id = self.app_id
@@ -447,6 +430,9 @@ class CardinalBanditsPureExploration(AppPrototype):
       context_type,didSucceed,message = db.get(app_id+':experiments',exp_uid,'context_type')
       context,didSucceed,message = db.get(app_id+':experiments',exp_uid,'context')
 
+      # check for labels
+      labels,didSucceed,message = db.get(app_id+':experiments',exp_uid,'labels')
+      
       # log
       log_entry_durations = { 'exp_uid':exp_uid,'alg_uid':alg_uid,'task':'getQuery','duration':dt } 
       log_entry_durations.update( rc.getDurations() )
@@ -471,10 +457,12 @@ class CardinalBanditsPureExploration(AppPrototype):
       for field in query_doc:
         db.set(app_id+':queries', query_uid, field, query_doc[field])
 
-      # add context after updating query doc to avoid redundant information
-      query['context'] = context
-      query['context_type'] = context_type
-        
+      # add context and labels after updating query doc to avoid redundant information
+      if context:
+        query['context'] = context
+        query['context_type'] = context_type
+      if labels:
+        query['labels'] = labels
       args_out = {'args':query,'meta':meta}
       response_json = json.dumps(args_out)
 
@@ -501,15 +489,6 @@ class CardinalBanditsPureExploration(AppPrototype):
         return (JSON) '{}', (bool) False, (str) error
       else:
         return (JSON) '{}', (bool) True,''
-
-    Usage:
-      processAnswer_args_json,didSucceed,message = app.processAnswer(exp_uid,processAnswer_args_json)
-
-    Example input:
-      processAnswer_args_json = 
-
-    Example output:
-      processAnswer_response_json = {}
     """
 
     try:
@@ -631,7 +610,7 @@ class CardinalBanditsPureExploration(AppPrototype):
 
       # convert args_json to args_dict
       try:
-        args_dict = json.loads(args_json)
+        args_dict = json.loads(args_json, object_pairs_hook=OrderedDict)
       except:
         error = "%s.predict failed to convert input args_json due to improper format" %(self.app_id) 
         return '{}',False,error
@@ -775,19 +754,19 @@ class CardinalBanditsPureExploration(AppPrototype):
         compute_detailed_stats = dashboard.compute_duration_detailed_stacked_area_plot(self.app_id,exp_uid,task,alg_label)
         stats = compute_detailed_stats
 
-              # input alg_label
+      # input alg_label
       elif stat_id == "response_time_histogram":
         alg_label = params['alg_label']
         response_time_stats = dashboard.response_time_histogram(self.app_id,exp_uid,alg_label)
         stats = response_time_stats
         
-   # input alg_label
+      # input alg_label
       elif stat_id == "network_delay_histogram":
         alg_label = params['alg_label']
         network_delay_stats = dashboard.network_delay_histogram(self.app_id,exp_uid,alg_label)
         stats = network_delay_stats
 
-
+      # input alg_label
       elif stat_id == "most_current_ranking":
         alg_label = params['alg_label']
         stats = dashboard.most_current_ranking(self.app_id,exp_uid,alg_label)

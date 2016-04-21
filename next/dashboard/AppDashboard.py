@@ -1,13 +1,3 @@
-"""
-StochasticBanditsPureExplorationDashboard 
-author: Kevin Jamieson, kevin.g.jamieson@gmail.com
-last updated: 2/11/2015
-
-######################################
-AppDashboard
-"""
-
-
 import json
 import numpy
 import numpy.random
@@ -80,11 +70,7 @@ class AppDashboard(object):
       (string) task :  must be in {'getQuery','processAnswer','predict'}
 
     Expected output (in dict):
-      (string) plot_type : 'histogram'
-      (string) x_label : 'Date'
-      (string) y_label : 'Count'
-      (list) t : list of timestamp strings
-      (string) legend_label : 'API Calls to '+task
+      (dict) MPLD3 plot dictionary
     """
 
 
@@ -99,13 +85,14 @@ class AppDashboard(object):
     import matplotlib.pyplot as plt
     import mpld3
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'),figsize=(12,1.5))
-    ax.hist(numerical_timestamps,int(1+4*numpy.sqrt(len(numerical_timestamps))),alpha=0.5,color='black')
+    ax.hist(numerical_timestamps,min(int(1+4*numpy.sqrt(len(numerical_timestamps))),300),alpha=0.5,color='black')
     ax.set_frame_on(False)
     ax.get_xaxis().set_ticks([])
     ax.get_yaxis().set_ticks([])
     ax.get_yaxis().set_visible(False)
     ax.set_xlim(0, max(numerical_timestamps))
     plot_dict = mpld3.fig_to_dict(fig)
+    plt.close()
 
     
     return plot_dict
@@ -121,18 +108,7 @@ class AppDashboard(object):
       (string) task :  must be in {'getQuery','processAnswer','predict'}
 
     Expected output (in dict):
-      plot_type 'multi_line_plot'
-      (string) x_label : 'API Call'
-      (float) x_min : 1
-      (float) x_max : maximum number of reported answers for any algorithm
-      (string) y_label : 'Duration (s)'
-      (float) y_min : 0.
-      (float) y_max : maximum duration value achieved by any algorithm
-      (list of dicts with fields) data : 
-        (list of strings) t : list of timestamp strings
-        (list of floats) x : integers ranging from 1 to maximum number of elements in y (or t)
-        (list of floats) y : list of durations
-        (string) legend_label : alg_label
+      (dict) MPLD3 plot dictionary
     """
     alg_list,didSucceed,message = self.db.get(app_id+':experiments',exp_uid,'alg_list')
 
@@ -214,6 +190,7 @@ class AppDashboard(object):
     for label in legend.get_texts():
       label.set_fontsize('small')
     plot_dict = mpld3.fig_to_dict(fig)
+    plt.close()
 
 
     return plot_dict
@@ -229,18 +206,7 @@ class AppDashboard(object):
       (string) alg_label : must be a valid alg_label contained in alg_list list of dicts 
 
     Expected output (in dict):
-      plot_type 'stacked_area_plot'
-      (string) x_label : 'API Call'
-      (float) x_min : 1
-      (float) x_max : length of datastream
-      (string) y_label : 'Duration (s)'
-      (float) y_min : 0.
-      (float) y_max : maximum duration value achieved sum of all layers
-      (list of strings) t : list of timestamp strings
-      (list of floats) x : integers ranging from 1 x_max
-      (list of dicts with fields) data : 
-        (list of floats) y : list of durations
-        (string) legend_label : area_label in {'compute','db_set','db_get'}
+      (dict) MPLD3 plot dictionary
     """
 
     alg_list,didSucceed,message = self.db.get(app_id+':experiments',exp_uid,'alg_list')
@@ -298,52 +264,12 @@ class AppDashboard(object):
       dbGet.append(_alg_duration_dbGet)
       compute.append( _alg_duration - _alg_duration_dbSet - _alg_duration_dbGet )
 
-    
-    list_of_dicts = []
-
-    duration_dict = {}
-    duration_dict['legend_label'] = 'compute'
-    duration_dict['y'] = compute
-    list_of_dicts.append(duration_dict)
-
-    duration_dict = {}
-    duration_dict['legend_label'] = 'db:get'
-    duration_dict['y'] = dbGet
-    list_of_dicts.append(duration_dict)
-
-    duration_dict = {}
-    duration_dict['legend_label'] = 'db:set'
-    duration_dict['y'] = dbSet
-    list_of_dicts.append(duration_dict)
-
-    duration_dict = {}
-    duration_dict['legend_label'] = 'admin'
-    duration_dict['y'] = admin
-    list_of_dicts.append(duration_dict)
-
-    duration_dict = {}
-    duration_dict['legend_label'] = 'enqueued'
-    duration_dict['y'] = enqueued
-    list_of_dicts.append(duration_dict)
-
-    return_dict = {}
-    return_dict['x'] = x
-    return_dict['t'] = t
-    return_dict['data'] = list_of_dicts
-    return_dict['plot_type'] = 'stacked_area_plot'
-    return_dict['x_label'] = 'API Call'
     try:
-      return_dict['x_min'] = min(x)
-      return_dict['x_max'] = max(x)
-      return_dict['y_min'] = min_y_value
-      return_dict['y_max'] = max_y_value
+      min_x = min(x)
+      max_x = max(x)
     except:
-      return_dict['x_min'] = 0.
-      return_dict['x_max'] = 0.
-      return_dict['y_min'] = 0.
-      return_dict['y_max'] = 0.
-    return_dict['y_label'] = 'Duration (s)'
-
+      min_x = 0.
+      max_x = 0.
 
     import matplotlib.pyplot as plt
     import mpld3
@@ -351,8 +277,8 @@ class AppDashboard(object):
     stack_coll = ax.stackplot(x,compute,dbGet,dbSet,admin,enqueued, alpha=.5)
     ax.set_xlabel('API Call')
     ax.set_ylabel('Duration (s)')
-    ax.set_xlim([return_dict['x_min'],return_dict['x_max']])
-    ax.set_ylim([0.,return_dict['y_max']])
+    ax.set_xlim([min_x,max_x])
+    ax.set_ylim([0.,max_y_value])
     ax.grid(color='white', linestyle='solid')
     ax.set_title(alg_label+' - '+task, size=14)
     proxy_rects = [plt.Rectangle((0, 0), 1, 1, alpha=.5,fc=pc.get_facecolor()[0]) for pc in stack_coll]
@@ -360,6 +286,7 @@ class AppDashboard(object):
     for label in legend.get_texts():
       label.set_fontsize('small')
     plot_dict = mpld3.fig_to_dict(fig)
+    plt.close()
     
 
     return plot_dict
@@ -373,10 +300,7 @@ class AppDashboard(object):
       (string) alg_label : must be a valid alg_label contained in alg_list list of dicts 
 
     Expected output (in dict):
-      (string) plot_type : 'histogram'
-      (string) x_label : 'Response Time'
-      (string) y_label : 'Count'
-      (string) legend_label : ''
+      (dict) MPLD3 plot dictionary
     """
 
     alg_list,didSucceed,message = self.db.get(app_id+':experiments',exp_uid,'alg_list')
@@ -399,13 +323,14 @@ class AppDashboard(object):
     import matplotlib.pyplot as plt
     import mpld3
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t,min(MAX_SAMPLES_PER_PLOT,int(1+4*numpy.sqrt(len(t)))),alpha=0.5,color='black')
+    ax.hist(t,MAX_SAMPLES_PER_PLOT,range=(0,30),alpha=0.5,color='black')
     ax.set_xlim(0, 30)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')
     ax.set_ylabel('Count')
     ax.set_title(alg_label + " - response time", size=14)
     plot_dict = mpld3.fig_to_dict(fig)
+    plt.close()
 
     return plot_dict
 
@@ -417,10 +342,7 @@ class AppDashboard(object):
       (string) alg_label : must be a valid alg_label contained in alg_list list of dicts 
 
     Expected output (in dict):
-      (string) plot_type : 'histogram'
-      (string) x_label : 'Network Delay'
-      (string) y_label : 'Count'
-      (string) legend_label : ''
+      (dict) MPLD3 plot dictionary
     """
 
     alg_list,didSucceed,message = self.db.get(app_id+':experiments',exp_uid,'alg_list')
@@ -442,13 +364,14 @@ class AppDashboard(object):
     import matplotlib.pyplot as plt
     import mpld3
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t,min(MAX_SAMPLES_PER_PLOT,int(1+4*numpy.sqrt(len(t)))),alpha=0.5,color='black')
+    ax.hist(t,MAX_SAMPLES_PER_PLOT,range=(0,5),alpha=0.5,color='black')
     ax.set_xlim(0, 5)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')
     ax.set_ylabel('Count')
     ax.set_title(alg_label + " - network delay", size=14)
     plot_dict = mpld3.fig_to_dict(fig)
+    plt.close()
 
     return plot_dict
 
