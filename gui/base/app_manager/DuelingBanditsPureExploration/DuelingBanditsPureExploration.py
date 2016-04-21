@@ -7,6 +7,7 @@ from base.app_manager.app_resource_prototype import AppResourcePrototype
 from flask import render_template
 from base.current import *
 from base.models import Experiment
+from base.upload_manager import get_AWS_bucket, upload_to_S3
 
 
 from boto.s3.connection import S3Connection
@@ -163,10 +164,13 @@ class DuelingBanditsPureExploration(AppResourcePrototype):
         initExp_dict['args']['algorithm_management_settings'] = {}
         initExp_dict['args']['algorithm_management_settings']['mode'] = current_experiment.params['algorithm_management']
         initExp_dict['args']['algorithm_management_settings']['params'] = {}
-        initExp_dict['args']['algorithm_management_settings']['params']['context_type'] = current_experiment.params['context_type']
-        initExp_dict['args']['algorithm_management_settings']['params']['context_image'] = current_experiment.params['context_image']
-        initExp_dict['args']['algorithm_management_settings']['params']['context_text'] = current_experiment.params['context_text']
         initExp_dict['args']['algorithm_management_settings']['params']['proportions'] = []
+
+        initExp_dict['args']['context_type'] = current_experiment.params['context_type']
+        if current_experiment.params['context_type'] == 'text':
+            initExp_dict['args']['context'] = current_experiment.params['context_text']
+        elif current_experiment.params['context_type'] == 'image':
+            initExp_dict['args']['context'] = current_experiment.params['context_image']
 
         for alg in current_experiment.params['alg_rows']:
             params_dict = copy.deepcopy(alg)

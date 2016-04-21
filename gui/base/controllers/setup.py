@@ -26,7 +26,6 @@ def _setup():
     if form.validate_on_submit():
         current_user.access_key_id = form.access_key_id.data
         current_user.secret_access_key = form.secret_access_key.data
-        current_user.next_backend_global_host = urlparse(request.url).hostname
        
         gotbucket = False
         try:

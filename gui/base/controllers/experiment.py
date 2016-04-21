@@ -1,9 +1,10 @@
 import csv, json, os, requests
-from  bson.json_util import dumps
+from bson.json_util import dumps
 from flask import Blueprint, Response, render_template, flash, request, redirect, url_for, session,jsonify
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, RadioField, FieldList, IntegerField, FormField, validators
+from werkzeug.local import Local
 
 import base
 from base import cache
@@ -15,14 +16,13 @@ from base.app_manager import app_manager
 config = base.Config()
 experiment = Blueprint('experiment', __name__)
 
-
 @experiment.route('/<experiment_id>')
 @login_required
 @project_required
 def _experiment(experiment_id):
     set_experiment(experiment_id=experiment_id)
     # Frontend base url needed for stats and widgets
-    next_backend_url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
+    next_backend_url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     # Frontend url needed for queries
     next_frontend_url = "http://"+config.NEXT_FRONTEND_GLOBAL_HOST+":"+config.NEXT_FRONTEND_GLOBAL_PORT
     # query the app_manager for app specific params
@@ -126,7 +126,7 @@ def run_experiment(experiment_id):
     # Get the appropriate app manager resource
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     # Run the experiment using this app resource
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
+    url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/experiment"
     response_dict = app_resource.run_experiment(current_experiment, url)
 
     if 'exp_uid' in response_dict.keys() and 'exp_key' in response_dict.keys():
@@ -149,7 +149,7 @@ def run_experiment(experiment_id):
 
     # Do this more cleanly. The problem is that mongoengine fields can't be json serialized.
     create_target_mapping_dict['target_blob'] = [mongo_to_dict(doc) for doc in current_experiment.target_set.targets]
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"
+    url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/targets/createtargetmapping"
     response = requests.post(url,
                              json.dumps(create_target_mapping_dict),
                              headers={'content-type':'application/json'})
@@ -165,7 +165,7 @@ def run_experiment(experiment_id):
 def get_temp_keys():
     n = int(request.args.get("keys_count",0))
     # Use local links to to local request
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
+    url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT+"/api/temp-widget-keys"
     args = {
         'exp_uid':current_experiment.exp_uid,
         'exp_key':current_experiment.exp_key,
@@ -190,7 +190,7 @@ def get_temp_keys():
 @project_required
 @experiment_required
 def get_participant_responses():
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
+    url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     participant_responses = app_resource.get_formatted_participant_data(current_experiment, url)
     return "\n".join(participant_responses), 200, {'Content-Disposition':'attachment', 'Content-Type': 'text/csv; charset=utf-8'}
@@ -200,7 +200,7 @@ def get_participant_responses():
 @project_required
 @experiment_required
 def get_embedding():
-    url = "http://"+current_user.next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
+    url = "http://"+next_backend_global_host+":"+config.NEXT_BACKEND_GLOBAL_PORT
     app_resource = app_manager.get_app_resource(current_experiment.app_id)
     embedding = app_resource.get_formatted_embedding_data(current_experiment,
                                                           url)

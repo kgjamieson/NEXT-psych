@@ -27,10 +27,10 @@ class PoolBasedTripletMDS(AppResourcePrototype):
         Return a form with specific params for the new experiment form.
         """
         alg_list = ['RandomSampling', 'UncertaintySampling','CrowdKernel']
-        
+
         # Alg row: follow this post:
         # http://stackoverflow.com/questions/11402627/how-to-get-a-build-a-form-with-repeated-elements-well
-        
+
         class AlgorithmDefinitionRowForm(Form):
             alg_label = TextField('Algorithm Label')
             alg_id = SelectField('Algorithm Id',
@@ -98,7 +98,7 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                                                "Right",
                                                "Answer",
                                                "Alg Label",
-                                               'Response Time']))
+                                               'Response Time (s)']))
         for participant_id, response_list in response_dict['participant_responses'].iteritems():
             exp_uid, participant_id = participant_id.split('_')
             for response in response_list:
@@ -122,12 +122,12 @@ class PoolBasedTripletMDS(AppResourcePrototype):
                     line.append(target_winner['target']['target_id'])
                     # Append the alg_label
                     line.append(response['alg_label'])
-                    print line.keys()
+                    line.append(str(response['response_time']))
                     participant_responses.append(",".join(line))
 
         return participant_responses
 
-    
+
     def get_formatted_embedding_data(self, current_experiment, url, args=None):
         #url = url+"/api/experiment/"+current_experiment.exp_uid+"/"+current_experiment.exp_key+"/participants"
         #url = url+'/api/widgets/getwidget/'

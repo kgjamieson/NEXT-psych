@@ -1,76 +1,24 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <p><b>Embedding</b></p>
-    <!-- Create Tabs -->
-    <ul class="nav nav-tabs">
-      {% for alg in current_experiment.info["alg_list"] %}
-      <li role="presentation" {{ "class=active" if loop.first }}><a href="#most_current_embedding_{{ alg['alg_label'] }}_tab"  role="tab" data-toggle="tab">{{ alg["alg_label"] }}-{{ alg["alg_id"] }}</a></li>
-      
-      {% endfor %}
-    </ul>
-    
-    <div class="tab-content">
-    {% for alg in current_experiment.info["alg_list"] %}
-    {% set alg_label = alg["alg_label"] %}
-      <div class="row row-spacing tab-pane {{ 'active' if loop.first }}" role="tabpanel" id="most_current_embedding_{{ alg_label }}_tab">
-	<div class="col-lg-8 col-lg-offset-2">
-	  <div id="most_current_embedding_{{ alg_label }}" class="embedding"> Loading </div>
-	</div>
-	
-	<script>  
-	  plot_response = function(data) {
-	  $("#most_current_embedding_{{ alg_label }}").html("");
-	  console.log("most_current_embedding data", data.data);
-	  next_widget.plotCurrentEmbedding(data.data,"most_current_embedding_{{ alg_label }}");
-	  }
-	  
-	  data = next_widget.getStats(
-	  {
-	  'app_id': "{{ current_experiment.app_id }}",
-	  'exp_uid': "{{ current_experiment.exp_uid }}",
-	  'exp_key': "{{ current_experiment.exp_key }}",
-	  'args':{
-	  'stat_id' : 'most_current_embedding',
-	  'params'  : {'alg_label': "{{ alg_label }}" }
-	  }
-	  },
-	  plot_response
-	  );  
-	</script>
-      </div>
-      
-      {% endfor %}
-      </div>
-
-<div class="panel panel-default">
-  <div class="panel-body">      
-    <p><b>Learning Rate</b></p>
-    <div class="row row-spacing">
-      <div class="col-lg-6 col-lg-offset-3">
-	<div id= "test_error_multiline_plot_getQuery" class="plot"> Loading </div>
-      </div>
+    Get the embedding as a CSV file. The two dimensional embedding is shown as an image on the backend, and this file also contains the n-dimensional embedding (n specified when experiment created).
+    <p></p>
+    <div class="well well-sm col-lg-6" style="overflow:hidden;text-overflow:ellipsis;">
+        <a href="get-embedding" download="embedding.csv">embedding.csv</a>
     </div>
-
-    <script>
-
-      plot_response = function(data) {
-      $("#test_error_multiline_plot_getQuery").html("");
-      console.log("plot_response",data);
-      charts.plot(data,"test_error_multiline_plot_getQuery","Triplet Test Error getQuery");
-      }
-      
-      data = next_widget.getStats(
-      {
-      'app_id': "{{ current_experiment.app_id }}",
-      'exp_uid': "{{ current_experiment.exp_uid }}",
-      'exp_key': "{{ current_experiment.exp_key }}",
-      'args':{
-      'stat_id' : 'test_error_multiline_plot',
-      'params'  : {'task':''}
-      }
-      },
-      plot_response
-      );
-    </script>
+    <div class="col-lg-6">
+    This file includes coordinates for each embedding. These coordinates are associated with an stimulus label.
+    <p>
+    i.e.<br>
+    <code>
+        stimulus_name,x_cord,y_cord,x_1,x_2,x_3<br>
+        vonn.png,0.5,-0.5,0,1,2<br>
+        bode.png,-1.0,-0.5,0,2,1<br>
+        ligety.png,-0.5,-0.75,1,2,0<br>
+    </code>
+    <br>
+    <code>{x,y}_cord</code> are for the two dimensional embedding and <code>x_i</code> are for the n-dimensional embedding.
+    </p>
+  </div>
   </div>
 </div>
