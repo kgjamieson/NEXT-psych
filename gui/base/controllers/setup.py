@@ -40,7 +40,7 @@ def _setup():
                     pass
             current_user.aws_bucket_name = bucket_uid
             current_user.save()
-        except e:
+        except Exception as e:
             flash("Please check your aws credentials")
             return render_template('setup.html', form = SecretForm())
         return redirect(url_for('dashboard._dashboard'))
